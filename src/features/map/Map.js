@@ -72,9 +72,9 @@ const Map = ({ data, setSelectedLocationData }) => {
     const hoveredFeature =
       features && features.find((f) => f.layer.id === 'data')
 
-    const bounds = hoveredFeature.geometry?.coordinates?.[0]
+    const { x, y } = hoveredFeature.properties
 
-    fitBounds({ x: bounds[0], y: bounds[2] })
+    fitBounds({ x: JSON.parse(x), y: JSON.parse(y) })
 
     setSelectedLocationData(hoveredFeature?.properties)
   }
@@ -94,18 +94,21 @@ const Map = ({ data, setSelectedLocationData }) => {
   }
 
   useEffect(() => {
-    let locations = data.data
+    let locations = data
     locations = _.sortBy(locations, 'area_m2').reverse()
 
     setMapFeatures({
       type: 'FeatureCollection',
       features: locations.map((loc) => {
-        const { bounds, ...properties } = loc
+        const { geometry, bounds, ...properties } = loc
         return {
           type: 'Feature',
-          geometry: bounds,
+          geometry: geometry,
           properties: {
             ...properties,
+            // save x/y bounding box coordinates
+            x: bounds?.coordinates[0][0],
+            y: bounds?.coordinates[0][2],
           },
         }
       }),
@@ -121,9 +124,9 @@ const Map = ({ data, setSelectedLocationData }) => {
         'match',
         ['get', 'location_type'],
         'country',
-        'lightsalmon',
-        'wdpa',
         'cyan',
+        'wdpa',
+        'magenta',
         /* other */ 'hotpink',
       ],
     },

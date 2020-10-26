@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Map from '../features/map/Map'
 import Widgets from '../features/widgets/Widgets'
 
-import locationsData from '../data/gmw_locations.json'
+import locationsData from '../data/gmw_locations_merged.json'
 
 function App() {
   const [selectedLocationData, setSelectedLocationData] = useState()
