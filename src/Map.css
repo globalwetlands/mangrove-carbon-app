@@ -1,0 +1,11 @@
+.Map {
+  width: 100vw;
+  height: 100vh;
+}
+
+.Map--NavigationControl {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 5px;
+}
