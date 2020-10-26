@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import MapGL, { NavigationControl, Source, Layer } from 'react-map-gl'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
+import MapGL, {
+  NavigationControl,
+  Source,
+  Layer,
+  WebMercatorViewport,
+  FlyToInterpolator,
+} from 'react-map-gl'
 import _ from 'lodash'
 
 import './Map.css'
@@ -9,9 +15,11 @@ const Map = ({ data, setSelectedLocationData }) => {
     .SNOWPACK_PUBLIC_MAPBOX_ACCESS_TOKEN
   const mapStyle = 'mapbox://styles/mapbox/light-v9'
 
+  const mapRef = useRef()
+
   const [viewport, setViewport] = useState({
-    width: 400,
-    height: 400,
+    // width: 400,
+    // height: 400,
     latitude: 20,
     longitude: 0,
     zoom: 2,
@@ -20,6 +28,28 @@ const Map = ({ data, setSelectedLocationData }) => {
   const [tooltip, setTooltip] = useState({})
 
   const [mapFeatures, setMapFeatures] = useState(null)
+
+  const fitBounds = useCallback(
+    ({ x, y }) => {
+      const { longitude, latitude, zoom } = new WebMercatorViewport(
+        viewport
+      ).fitBounds([x, y], {
+        padding: 100,
+        offset: [0, 0],
+      })
+      const updatedViewport = {
+        ...viewport,
+        longitude,
+        latitude,
+        zoom,
+        transitionDuration: 1000,
+        transitionInterpolator: new FlyToInterpolator(),
+        // transitionEasing: d3.easeCubic,
+      }
+      setViewport(updatedViewport)
+    },
+    [viewport]
+  )
 
   const onHover = (e) => {
     const {
@@ -40,6 +70,10 @@ const Map = ({ data, setSelectedLocationData }) => {
     const { features } = e
     const hoveredFeature =
       features && features.find((f) => f.layer.id === 'data')
+
+    const bounds = hoveredFeature.geometry?.coordinates?.[0]
+
+    fitBounds({ x: bounds[0], y: bounds[2] })
 
     setSelectedLocationData(hoveredFeature?.properties)
   }
@@ -105,6 +139,7 @@ const Map = ({ data, setSelectedLocationData }) => {
         mapboxApiAccessToken={mapboxApiAccessToken}
         onHover={onHover}
         onClick={onClick}
+        ref={mapRef}
       >
         <NavigationControl
           className="Map--NavigationControl"
