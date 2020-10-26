@@ -23,6 +23,7 @@ const Map = ({ data, setSelectedLocationData }) => {
     latitude: 20,
     longitude: 0,
     zoom: 2,
+    minZoom: 2,
   })
 
   const [tooltip, setTooltip] = useState({})
