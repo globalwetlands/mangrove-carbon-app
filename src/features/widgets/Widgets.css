@@ -1,0 +1,17 @@
+.Widgets--Wrap {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  bottom: 35px;
+  pointer-events: none;
+}
+
+.Widgets--Container {
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  min-height: 50px;
+  margin: 0 auto;
+  max-width: 800px;
+  pointer-events: all;
+}

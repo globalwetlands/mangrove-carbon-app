@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import './Map.css'
 
-const Map = ({ data }) => {
+const Map = ({ data, setSelectedLocationData }) => {
   const mapboxApiAccessToken = import.meta.env
     .SNOWPACK_PUBLIC_MAPBOX_ACCESS_TOKEN
   const mapStyle = 'mapbox://styles/mapbox/light-v9'
@@ -34,6 +34,14 @@ const Map = ({ data }) => {
       x: offsetX,
       y: offsetY,
     })
+  }
+
+  const onClick = (e) => {
+    const { features } = e
+    const hoveredFeature =
+      features && features.find((f) => f.layer.id === 'data')
+
+    setSelectedLocationData(hoveredFeature?.properties)
   }
 
   const renderTooltip = () => {
@@ -96,6 +104,7 @@ const Map = ({ data }) => {
         onViewportChange={setViewport}
         mapboxApiAccessToken={mapboxApiAccessToken}
         onHover={onHover}
+        onClick={onClick}
       >
         <NavigationControl
           className="Map--NavigationControl"
