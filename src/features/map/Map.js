@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
-import MapGL, {
+import React, { useEffect, useState, useCallback } from 'react'
+import {
+  InteractiveMap as MapGL,
   NavigationControl,
   Source,
   Layer,

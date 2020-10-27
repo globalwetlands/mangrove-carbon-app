@@ -2,6 +2,6 @@
   "extends": "@snowpack/app-scripts-react",
   "plugins": [
     "@snowpack/plugin-dotenv",
-    "@snowpack/plugin-webpack"
+    "@snowpack/plugin-optimize"
   ]
 }
