@@ -127,16 +127,16 @@ const Map = ({ setSelectedLocationData }) => {
     id: 'data',
     type: 'fill',
     paint: {
-      'fill-opacity': 0.2,
+      'fill-opacity': 0.15,
       'fill-outline-color': 'black',
       'fill-color': [
         'match',
         ['get', 'location_type'],
         'country',
-        'cyan',
+        '#50E597',
         'wdpa',
-        'magenta',
-        /* other */ 'hotpink',
+        '#FF4E8B',
+        /* other */ '#FF3200',
       ],
     },
   }
