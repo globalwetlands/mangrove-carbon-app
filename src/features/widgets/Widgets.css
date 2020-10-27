@@ -1,7 +1,7 @@
 .Widgets--Wrap {
   position: absolute;
-  left: 5px;
-  right: 5px;
+  left: 0px;
+  right: 0px;
   bottom: 35px;
   pointer-events: none;
 }
@@ -9,8 +9,9 @@
 .Widgets--Container {
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.9);
-  padding: 15px;
+  padding: 15px 25px;
   min-height: 50px;
+  width: 95%;
   margin: 0 auto;
   max-width: 800px;
   pointer-events: all;
