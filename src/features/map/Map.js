@@ -7,15 +7,17 @@ import MapGL, {
   FlyToInterpolator,
 } from 'react-map-gl'
 import _ from 'lodash'
+import bbox from '@turf/bbox'
 
 import './Map.css'
+import { useLocationsData } from '../../data/dataHooks'
 
-const Map = ({ data, setSelectedLocationData }) => {
+const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = import.meta.env
     .SNOWPACK_PUBLIC_MAPBOX_ACCESS_TOKEN
   const mapStyle = 'mapbox://styles/mapbox/light-v9'
 
-  const mapRef = useRef()
+  const locationsData = useLocationsData()
 
   const [viewport, setViewport] = useState({
     // width: 400,
@@ -31,13 +33,22 @@ const Map = ({ data, setSelectedLocationData }) => {
   const [mapFeatures, setMapFeatures] = useState(null)
 
   const fitBounds = useCallback(
-    ({ x, y }) => {
+    (feature) => {
+      // calculate the bounding box of the feature
+      const [minLng, minLat, maxLng, maxLat] = bbox(feature)
+
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport
-      ).fitBounds([x, y], {
-        padding: 100,
-        offset: [0, 0],
-      })
+      ).fitBounds(
+        [
+          [minLng, minLat],
+          [maxLng, maxLat],
+        ],
+        {
+          padding: 100,
+          offset: [0, 0],
+        }
+      )
       const updatedViewport = {
         ...viewport,
         longitude,
@@ -69,14 +80,10 @@ const Map = ({ data, setSelectedLocationData }) => {
 
   const onClick = (e) => {
     const { features } = e
-    const hoveredFeature =
+    const clickedFeature =
       features && features.find((f) => f.layer.id === 'data')
-
-    const { x, y } = hoveredFeature.properties
-
-    fitBounds({ x: JSON.parse(x), y: JSON.parse(y) })
-
-    setSelectedLocationData(hoveredFeature?.properties)
+    fitBounds(clickedFeature)
+    setSelectedLocationData(clickedFeature?.properties)
   }
 
   const renderTooltip = () => {
@@ -94,7 +101,7 @@ const Map = ({ data, setSelectedLocationData }) => {
   }
 
   useEffect(() => {
-    let locations = data
+    let locations = locationsData
     locations = _.sortBy(locations, 'area_m2').reverse()
 
     setMapFeatures({
@@ -113,7 +120,7 @@ const Map = ({ data, setSelectedLocationData }) => {
         }
       }),
     })
-  }, [data])
+  }, [locationsData])
 
   const dataLayer = {
     id: 'data',
@@ -143,7 +150,6 @@ const Map = ({ data, setSelectedLocationData }) => {
         mapboxApiAccessToken={mapboxApiAccessToken}
         onHover={onHover}
         onClick={onClick}
-        ref={mapRef}
       >
         <NavigationControl
           className="Map--NavigationControl"
