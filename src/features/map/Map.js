@@ -127,6 +127,7 @@ const Map = ({ setSelectedLocationData }) => {
     type: 'fill',
     paint: {
       'fill-opacity': 0.2,
+      'fill-outline-color': 'black',
       'fill-color': [
         'match',
         ['get', 'location_type'],
