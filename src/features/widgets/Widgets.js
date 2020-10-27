@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSingleLocationData } from '../../data/dataHooks'
 
 import './Widgets.css'
 
@@ -6,6 +7,17 @@ const WidgetWrap = ({ selectedLocationData }) => {
   if (!selectedLocationData) {
     return null
   }
+
+  const {
+    data: locationData,
+    loadingState: locationDataLoadingState,
+  } = useSingleLocationData({
+    locationID: selectedLocationData?.id,
+  })
+
+  useEffect(() => {
+    console.log(locationData)
+  }, [locationData])
 
   return (
     <div className="Widgets--Wrap">

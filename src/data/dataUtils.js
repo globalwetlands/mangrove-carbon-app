@@ -5,3 +5,10 @@ export const loadLocationsData = async (
   const data = fetch(dataUrl).then((res) => res.json())
   return data
 }
+
+export const loadSingleLocationData = async (locationID) => {
+  console.log(`Loading location ${locationID} data`)
+  const dataUrl = `/locations_data/${locationID}.json`
+  const data = fetch(dataUrl).then((res) => res.json())
+  return data
+}
