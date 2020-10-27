@@ -11,7 +11,7 @@ import _ from 'lodash'
 import bbox from '@turf/bbox'
 
 import './Map.css'
-import { useLocationsData } from '../../data/dataHooks'
+import { useLocationsData } from '../../utils/dataHooks'
 
 const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = import.meta.env
@@ -83,8 +83,10 @@ const Map = ({ setSelectedLocationData }) => {
     const { features } = e
     const clickedFeature =
       features && features.find((f) => f.layer.id === 'data')
-    fitBounds(clickedFeature)
-    setSelectedLocationData(clickedFeature?.properties)
+    if (clickedFeature) {
+      fitBounds(clickedFeature)
+      setSelectedLocationData(clickedFeature?.properties)
+    }
   }
 
   const renderTooltip = () => {

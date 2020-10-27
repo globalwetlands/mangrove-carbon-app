@@ -13,7 +13,6 @@ export const useSingleLocationData = ({ locationID }) => {
   const [data, setData] = useState()
   const [loadingState, setLoadingState] = useState()
   useEffect(() => {
-    console.log(locationID)
     if (locationID) {
       // reset data
       setData(undefined)

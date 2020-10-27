@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
-import { useSingleLocationData } from '../../data/dataHooks'
+import { useSingleLocationData } from '../../utils/dataHooks'
+
+import EmissionsModelWidget from './EmissionsModelWidget'
 
 import './Widgets.css'
 
@@ -16,22 +18,19 @@ const WidgetWrap = ({ selectedLocationData }) => {
   })
 
   useEffect(() => {
-    console.log(locationData)
+    if (locationData) {
+      console.log('⚡️: WidgetWrap -> locationData', locationData)
+    }
   }, [locationData])
 
   return (
     <div className="Widgets--Wrap">
       <div className="Widgets--Container">
-        <div>
-          <h3>
-            {selectedLocationData.name} ({selectedLocationData.iso})
-          </h3>
-          <ul>
-            <li>area_m2: {selectedLocationData.area_m2}</li>
-            <li>perimeter_m: {selectedLocationData.perimeter_m}</li>
-            <li>coast_length_m: {selectedLocationData.coast_length_m}</li>
-          </ul>
-        </div>
+        <EmissionsModelWidget
+          name={selectedLocationData?.name}
+          iso={selectedLocationData?.iso}
+          locationData={locationData}
+        />
       </div>
     </div>
   )
