@@ -7,7 +7,8 @@ import { emission_model } from '../../utils/emission_model'
 function calculateEmissionData(
   locationData,
   historicalDate = '2016-01-01',
-  historicalTimeDiff = 1 // years
+  historicalTimeDiff = 1, // years
+  forecastYears = 50
 ) {
   const { mangrove_datum } = locationData
 
@@ -41,16 +42,21 @@ function calculateEmissionData(
   const sequestrationRate = 12
   //    * varies, no global value,
 
-  const result = emission_model({
-    t: 50, // years
-    A1: area_ha, // ha
-    d: deforestationRate,
-    Cmax: emissionsFactor,
-    s: sequestrationRate,
-  })
+  // generate emission_model data for range of years
+  const years = _.range(forecastYears)
+
+  const results = years.map((year) =>
+    emission_model({
+      t: year,
+      A1: area_ha, // ha
+      d: deforestationRate,
+      Cmax: emissionsFactor,
+      s: sequestrationRate,
+    })
+  )
 
   return {
-    result,
+    results,
     area_ha,
     loss_ha,
     deforestationRate,
@@ -74,14 +80,26 @@ const EmissionsModelWidget = ({ name, iso, locationData }) => {
       return null
     }
 
+    console.log('⚡️: Debug -> emissionModelResult', emissionModelResult)
+
     return (
-      <ul>
-        {Object.entries(emissionModelResult).map(([key, value]) => (
-          <li key={key}>
-            {key}: {_.round(value, 4)}
-          </li>
-        ))}
-      </ul>
+      <pre style={{ width: '100%', overflow: 'scroll' }}>
+        <code>
+          {Object.entries(emissionModelResult).map(([key, value]) => {
+            if (_.isArray(value)) {
+              value = value.map((num) => _.round(num, 4)).join(', ')
+              value = `[${value}]`
+            } else {
+              value = _.round(value, 4)
+            }
+            return (
+              <div key={key}>
+                {key}: {value}
+              </div>
+            )
+          })}
+        </code>
+      </pre>
     )
   }
 

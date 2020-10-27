@@ -23,6 +23,7 @@ function emission_model_rd({ t, A1, d, r, Cmax, s }) {
   x = x * -1
   return x
 }
+
 function emission_model_rnotd({ t, A1, d, r, Cmax, s }) {
   let x =
     (A1 * s * (1 - Math.exp(-d * t))) / d - // sequestration with deforesting
