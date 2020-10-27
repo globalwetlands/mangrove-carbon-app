@@ -17,7 +17,9 @@ const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
   const mapStyle = 'mapbox://styles/mapbox/light-v9'
 
-  const locationsData = useLocationsData()
+  const countryLocations = useLocationsData({ type: 'country' })
+  const wdpaLocations = useLocationsData({ type: 'wdpa' })
+  const aoiLocations = useLocationsData({ type: 'aoi' })
 
   const [viewport, setViewport] = useState({
     // width: 400,
@@ -103,26 +105,23 @@ const Map = ({ setSelectedLocationData }) => {
   }
 
   useEffect(() => {
-    let locations = locationsData
+    let locations = [...countryLocations, ...wdpaLocations, ...aoiLocations]
     locations = _.sortBy(locations, 'area_m2').reverse()
-
-    setMapFeatures({
-      type: 'FeatureCollection',
-      features: locations.map((loc) => {
-        const { geometry, bounds, ...properties } = loc
-        return {
-          type: 'Feature',
-          geometry: geometry,
-          properties: {
-            ...properties,
-            // save x/y bounding box coordinates
-            x: bounds?.coordinates[0][0],
-            y: bounds?.coordinates[0][2],
-          },
-        }
-      }),
+    let features = locations.map((loc) => {
+      const { geometry, bounds, ...properties } = loc
+      return {
+        type: 'Feature',
+        geometry: geometry,
+        properties: {
+          ...properties,
+          // save x/y bounding box coordinates
+          x: bounds?.coordinates[0][0],
+          y: bounds?.coordinates[0][2],
+        },
+      }
     })
-  }, [locationsData])
+    setMapFeatures(features)
+  }, [countryLocations, wdpaLocations, aoiLocations])
 
   const dataLayer = {
     id: 'data',
@@ -158,7 +157,10 @@ const Map = ({ setSelectedLocationData }) => {
           className="Map--NavigationControl"
           onViewportChange={setViewport}
         />
-        <Source type="geojson" data={mapFeatures}>
+        <Source
+          type="geojson"
+          data={{ type: 'FeatureCollection', features: mapFeatures }}
+        >
           <Layer {...dataLayer} />
         </Source>
         {renderTooltip()}

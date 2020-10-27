@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { loadLocationsData, loadSingleLocationData } from './dataUtils'
 
-export const useLocationsData = () => {
-  const [data, setData] = useState()
+export const useLocationsData = ({ type = 'country' } = {}) => {
+  const [data, setData] = useState([])
   useEffect(() => {
-    loadLocationsData().then((data) => setData(data))
-  }, [])
+    loadLocationsData({ type }).then((data) => setData(data))
+  }, [type])
   return data
 }
 

@@ -1,6 +1,7 @@
-export const loadLocationsData = async (
-  dataUrl = '/geojson/locations_polygons.json'
-) => {
+export const loadLocationsData = async ({
+  type = 'country', // country, aoi, wdpa
+}) => {
+  const dataUrl = `/geojson/${type}_locations.json`
   console.log('Loading locations data')
   const data = fetch(dataUrl).then((res) => res.json())
   return data
