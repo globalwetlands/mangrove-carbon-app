@@ -8,7 +8,7 @@ import './Widgets.css'
 const WidgetWrap = ({ selectedLocationData }) => {
   const {
     data: locationData,
-    loadingState: locationDataLoadingState,
+    // loadingState: locationDataLoadingState,
   } = useSingleLocationData({
     locationID: selectedLocationData?.id,
   })

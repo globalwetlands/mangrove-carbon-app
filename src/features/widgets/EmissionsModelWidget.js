@@ -35,12 +35,12 @@ function calculateEmissionData(
 
   const {
     area_m2, // A1
-    gain_m2,
+    // gain_m2,
     loss_m2, // gross loss
-    net_change_m2,
+    // net_change_m2,
     agb_tco2e, // above ground total CO2e grams
     bgb_tco2e, // below ground total CO2e grams
-    toc_tco2e, // total C02e
+    // toc_tco2e, // total C02e
   } = historicalDatapoint
 
   const area_ha = m2ToHa(area_m2)
