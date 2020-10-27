@@ -27,17 +27,34 @@ const EmissionModelChart = ({ emissionModelResult = {} }) => {
         data={data}
         margin={{
           top: 5,
-          right: 30,
-          left: 20,
+          right: 40,
+          left: 0,
           bottom: 5,
         }}
       >
-        <CartesianGrid strokeDasharray="5 5" strokeOpacity={0.5} />
+        <CartesianGrid
+          strokeDasharray="5 5"
+          strokeOpacity={0.5}
+          vertical={false}
+        />
         <XAxis
           dataKey="name"
           // label="Years"
+          axisLine={false}
+          tickMargin={5}
+          tickCount={10}
+          interval="preserveStartEnd"
+          domain={[0, 'dataMax']}
+          type="number"
         />
-        <YAxis tickFormatter={(c) => formatNumber(c)} type="number" />
+        <YAxis
+          orientation="right"
+          axisLine={false}
+          tickFormatter={(c) => formatNumber(c)}
+          type="number"
+          tickLine={false}
+          tickMargin={5}
+        />
         <Tooltip
           formatter={(val, name, props) => {
             return [formatNumber(val), name]
@@ -48,6 +65,7 @@ const EmissionModelChart = ({ emissionModelResult = {} }) => {
           type="monotone"
           dataKey="value"
           stroke="#8884d8"
+          strokeWidth={2}
           activeDot={{ r: 8 }}
           dot={false}
         />
