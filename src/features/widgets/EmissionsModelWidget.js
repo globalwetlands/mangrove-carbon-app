@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from 'recharts'
 import _ from 'lodash'
 
 import { m2ToHa } from '../../utils/utils'
 import { emission_model } from '../../utils/emission_model'
+
+import EmissionModelChart from './EmissionsModelChart'
+
+const EmissionModelDescription = ({ emissionModelResult }) => {
+  return (
+    <div className="Widgets--Description">
+      <p>
+        Text goes here describing the <strong>data</strong> we're using to{' '}
+        <strong>calculate</strong> the figure below.
+      </p>
+    </div>
+  )
+}
 
 function calculateEmissionData(
   locationData,
@@ -74,79 +78,6 @@ function calculateEmissionData(
   }
 }
 
-const EmissionModelChart = () => {
-  const data = [
-    {
-      name: 'Page A',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'Page B',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Page C',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'Page D',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'Page E',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Page F',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Page G',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ]
-  return (
-    <LineChart
-      width={500}
-      height={300}
-      data={data}
-      margin={{
-        top: 5,
-        right: 30,
-        left: 20,
-        bottom: 5,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Line
-        type="monotone"
-        dataKey="pv"
-        stroke="#8884d8"
-        activeDot={{ r: 8 }}
-      />
-      <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-    </LineChart>
-  )
-}
-
 const EmissionsModelWidget = ({ name, iso, locationData }) => {
   const [emissionModelResult, setEmissionModelResult] = useState()
 
@@ -165,7 +96,7 @@ const EmissionsModelWidget = ({ name, iso, locationData }) => {
     console.log('⚡️: Debug -> emissionModelResult', emissionModelResult)
 
     return (
-      <pre style={{ width: '100%', overflow: 'scroll' }}>
+      <pre style={{ overflow: 'scroll' }}>
         <code>
           {Object.entries(emissionModelResult).map(([key, value]) => {
             if (_.isArray(value)) {
@@ -187,7 +118,7 @@ const EmissionsModelWidget = ({ name, iso, locationData }) => {
 
   return (
     <div>
-      <h3>
+      <h3 className="Widgets--Title">
         {name} ({iso})
       </h3>
       {/* {locationData && (
@@ -195,10 +126,13 @@ const EmissionsModelWidget = ({ name, iso, locationData }) => {
           <li>area_m2: {locationData.area_m2}</li>
         </ul>
       )} */}
+      <EmissionModelDescription emissionModelResult={emissionModelResult} />
+
+      <EmissionModelChart emissionModelResult={emissionModelResult} />
+
       {emissionModelResult && (
         <Debug emissionModelResult={emissionModelResult} />
       )}
-      <EmissionModelChart emissionModelResult={emissionModelResult} />
     </div>
   )
 }

@@ -3,16 +3,33 @@
   left: 0px;
   right: 0px;
   bottom: 35px;
+  max-width: 540px;
+  padding-left: 50px;
   pointer-events: none;
 }
 
 .Widgets--Container {
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 15px 25px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 1);
+  padding: 30px 40px;
   min-height: 50px;
   width: 95%;
-  margin: 0 auto;
+  margin: 10px auto;
   max-width: 800px;
   pointer-events: all;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+}
+
+.Widgets--Title {
+  font-weight: 300;
+  font-size: 30px;
+  margin: 20px 0;
+}
+
+.Widgets--Description {
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 30px;
+  margin: 1rem 0;
+  position: relative;
 }
