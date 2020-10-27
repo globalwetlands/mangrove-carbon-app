@@ -6,10 +6,6 @@ import EmissionsModelWidget from './EmissionsModelWidget'
 import './Widgets.css'
 
 const WidgetWrap = ({ selectedLocationData }) => {
-  if (!selectedLocationData) {
-    return null
-  }
-
   const {
     data: locationData,
     loadingState: locationDataLoadingState,
@@ -22,6 +18,10 @@ const WidgetWrap = ({ selectedLocationData }) => {
       console.log('⚡️: WidgetWrap -> locationData', locationData)
     }
   }, [locationData])
+
+  if (!selectedLocationData) {
+    return null
+  }
 
   return (
     <div className="Widgets--Wrap">

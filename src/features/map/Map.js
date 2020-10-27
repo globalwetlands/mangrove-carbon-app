@@ -14,8 +14,7 @@ import './Map.css'
 import { useLocationsData } from '../../utils/dataHooks'
 
 const Map = ({ setSelectedLocationData }) => {
-  const mapboxApiAccessToken = import.meta.env
-    .SNOWPACK_PUBLIC_MAPBOX_ACCESS_TOKEN
+  const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
   const mapStyle = 'mapbox://styles/mapbox/light-v9'
 
   const locationsData = useLocationsData()
