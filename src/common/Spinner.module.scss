@@ -52,14 +52,14 @@ $duration: 1.4s;
 
 @keyframes dashSmall {
   0% {
-    stroke-dashoffset: $offset;
+    stroke-dashoffset: $offset-small;
   }
   50% {
-    stroke-dashoffset: $offset/4;
+    stroke-dashoffset: $offset-small/4;
     transform: rotate(135deg);
   }
   100% {
-    stroke-dashoffset: $offset;
+    stroke-dashoffset: $offset-small;
     transform: rotate(450deg);
   }
 }
