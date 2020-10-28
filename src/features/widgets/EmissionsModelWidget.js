@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
+import dayjs from 'dayjs'
 
 import { useSingleLocationData } from '../../utils/dataHooks'
 import { m2ToHa } from '../../utils/utils'
@@ -8,12 +9,17 @@ import { emission_model } from '../../utils/emission_model'
 import Spinner from '../../common/Spinner'
 import EmissionModelChart from './EmissionsModelChart'
 
-const EmissionModelDescription = ({ emissionModelResult }) => {
+const EmissionModelDescription = ({ emissionModelResult = {} }) => {
+  const { historicalTimeDiff, loss_ha } = emissionModelResult
+  const displayNumValue = (val) => (_.isNaN(val) ? '_' : val)
   return (
     <div className="Widgets--Description">
       <p>
         Text goes here describing the <strong>data</strong> we're using to{' '}
-        <strong>calculate</strong> the figure below.
+        <strong>calculate</strong> the figure below. Mangrove{' '}
+        {loss_ha < 0 ? 'gain' : 'loss'} of{' '}
+        <strong>{displayNumValue(_.round(Math.abs(loss_ha)))} ha</strong> over{' '}
+        <strong>{displayNumValue(historicalTimeDiff)} years</strong>
       </p>
     </div>
   )
@@ -21,29 +27,37 @@ const EmissionModelDescription = ({ emissionModelResult }) => {
 
 function calculateEmissionData(
   locationData,
-  historicalDate = '2016-01-01',
-  historicalTimeDiff = 1, // years
+  historicalDates = ['1996-01-01', '2016-01-01'],
   forecastYears = 50
 ) {
+  const historicalTimeDiff = dayjs(historicalDates[1]).diff(
+    dayjs(historicalDates[0]),
+    'year'
+  )
+
   const { mangrove_datum } = locationData
 
-  const historicalDatapoint = mangrove_datum.find(
-    ({ date }) => date === historicalDate
-  )
+  const historicalDatapoints = [
+    mangrove_datum.find(({ date }) => date === historicalDates[0]),
+    mangrove_datum.find(({ date }) => date === historicalDates[1]),
+  ]
   console.log(
     '⚡️: calculateEmissionData -> historicalDatapoint',
-    historicalDatapoint
+    historicalDatapoints
   )
 
   const {
     area_m2, // A1
     // gain_m2,
-    loss_m2, // gross loss
+    // loss_m2, // gross loss
     // net_change_m2,
     agb_tco2e, // above ground total CO2e grams
     bgb_tco2e, // below ground total CO2e grams
     // toc_tco2e, // total C02e
-  } = historicalDatapoint
+  } = historicalDatapoints[1]
+
+  const loss_m2 =
+    historicalDatapoints[0]?.area_m2 - historicalDatapoints[1]?.area_m2
 
   const area_ha = m2ToHa(area_m2)
   const loss_ha = m2ToHa(loss_m2)
@@ -72,6 +86,7 @@ function calculateEmissionData(
 
   return {
     results,
+    historicalTimeDiff,
     area_ha,
     loss_ha,
     deforestationRate,
@@ -99,6 +114,13 @@ const Debug = ({ emissionModelResult = {} }) => {
             </div>
           )
         })}
+        {`\nemission_model({
+          t: year,
+          A1: area_ha, // ha
+          d: deforestationRate,
+          Cmax: emissionsFactor,
+          s: sequestrationRate,
+        })`}
       </code>
     </pre>
   )
