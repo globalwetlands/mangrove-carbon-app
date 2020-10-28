@@ -48,7 +48,7 @@ const Map = ({ setSelectedLocationData }) => {
           [maxLng, maxLat],
         ],
         {
-          padding: 100,
+          padding: { top: 50, bottom: 50, right: 20, left: 580 },
           offset: [0, 0],
         }
       )
