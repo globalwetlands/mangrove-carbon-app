@@ -78,6 +78,30 @@ function calculateEmissionData(
   }
 }
 
+const Debug = ({ emissionModelResult = {} }) => {
+  console.log('⚡️: Debug -> emissionModelResult', emissionModelResult)
+
+  return (
+    <pre style={{ overflow: 'scroll', height: 150 }}>
+      <code>
+        {Object.entries(emissionModelResult).map(([key, value]) => {
+          if (_.isArray(value)) {
+            value = value.map((num) => _.round(num, 4)).join(', ')
+            value = `[${value}]`
+          } else {
+            value = _.round(value, 4)
+          }
+          return (
+            <div key={key}>
+              {key}: {value}
+            </div>
+          )
+        })}
+      </code>
+    </pre>
+  )
+}
+
 const EmissionsModelWidget = ({ name, iso, locationData }) => {
   const [emissionModelResult, setEmissionModelResult] = useState()
 
@@ -85,54 +109,22 @@ const EmissionsModelWidget = ({ name, iso, locationData }) => {
     if (locationData) {
       const emissionModelResult = calculateEmissionData(locationData)
       setEmissionModelResult(emissionModelResult)
+    } else {
+      setEmissionModelResult(undefined)
     }
   }, [locationData])
-
-  const Debug = ({ emissionModelResult }) => {
-    if (!emissionModelResult) {
-      return null
-    }
-
-    console.log('⚡️: Debug -> emissionModelResult', emissionModelResult)
-
-    return (
-      <pre style={{ overflow: 'scroll' }}>
-        <code>
-          {Object.entries(emissionModelResult).map(([key, value]) => {
-            if (_.isArray(value)) {
-              value = value.map((num) => _.round(num, 4)).join(', ')
-              value = `[${value}]`
-            } else {
-              value = _.round(value, 4)
-            }
-            return (
-              <div key={key}>
-                {key}: {value}
-              </div>
-            )
-          })}
-        </code>
-      </pre>
-    )
-  }
 
   return (
     <div>
       <h3 className="Widgets--Title">
         {name} ({iso})
       </h3>
-      {/* {locationData && (
-        <ul>
-          <li>area_m2: {locationData.area_m2}</li>
-        </ul>
-      )} */}
+
       <EmissionModelDescription emissionModelResult={emissionModelResult} />
 
       <EmissionModelChart emissionModelResult={emissionModelResult} />
 
-      {emissionModelResult && (
-        <Debug emissionModelResult={emissionModelResult} />
-      )}
+      <Debug emissionModelResult={emissionModelResult} />
     </div>
   )
 }
