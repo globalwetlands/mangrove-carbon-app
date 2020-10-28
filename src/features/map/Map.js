@@ -166,7 +166,7 @@ const Map = ({ setSelectedLocationData }) => {
         </Source>
         {renderTooltip()}
       </MapGL>
-      {!mapFeatures?.length && (
+      {!countryLocations?.length && (
         <Spinner
           style={{
             position: 'absolute',
