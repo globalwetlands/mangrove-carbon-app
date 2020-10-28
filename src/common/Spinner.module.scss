@@ -3,6 +3,7 @@
 // Here is where the magic happens
 
 $offset: 187;
+$offset-small: 55;
 $duration: 1.4s;
 
 .spinner {
@@ -27,22 +28,29 @@ $duration: 1.4s;
     colors ($duration * 4) ease-in-out infinite;
 }
 
-@keyframes colors {
-  // 0% {
-  //   stroke: #ff4e8b;
-  // }
-  // 33% {
-  //   stroke: #50e597;
-  // }
-  // 66% {
-  //   stroke: #6a55d9;
-  // }
-  // 100% {
-  //   stroke: #ff4e8b;
-  // }
+.pathSmall {
+  stroke-dasharray: $offset-small;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  stroke: #50e597;
+  animation: dashSmall $duration ease-in-out infinite;
 }
 
 @keyframes dash {
+  0% {
+    stroke-dashoffset: $offset;
+  }
+  50% {
+    stroke-dashoffset: $offset/4;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: $offset;
+    transform: rotate(450deg);
+  }
+}
+
+@keyframes dashSmall {
   0% {
     stroke-dashoffset: $offset;
   }

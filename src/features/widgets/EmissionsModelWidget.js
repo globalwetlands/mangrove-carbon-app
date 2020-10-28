@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
 
+import { useSingleLocationData } from '../../utils/dataHooks'
 import { m2ToHa } from '../../utils/utils'
 import { emission_model } from '../../utils/emission_model'
 
+import Spinner from '../../common/Spinner'
 import EmissionModelChart from './EmissionsModelChart'
 
 const EmissionModelDescription = ({ emissionModelResult }) => {
@@ -102,7 +104,14 @@ const Debug = ({ emissionModelResult = {} }) => {
   )
 }
 
-const EmissionsModelWidget = ({ name, iso, locationData }) => {
+const EmissionsModelWidget = ({ selectedLocationData }) => {
+  const {
+    data: locationData,
+    loadingState: locationDataLoadingState,
+  } = useSingleLocationData({
+    locationID: selectedLocationData?.id,
+  })
+
   const [emissionModelResult, setEmissionModelResult] = useState()
 
   useEffect(() => {
@@ -114,10 +123,15 @@ const EmissionsModelWidget = ({ name, iso, locationData }) => {
     }
   }, [locationData])
 
+  console.log(locationDataLoadingState)
+
   return (
     <div>
       <h3 className="Widgets--Title">
-        {name} ({iso})
+        {selectedLocationData?.name} ({selectedLocationData?.iso})
+        {locationDataLoadingState !== 'loaded' && (
+          <Spinner isSmall style={{ marginLeft: 10 }} />
+        )}
       </h3>
 
       <EmissionModelDescription emissionModelResult={emissionModelResult} />

@@ -1,8 +1,11 @@
+// import { delay } from './utils'
+
 export const loadLocationsData = async ({
   type = 'country', // country, aoi, wdpa
 }) => {
   const dataUrl = `/geojson/${type}_locations.json`
   console.log('Loading locations data')
+  // await delay(1000)
   const data = fetch(dataUrl).then((res) => res.json())
   return data
 }
