@@ -129,7 +129,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
     <div>
       <h3 className="Widgets--Title">
         {selectedLocationData?.name} ({selectedLocationData?.iso})
-        {locationDataLoadingState === 'loaded' && (
+        {locationDataLoadingState !== 'loaded' && (
           <Spinner
             isSmall
             style={{ position: 'absolute', right: 25, top: 25 }}
