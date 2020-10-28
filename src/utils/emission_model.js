@@ -40,8 +40,8 @@ export function emission_model({
   A1, // initial area
   d, // deforestation rate
   r = 0.1, // emissions rate
-  Cmax, // ag carbon + bg carbon
-  s = 0, // sequestration rate
+  Cmax, // ag carbon + bg carbon per hectare
+  s = 0, // sequestration rate // is the yearly sequestration rate per hectare
 }) {
   const args = {
     t,

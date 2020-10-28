@@ -43,6 +43,7 @@ const EmissionModelChart = ({ emissionModelResult = {} }) => {
           axisLine={false}
           tickMargin={5}
           tickCount={10}
+          // tickFormatter={(c) => 2016 + c}
           interval="preserveStartEnd"
           domain={[0, 'dataMax']}
           type="number"
@@ -54,7 +55,14 @@ const EmissionModelChart = ({ emissionModelResult = {} }) => {
           type="number"
           tickLine={false}
           tickMargin={5}
-        />
+        >
+          {/* <Label
+            value="Mg CO2 emitted"
+            angle={-90}
+            offset={-2}
+            position="insideBottomLeft"
+          /> */}
+        </YAxis>
         <Tooltip
           formatter={(val, name, props) => {
             return [formatNumber(val), name]

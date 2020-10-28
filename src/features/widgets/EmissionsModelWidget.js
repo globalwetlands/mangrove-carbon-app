@@ -61,15 +61,18 @@ function calculateEmissionData(
     '⚡️: calculateEmissionData -> historicalDatapoint',
     historicalDatapoints
   )
+  // initial area // A1
+  const { area_m2 } = historicalDatapoints[0]
 
   const {
-    area_m2, // A1
+    // area_m2,
     // gain_m2,
     // loss_m2, // gross loss
     // net_change_m2,
     agb_tco2e, // above ground total CO2e grams
     bgb_tco2e, // below ground total CO2e grams
     // toc_tco2e, // total C02e
+    // soc_tco2e,
   } = historicalDatapoints[1]
 
   const loss_m2 =
@@ -79,14 +82,17 @@ function calculateEmissionData(
   const loss_ha = m2ToHa(loss_m2)
   const deforestationRate = loss_ha / area_ha / historicalTimeDiff
 
+  // Mg (Megagram) == Tonne
+  // tco2e = metric tonnes CO2e per hectare
   const emissionsFactor = (agb_tco2e + bgb_tco2e) / area_ha //  (MgC02 per hectare)
   // C02 is 2.67 times heavier than C
 
-  const sequestrationRate = 12 //    * varies, no global value,
+  const sequestrationRate = 6.49 //    * varies, no global value, using 6.49 found in table S4 supp materials
 
   // generate emission_model data for range of years
   const years = _.range(forecastYears)
 
+  // output unit: Mg CO2 emitted
   const results = years.map((year) =>
     emission_model({
       t: year,
