@@ -10,8 +10,9 @@ import {
 import _ from 'lodash'
 import bbox from '@turf/bbox'
 
-import './Map.css'
 import { useLocationsData } from '../../utils/dataHooks'
+import Spinner from '../../common/Spinner'
+import './Map.css'
 
 const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
@@ -165,6 +166,15 @@ const Map = ({ setSelectedLocationData }) => {
         </Source>
         {renderTooltip()}
       </MapGL>
+      {!mapFeatures?.length && (
+        <Spinner
+          style={{
+            position: 'absolute',
+            top: 'calc(50% - 33px)',
+            left: 'calc(50% - 33px)',
+          }}
+        />
+      )}
     </div>
   )
 }
