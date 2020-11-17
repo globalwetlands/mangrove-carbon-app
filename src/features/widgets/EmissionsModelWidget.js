@@ -175,7 +175,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           {locationDataLoadingState !== 'loaded' && (
             <Spinner
               isSmall
-              style={{ position: 'absolute', right: 25, top: 25 }}
+              style={{ position: 'absolute', left: 10, top: 10 }}
             />
           )}
         </h3>
