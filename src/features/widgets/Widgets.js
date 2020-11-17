@@ -11,9 +11,7 @@ const WidgetWrap = ({ selectedLocationData }) => {
 
   return (
     <div className="Widgets--Wrap">
-      <div className="Widgets--Box">
-        <EmissionsModelWidget selectedLocationData={selectedLocationData} />
-      </div>
+      <EmissionsModelWidget selectedLocationData={selectedLocationData} />
     </div>
   )
 }

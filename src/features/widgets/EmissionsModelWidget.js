@@ -168,22 +168,25 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
   console.log(locationDataLoadingState)
 
   return (
-    <div>
-      <h3 className="Widgets--Title">
-        {selectedLocationData?.name} ({selectedLocationData?.iso})
-        {locationDataLoadingState !== 'loaded' && (
-          <Spinner
-            isSmall
-            style={{ position: 'absolute', right: 25, top: 25 }}
-          />
-        )}
-      </h3>
+    <div className="Widgets--Box">
+      <div className="Widgets--Box--Column">
+        <h3 className="Widgets--Title">
+          {selectedLocationData?.name} ({selectedLocationData?.iso})
+          {locationDataLoadingState !== 'loaded' && (
+            <Spinner
+              isSmall
+              style={{ position: 'absolute', right: 25, top: 25 }}
+            />
+          )}
+        </h3>
 
-      <EmissionModelDescription emissionModelResult={emissionModelResult} />
+        <EmissionModelDescription emissionModelResult={emissionModelResult} />
+      </div>
 
-      <EmissionModelChart emissionModelResult={emissionModelResult} />
-
-      <Debug emissionModelResult={emissionModelResult} />
+      <div className="Widgets--Box--Column">
+        <EmissionModelChart emissionModelResult={emissionModelResult} />
+      </div>
+      {/* <Debug emissionModelResult={emissionModelResult} /> */}
     </div>
   )
 }

@@ -4,33 +4,41 @@
   right: 0px;
   bottom: 0px;
   top: 0px;
-  max-width: 540px;
-  padding-left: 50px;
   pointer-events: none;
-  overflow-x: scroll;
+  overflow: scroll;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  padding: 35px;
 }
 
 .Widgets--Box {
   position: relative;
+  display: flex;
+  flex-direction: row;
   border-radius: 20px;
   background: rgba(255, 255, 255, 1);
   padding: 30px 40px;
   min-height: 50px;
-  width: 95%;
   margin: 35px auto;
-  max-width: 800px;
   pointer-events: all;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+}
+
+.Widgets--Box--Column {
+  flex-shrink: 0;
+  min-width: 350px;
+}
+
+.Widgets--Box--Column + .Widgets--Box--Column {
+  margin-left: 20px;
 }
 
 .Widgets--Title {
   font-weight: 300;
   font-size: 30px;
-  margin: 20px 0;
+  margin: 0 0 20px 0;
 }
 
 .Widgets--Description {
