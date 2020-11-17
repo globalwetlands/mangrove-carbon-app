@@ -114,37 +114,37 @@ function calculateEmissionData(
   }
 }
 
-const Debug = ({ emissionModelResult = {} }) => {
-  console.log('⚡️: Debug -> emissionModelResult', emissionModelResult)
+// const Debug = ({ emissionModelResult = {} }) => {
+//   console.log('⚡️: Debug -> emissionModelResult', emissionModelResult)
 
-  return (
-    <pre style={{ overflow: 'scroll', height: 200 }}>
-      <code>
-        {Object.entries(emissionModelResult).map(([key, value]) => {
-          if (_.isArray(value)) {
-            value = value.map((num) => _.round(num, 4)).join(', ')
-            value = `[${value}]`
-          } else {
-            value = _.round(value, 4)
-          }
-          return (
-            <div key={key}>
-              {key}: {value}
-            </div>
-          )
-        })}
-        {`\nemissionsFactor = (agb_tco2e + bgb_tco2e) / area_ha`}
-        {`\n\nemission_model({
-          t: year,
-          A1: area_ha,
-          d: deforestationRate,
-          Cmax: emissionsFactor,
-          s: sequestrationRate,
-        })`}
-      </code>
-    </pre>
-  )
-}
+//   return (
+//     <pre style={{ overflow: 'scroll', height: 200 }}>
+//       <code>
+//         {Object.entries(emissionModelResult).map(([key, value]) => {
+//           if (_.isArray(value)) {
+//             value = value.map((num) => _.round(num, 4)).join(', ')
+//             value = `[${value}]`
+//           } else {
+//             value = _.round(value, 4)
+//           }
+//           return (
+//             <div key={key}>
+//               {key}: {value}
+//             </div>
+//           )
+//         })}
+//         {`\nemissionsFactor = (agb_tco2e + bgb_tco2e) / area_ha`}
+//         {`\n\nemission_model({
+//           t: year,
+//           A1: area_ha,
+//           d: deforestationRate,
+//           Cmax: emissionsFactor,
+//           s: sequestrationRate,
+//         })`}
+//       </code>
+//     </pre>
+//   )
+// }
 
 const EmissionsModelWidget = ({ selectedLocationData }) => {
   const {

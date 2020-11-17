@@ -6,7 +6,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
+  // ResponsiveContainer,
 } from 'recharts'
 import _ from 'lodash'
 
