@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import _ from 'lodash'
 import dayjs from 'dayjs'
 
@@ -168,7 +168,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
   console.log(locationDataLoadingState)
 
   return (
-    <div className="Widgets--Box">
+    <Fragment>
       <div className="Widgets--Box--Column">
         <h3 className="Widgets--Title">
           {selectedLocationData?.name} ({selectedLocationData?.iso})
@@ -187,7 +187,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
         <EmissionModelChart emissionModelResult={emissionModelResult} />
       </div>
       {/* <Debug emissionModelResult={emissionModelResult} /> */}
-    </div>
+    </Fragment>
   )
 }
 

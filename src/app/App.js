@@ -8,7 +8,10 @@ function App() {
   return (
     <div>
       <Map setSelectedLocationData={setSelectedLocationData} />
-      <Widgets selectedLocationData={selectedLocationData} />
+      <Widgets
+        selectedLocationData={selectedLocationData}
+        setSelectedLocationData={setSelectedLocationData}
+      />
     </div>
   )
 }
