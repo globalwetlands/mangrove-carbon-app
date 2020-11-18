@@ -47,8 +47,14 @@
   min-width: 350px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+}
+
+.Widgets--Box--Column--Title {
+  font-size: 15px;
+  margin-top: 40px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .Widgets--Box--Column + .Widgets--Box--Column {

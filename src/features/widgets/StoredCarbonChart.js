@@ -7,7 +7,7 @@ import { colors } from '../../utils/colorUtils'
 
 const StoredCarbonChart = ({ width, height, emissionModelResult = {} }) => {
   const [activeIndex, setActiveIndex] = useState()
-  const outerRadius = 0.35 * Math.min(width, height)
+  const outerRadius = 0.45 * Math.min(width, height)
   const innerRadius = 0.3 * Math.min(width, height)
   const cx = width / 2
   const cy = height / 2
