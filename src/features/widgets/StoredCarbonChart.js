@@ -3,26 +3,32 @@ import { PieChart, Pie } from 'recharts'
 import _ from 'lodash'
 
 import { tToMt } from '../../utils/utils'
+import { colors } from '../../utils/colorUtils'
 
 const StoredCarbonChart = ({ width, height, emissionModelResult = {} }) => {
   const [activeIndex, setActiveIndex] = useState()
-  const outerRadius = 0.45 * Math.min(width, height)
-  const innerRadius = 0.35 * Math.min(width, height)
+  const outerRadius = 0.35 * Math.min(width, height)
+  const innerRadius = 0.3 * Math.min(width, height)
   const cx = width / 2
   const cy = height / 2
 
   const chartData = useMemo(() => {
+    const palette = [colors.green['300'], colors.deepOrange['300']]
     const {
       agb_tco2e, // above ground total CO2e grams
-      bgb_tco2e, // below ground total CO2e grams
+      // bgb_tco2e, // below ground total CO2e grams
       soc_tco2e,
     } = emissionModelResult
 
+    // agb_tco2e + soc_tco2e = toc_tco2e
+
     return [
-      { name: 'agb_tco2e', value: agb_tco2e / 1000, fill: 'orange' },
-      { name: 'bgb_tco2e', value: bgb_tco2e / 1000, fill: 'coral' },
-      // { name: 'toc_tco2e', value: toc_tco2e, fill: 'orange' },
-      { name: 'soc_tco2e', value: soc_tco2e / 1000, fill: 'lightsalmon' },
+      { name: 'AGB', value: tToMt(agb_tco2e), fill: palette[0] },
+      {
+        name: 'SOC',
+        value: tToMt(soc_tco2e),
+        fill: palette[1],
+      },
     ]
   }, [emissionModelResult])
 
@@ -42,7 +48,9 @@ const StoredCarbonChart = ({ width, height, emissionModelResult = {} }) => {
         cy={cy}
         innerRadius={innerRadius}
         outerRadius={outerRadius}
-        // label
+        label={({ name }) => {
+          return `${name}`
+        }}
       />
       <text x={cx} y={cy - 20} textAnchor="middle">
         <tspan x={cx} dy="0">
