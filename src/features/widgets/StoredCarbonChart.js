@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { PieChart, Pie, Legend } from 'recharts'
+import { PieChart, Pie, Legend, Tooltip } from 'recharts'
 import _ from 'lodash'
 
 import { tToMt } from '../../utils/utils'
@@ -37,6 +37,8 @@ const StoredCarbonChart = ({ width, height, emissionModelResult = {} }) => {
     1
   ).toLocaleString()
 
+  const formatValue = (val) => `${_.round(val, 1)} Mt CO₂e`
+
   return (
     <PieChart width={width} height={height}>
       <Pie
@@ -73,6 +75,8 @@ const StoredCarbonChart = ({ width, height, emissionModelResult = {} }) => {
         layout="vertical"
         width={75}
       />
+
+      <Tooltip formatter={formatValue} />
     </PieChart>
   )
 }
