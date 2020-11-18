@@ -45,6 +45,10 @@
 .Widgets--Box--Column {
   flex-shrink: 0;
   min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .Widgets--Box--Column + .Widgets--Box--Column {

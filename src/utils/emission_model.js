@@ -52,6 +52,10 @@ export function emission_model({
     s,
   }
 
+  if (d < 0) {
+    return 0
+  }
+
   if (r === d) {
     return emission_model_rd(args)
   } else {

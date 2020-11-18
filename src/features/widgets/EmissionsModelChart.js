@@ -6,24 +6,32 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  // ResponsiveContainer,
+  // Label,
 } from 'recharts'
 import _ from 'lodash'
 
-const EmissionModelChart = ({ emissionModelResult = {} }) => {
+import { tToMt } from '../../utils/utils'
+
+const EmissionModelChart = ({
+  emissionModelResult = {},
+  width = 385,
+  height = 200,
+}) => {
   const { results = [] } = emissionModelResult
   const data = results.map((value, index) => ({
     name: index + 1, // year
     value,
   }))
 
-  const formatNumber = (num) => _.round(num).toLocaleString()
+  const formatNumber = (num) => _.round(tToMt(num), 2).toLocaleString()
+  const formatYear = (c) => 2016 + c
+  const formatTooltipLabel = (val) => `${formatYear(val)} emissions`
+  const formatTooltipValue = (val) => `${formatNumber(val)} Mt CO₂e`
 
   return (
-    // <ResponsiveContainer width={'100%'} height={200}>
     <LineChart
-      width={385}
-      height={200}
+      width={width}
+      height={height}
       data={data}
       margin={{
         top: 5,
@@ -43,7 +51,7 @@ const EmissionModelChart = ({ emissionModelResult = {} }) => {
         axisLine={false}
         tickMargin={5}
         tickCount={10}
-        // tickFormatter={(c) => 2016 + c}
+        tickFormatter={formatYear}
         interval="preserveStartEnd"
         domain={[0, 'dataMax']}
         type="number"
@@ -57,15 +65,18 @@ const EmissionModelChart = ({ emissionModelResult = {} }) => {
         tickMargin={5}
       >
         {/* <Label
-            value="Mg CO2 emitted"
-            angle={-90}
-            offset={-2}
-            position="insideBottomLeft"
-          /> */}
+          value="Mg CO2 emitted"
+          angle={-90}
+          offset={-2}
+          position="insideBottomLeft"
+        /> */}
       </YAxis>
       <Tooltip
+        labelFormatter={(val, name, props) => {
+          return formatTooltipLabel(val)
+        }}
         formatter={(val, name, props) => {
-          return [formatNumber(val), name]
+          return [formatTooltipValue(val), null]
         }}
       />
       {/* <Legend /> */}
@@ -78,7 +89,6 @@ const EmissionModelChart = ({ emissionModelResult = {} }) => {
         dot={false}
       />
     </LineChart>
-    // </ResponsiveContainer>
   )
 }
 
