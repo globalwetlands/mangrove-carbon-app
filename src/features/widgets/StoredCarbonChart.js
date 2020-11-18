@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { PieChart, Pie } from 'recharts'
+import { PieChart, Pie, Legend } from 'recharts'
 import _ from 'lodash'
 
 import { tToMt } from '../../utils/utils'
@@ -44,13 +44,15 @@ const StoredCarbonChart = ({ width, height, emissionModelResult = {} }) => {
         onMouseEnter={(data, index) => setActiveIndex(index)}
         data={chartData}
         dataKey="value"
-        cx={cx}
+        cx={cx - 76}
         cy={cy}
+        paddingAngle={2}
         innerRadius={innerRadius}
         outerRadius={outerRadius}
-        label={({ name }) => {
-          return `${name}`
-        }}
+        // label={({ name }) => {
+        //   return `${name}`
+        // }}
+        // labelLine={false}
       />
       <text x={cx} y={cy - 20} textAnchor="middle">
         <tspan x={cx} dy="0">
@@ -64,6 +66,13 @@ const StoredCarbonChart = ({ width, height, emissionModelResult = {} }) => {
           Mt CO₂e
         </tspan>
       </text>
+
+      <Legend
+        verticalAlign="bottom"
+        align="left"
+        layout="vertical"
+        width={75}
+      />
     </PieChart>
   )
 }

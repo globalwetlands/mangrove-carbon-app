@@ -195,7 +195,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
         <h3 className="Widgets--Box--Column--Title">Carbon Stored</h3>
         <StoredCarbonChart
           title="Carbon Stored"
-          width={275}
+          width={300}
           height={200}
           emissionModelResult={emissionModelResult}
         />
