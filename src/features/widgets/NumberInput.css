@@ -1,0 +1,23 @@
+.NumberInput {
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  appearance: none;
+  margin: 0;
+
+  border-bottom: 1px solid currentColor;
+  font-size: 1em;
+  text-align: right;
+}
+
+input[type='number'].NumberInput::-webkit-inner-spin-button,
+input[type='number'].NumberInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'].NumberInput {
+  -moz-appearance: textfield;
+}

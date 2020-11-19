@@ -9,6 +9,7 @@ import { emission_model } from '../../utils/emission_model'
 import Spinner from '../../common/Spinner'
 import EmissionModelChart from './EmissionsModelChart'
 import StoredCarbonChart from './StoredCarbonChart'
+import NumberInput from './NumberInput'
 
 function calculateEmissionData(
   locationData,
@@ -56,8 +57,6 @@ function calculateEmissionData(
       historicalTimeDiff) *
     -1
   const deforestationRatePercent = Math.exp(deforestationRate) - 1
-
-  console.log(toc_tco2e)
 
   // Mg (Megagram) == Tonne
   // tco2e = tonnes CO2e total
@@ -132,7 +131,14 @@ const EmissionModelDescription = ({ emissionModelResult = {} }) => {
       </div>
       <div>
         Deforestation rate of{' '}
-        <strong>{displayVal(deforestationRatePercent * 100, 2)}% pa</strong>.
+        <strong>
+          <NumberInput
+            value={displayVal(deforestationRatePercent * 100, 2)}
+            width={50}
+            unit="% pa"
+          />
+        </strong>
+        .
       </div>
       <div>
         Sequestration rate of{' '}
