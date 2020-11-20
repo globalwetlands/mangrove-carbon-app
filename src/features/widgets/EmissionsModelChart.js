@@ -13,12 +13,12 @@ import _ from 'lodash'
 import { tToMt } from '../../utils/utils'
 
 const EmissionModelChart = ({
-  emissionModelResult = {},
+  inputParams = {},
+  emissionModelResult = [],
   width = 385,
   height = 200,
 }) => {
-  const { results = [] } = emissionModelResult
-  const data = results.map((value, index) => ({
+  const data = emissionModelResult.map((value, index) => ({
     name: index + 1, // year
     value,
   }))

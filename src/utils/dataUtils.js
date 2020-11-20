@@ -22,87 +22,62 @@ export const loadSingleLocationData = async (locationID) => {
   return data
 }
 
-export function calculateEmissionData(
+export function parseLocationData({
   locationData,
   historicalDates = ['1996-01-01', '2016-01-01'],
-  forecastYears = 50
-) {
+}) {
+  // Mg (Megagram) == Tonne
+  const { mangrove_datum } = locationData
+
+  // get data for each historical date
   const historicalTimeDiff = dayjs(historicalDates[1]).diff(
     dayjs(historicalDates[0]),
     'year'
   )
-
-  const { mangrove_datum } = locationData
-
   const historicalDatapoints = [
     mangrove_datum.find(({ date }) => date === historicalDates[0]),
     mangrove_datum.find(({ date }) => date === historicalDates[1]),
   ]
 
-  // initial area // A1
-  const { area_m2 } = historicalDatapoints[0]
+  // Area
+  const { area_m2: initial_area_m2 } = historicalDatapoints[0]
+  const { area_m2: current_area_m2 } = historicalDatapoints[1]
+  const loss_m2 = initial_area_m2 - current_area_m2
+  const loss_ha = m2ToHa(loss_m2)
+  const initial_area_ha = m2ToHa(initial_area_m2)
+  const current_area_ha = m2ToHa(current_area_m2)
 
+  // get current stored carbon
   const {
-    // area_m2,
-    // gain_m2,
-    // loss_m2, // gross loss
-    // net_change_m2,
     agb_tco2e, // above ground total CO2e tonnes
     bgb_tco2e, // below ground total CO2e tonnes
-    toc_tco2e, // total C02e tonnes
+    toc_tco2e, // tonnes CO2e total
     soc_tco2e,
   } = historicalDatapoints[1]
 
-  const loss_m2 =
-    historicalDatapoints[0]?.area_m2 - historicalDatapoints[1]?.area_m2
-
-  const area_ha = m2ToHa(area_m2)
-  const loss_ha = m2ToHa(loss_m2)
+  // Calculate deforestation rate
 
   // deforestation rate LOG
   // (log(area[1] / area[0]) / timeDiff) * -1
   const deforestationRate =
-    (Math.log(
-      historicalDatapoints[1]?.area_m2 / historicalDatapoints[0]?.area_m2
-    ) /
-      historicalTimeDiff) *
-    -1
-  const deforestationRatePercent = Math.exp(deforestationRate) - 1
-
-  // Mg (Megagram) == Tonne
-  // tco2e = tonnes CO2e total
-  // C02 is 3.67 times heavier than C
+    (Math.log(current_area_m2 / initial_area_m2) / historicalTimeDiff) * -1
+  const deforestationRatePercent = (Math.exp(deforestationRate) - 1) * 100
 
   // Carbon storage
   // tonnes CO2e per hectare
-  const carbonStoredPerHectare = toc_tco2e / area_ha
+  // C02 is 3.67 times heavier than C
+  const carbonStoredPerHectare = toc_tco2e / current_area_ha
 
+  // Calculate remaining parameters
   const emissionsFactor = 0.8
-
   const Cmax = emissionsFactor * carbonStoredPerHectare
-
-  // varies, no global value, using 6.49 found in table S4 supp materials
+  // sequestrationRate: varies, no global value, using 6.49 found in table S4 supp materials
   // sequestrationRate unit: tonnes CO2e per year
   const sequestrationRate = 6.49
 
-  // generate emission_model data for range of years
-  const years = _.range(forecastYears)
-
-  // output unit: tonnes CO2 emitted
-  const results = years.map((year) =>
-    emission_model({
-      t: year,
-      A1: area_ha, // ha
-      d: deforestationRate,
-      Cmax,
-      s: sequestrationRate,
-    })
-  )
-
   return {
-    results,
     historicalTimeDiff,
-    area_ha,
+    initial_area_ha,
     loss_ha,
     deforestationRate,
     deforestationRatePercent,
@@ -113,5 +88,30 @@ export function calculateEmissionData(
     toc_tco2e, // total C02e
     soc_tco2e,
     carbonStoredPerHectare,
+    Cmax,
   }
+}
+
+export function calculateEmissionData({
+  initial_area_ha,
+  deforestationRate,
+  Cmax,
+  sequestrationRate,
+  forecastYears = 50,
+}) {
+  // generate emission_model data for range of years
+  const years = _.range(forecastYears)
+
+  // output unit: tonnes CO2 emitted
+  const results = years.map((year) =>
+    emission_model({
+      t: year,
+      A1: initial_area_ha, // ha
+      d: deforestationRate,
+      Cmax,
+      s: sequestrationRate,
+    })
+  )
+
+  return results
 }

@@ -5,20 +5,22 @@ import _ from 'lodash'
 import { tToMt } from '../../utils/utils'
 import { colors } from '../../utils/colorUtils'
 
-const StoredCarbonChart = ({ width, height, emissionModelResult = {} }) => {
+const StoredCarbonChart = ({ width, height, inputParams }) => {
   const [activeIndex, setActiveIndex] = useState()
+
   const outerRadius = 0.45 * Math.min(width, height)
   const innerRadius = 0.3 * Math.min(width, height)
   const cx = width / 2
   const cy = height / 2
 
   const chartData = useMemo(() => {
+    if (!inputParams) {
+      return []
+    }
+
+    const { agb_tco2e, soc_tco2e } = inputParams
+
     const palette = [colors.green['300'], colors.deepOrange['300']]
-    const {
-      agb_tco2e, // above ground total CO2e grams
-      // bgb_tco2e, // below ground total CO2e grams
-      soc_tco2e,
-    } = emissionModelResult
 
     // agb_tco2e + soc_tco2e = toc_tco2e
 
@@ -30,10 +32,10 @@ const StoredCarbonChart = ({ width, height, emissionModelResult = {} }) => {
         fill: palette[1],
       },
     ]
-  }, [emissionModelResult])
+  }, [inputParams])
 
   const totalValue = _.round(
-    tToMt(emissionModelResult?.toc_tco2e || 0),
+    tToMt(inputParams?.toc_tco2e || 0),
     1
   ).toLocaleString()
 

@@ -1,26 +1,38 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import _ from 'lodash'
 
-import { useSingleLocationData } from '../../utils/dataHooks'
-import { calculateEmissionData } from '../../utils/dataUtils'
+import { useSingleLocationData, useEmissionModel } from '../../utils/dataHooks'
+
 import Spinner from '../../common/Spinner'
 import EmissionModelChart from './EmissionsModelChart'
 import StoredCarbonChart from './StoredCarbonChart'
 import NumberInput from './NumberInput'
 
-const EmissionModelDescription = ({ emissionModelResult = {} }) => {
+const EmissionModelDescription = ({
+  emissionModelResult = {},
+  inputParams = {},
+  modifiedInputParams = {},
+  setModifiedInputParams,
+}) => {
   const {
     historicalTimeDiff,
     loss_ha,
-    area_ha,
     deforestationRatePercent,
     sequestrationRate,
     emissionsFactor,
     carbonStoredPerHectare,
-  } = emissionModelResult
+  } = inputParams
 
   const displayVal = (val, round = 10) =>
     _.isNaN(val) ? '_' : _.round(val, round).toLocaleString()
+
+  const handleChange = (e) => {
+    let { name, value } = e.target
+    setModifiedInputParams((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
 
   return (
     <div className="Widgets--Description">
@@ -30,22 +42,24 @@ const EmissionModelDescription = ({ emissionModelResult = {} }) => {
         {displayVal(historicalTimeDiff)} years.
       </div>
       <div>
-        Mangrove Extent <strong>{displayVal(area_ha, 0)} ha</strong>.
-      </div>
-      <div>
         Deforestation rate of{' '}
-        <strong>
-          <NumberInput
-            value={displayVal(deforestationRatePercent * 100, 2)}
-            width={50}
-            unit="% pa"
-          />
-        </strong>
+        <NumberInput
+          name={'deforestationRatePercent'}
+          value={deforestationRatePercent}
+          unit="% pa"
+          onChange={handleChange}
+        />
         .
       </div>
       <div>
         Sequestration rate of{' '}
-        <strong>{displayVal(sequestrationRate)} t CO₂e per year</strong>.
+        <NumberInput
+          name={'sequestrationRate'}
+          value={sequestrationRate}
+          unit="t CO₂e per year"
+          onChange={handleChange}
+        />
+        .
       </div>
       <div>
         Carbon Stored{' '}
@@ -66,16 +80,12 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
     locationID: selectedLocationData?.id,
   })
 
-  const [emissionModelResult, setEmissionModelResult] = useState()
-
-  useEffect(() => {
-    if (locationData) {
-      const emissionModelResult = calculateEmissionData(locationData)
-      setEmissionModelResult(emissionModelResult)
-    } else {
-      setEmissionModelResult(undefined)
-    }
-  }, [locationData])
+  const {
+    emissionModelResult,
+    inputParams,
+    modifiedInputParams,
+    setModifiedInputParams,
+  } = useEmissionModel({ locationData })
 
   return (
     <Fragment>
@@ -88,12 +98,18 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           {selectedLocationData?.name} ({selectedLocationData?.iso})
         </h3>
 
-        <EmissionModelDescription emissionModelResult={emissionModelResult} />
+        <EmissionModelDescription
+          emissionModelResult={emissionModelResult}
+          inputParams={inputParams}
+          modifiedInputParams={modifiedInputParams}
+          setModifiedInputParams={setModifiedInputParams}
+        />
       </div>
 
       <div className="Widgets--Box--Column">
         <h3 className="Widgets--Box--Column--Title">Projected Emissions</h3>
         <EmissionModelChart
+          inputParams={inputParams}
           emissionModelResult={emissionModelResult}
           width={385}
           height={200}
@@ -102,11 +118,12 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
 
       <div className="Widgets--Box--Column">
         <h3 className="Widgets--Box--Column--Title">Carbon Stored</h3>
+
         <StoredCarbonChart
           title="Carbon Stored"
           width={300}
           height={200}
-          emissionModelResult={emissionModelResult}
+          inputParams={inputParams}
         />
       </div>
     </Fragment>

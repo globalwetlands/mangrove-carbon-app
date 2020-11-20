@@ -4,12 +4,13 @@ import './NumberInput.css'
 
 const NumberInput = ({
   value,
-  onChange = (val) => console.log(val),
-  width = 'auto',
+  onChange = console.log,
   style = {},
   unit = '',
+  ...props
 }) => {
-  const handleChange = (e) => onChange(e.target.value)
+  const charWidth = 11.5
+  const calculatedWidth = (value || 0).toString().length * charWidth
 
   return (
     <span>
@@ -17,11 +18,12 @@ const NumberInput = ({
         className="NumberInput"
         value={value}
         type="number"
-        onChange={handleChange}
+        onChange={onChange}
         style={{
           ...style,
-          width,
+          width: calculatedWidth,
         }}
+        {...props}
       />{' '}
       {unit}
     </span>
