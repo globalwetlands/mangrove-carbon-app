@@ -8,7 +8,12 @@ import EmissionModelChart from './EmissionsModelChart'
 import StoredCarbonChart from './StoredCarbonChart'
 import NumberInput from './NumberInput'
 
-const EmissionModelDescription = ({ inputParams = {}, setInputParams }) => {
+const EmissionModelDescription = ({
+  inputParams = {},
+  setInputParams,
+  resetInputParams,
+  isModified,
+}) => {
   const {
     deforestationRate,
     sequestrationRate,
@@ -84,6 +89,11 @@ const EmissionModelDescription = ({ inputParams = {}, setInputParams }) => {
         />
         .
       </div>
+      {isModified && (
+        <button className="button" onClick={resetInputParams}>
+          Reset Inputs
+        </button>
+      )}
     </div>
   )
 }
@@ -101,6 +111,8 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
     inputParams,
     modifiedInputParams,
     setInputParams,
+    resetInputParams,
+    isModified,
   } = useEmissionModel({ locationData })
 
   return (
@@ -119,6 +131,8 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           inputParams={inputParams}
           modifiedInputParams={modifiedInputParams}
           setInputParams={setInputParams}
+          resetInputParams={resetInputParams}
+          isModified={isModified}
         />
       </div>
 

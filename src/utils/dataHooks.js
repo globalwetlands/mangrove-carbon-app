@@ -38,13 +38,29 @@ export const useSingleLocationData = ({ locationID }) => {
 
 export const useEmissionModel = ({ locationData, forecastYears = 50 }) => {
   const [inputParams, setInputParams] = useState({})
+  const [initialInputParams, setInitialInputParams] = useState({})
+  const [isModified, setIsModified] = useState(false)
 
   useEffect(() => {
+    // update initialInputParams on initial load of locationData
     if (locationData) {
       const inputParams = parseLocationData({ locationData })
+      setInitialInputParams(inputParams)
       setInputParams(inputParams)
+      setIsModified(false)
     }
   }, [locationData])
+
+  const resetInputParams = () => {
+    // reset params to initialInputParams
+    setInputParams(initialInputParams)
+    setIsModified(false)
+  }
+
+  const setInputParamsHandler = (props) => {
+    setInputParams(props)
+    setIsModified(true)
+  }
 
   const emissionModelResult = useMemo(() => {
     if (inputParams) {
@@ -72,6 +88,8 @@ export const useEmissionModel = ({ locationData, forecastYears = 50 }) => {
   return {
     emissionModelResult,
     inputParams,
-    setInputParams,
+    setInputParams: setInputParamsHandler,
+    resetInputParams,
+    isModified,
   }
 }
