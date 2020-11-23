@@ -8,27 +8,20 @@ import EmissionModelChart from './EmissionsModelChart'
 import StoredCarbonChart from './StoredCarbonChart'
 import NumberInput from './NumberInput'
 
-const EmissionModelDescription = ({
-  emissionModelResult = {},
-  inputParams = {},
-  modifiedInputParams = {},
-  setModifiedInputParams,
-}) => {
+const EmissionModelDescription = ({ inputParams = {}, setInputParams }) => {
   const {
-    historicalTimeDiff,
-    loss_ha,
-    deforestationRatePercent,
+    deforestationRate,
     sequestrationRate,
     emissionsFactor,
     carbonStoredPerHectare,
+    current_area_ha,
   } = inputParams
 
-  const displayVal = (val, round = 10) =>
-    _.isNaN(val) ? '_' : _.round(val, round).toLocaleString()
-
-  const handleChange = (e) => {
-    let { name, value } = e.target
-    setModifiedInputParams((prev) => ({
+  const handleChange = ({ name, value }) => {
+    if (name === 'deforestationRate') {
+      value /= 100
+    }
+    setInputParams((prev) => ({
       ...prev,
       [name]: value,
     }))
@@ -37,16 +30,26 @@ const EmissionModelDescription = ({
   return (
     <div className="Widgets--Description">
       <div>
+        Mangrove extent:{' '}
+        <NumberInput
+          name={'current_area_ha'}
+          value={_.round(current_area_ha)}
+          unit="ha"
+          onChange={handleChange}
+        />
+        .
+      </div>
+      {/* <div>
         Mangrove {loss_ha < 0 ? 'gain' : 'loss'} of{' '}
         <strong>{displayVal(Math.abs(loss_ha), 0)} ha</strong> over{' '}
         {displayVal(historicalTimeDiff)} years.
-      </div>
+      </div> */}
       <div>
         Deforestation rate of{' '}
         <NumberInput
-          name={'deforestationRatePercent'}
-          value={deforestationRatePercent}
-          unit="% pa"
+          name={'deforestationRate'}
+          value={_.round(deforestationRate * 100, 3)}
+          unit=" pa"
           onChange={handleChange}
         />
         .
@@ -61,12 +64,25 @@ const EmissionModelDescription = ({
         />
         .
       </div>
+
       <div>
         Carbon Stored{' '}
-        <strong>{displayVal(carbonStoredPerHectare, 2)} t CO₂e / ha</strong>.
+        <NumberInput
+          name={'carbonStoredPerHectare'}
+          value={_.round(carbonStoredPerHectare, 2)}
+          unit=" t CO₂e / ha"
+          onChange={handleChange}
+        />
+        .
       </div>
       <div>
-        Emissions factor of <strong>{displayVal(emissionsFactor, 2)}</strong>.
+        Emissions factor of{' '}
+        <NumberInput
+          name={'emissionsFactor'}
+          value={emissionsFactor}
+          onChange={handleChange}
+        />
+        .
       </div>
     </div>
   )
@@ -84,7 +100,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
     emissionModelResult,
     inputParams,
     modifiedInputParams,
-    setModifiedInputParams,
+    setInputParams,
   } = useEmissionModel({ locationData })
 
   return (
@@ -102,7 +118,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           emissionModelResult={emissionModelResult}
           inputParams={inputParams}
           modifiedInputParams={modifiedInputParams}
-          setModifiedInputParams={setModifiedInputParams}
+          setInputParams={setInputParams}
         />
       </div>
 

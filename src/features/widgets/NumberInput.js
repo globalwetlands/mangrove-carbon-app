@@ -1,27 +1,34 @@
 import React from 'react'
+import NumberFormat from 'react-number-format'
 
 import './NumberInput.css'
 
 const NumberInput = ({
   value,
+  name,
   onChange = console.log,
   style = {},
   unit = '',
   ...props
 }) => {
-  const charWidth = 11.5
-  const calculatedWidth = (value || 0).toString().length * charWidth
+  const calculatedWidth = (value || 0).toLocaleString().length
 
   return (
     <span>
-      <input
+      <NumberFormat
         className="NumberInput"
         value={value}
-        type="number"
-        onChange={onChange}
+        displayType={'input'}
+        thousandSeparator={true}
         style={{
           ...style,
-          width: calculatedWidth,
+          width: `${calculatedWidth}ch`,
+        }}
+        onValueChange={({ floatValue, formattedValue }) => {
+          onChange({
+            name,
+            value: floatValue,
+          })
         }}
         {...props}
       />{' '}

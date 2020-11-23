@@ -37,41 +37,41 @@ export const useSingleLocationData = ({ locationID }) => {
 }
 
 export const useEmissionModel = ({ locationData, forecastYears = 50 }) => {
-  const [modifiedInputParams, setModifiedInputParams] = useState({})
+  const [inputParams, setInputParams] = useState({})
 
-  const inputParams = useMemo(() => {
+  useEffect(() => {
     if (locationData) {
-      return parseLocationData({ locationData })
-    } else {
-      return undefined
+      const inputParams = parseLocationData({ locationData })
+      setInputParams(inputParams)
     }
   }, [locationData])
 
   const emissionModelResult = useMemo(() => {
     if (inputParams) {
       const {
-        initial_area_ha,
+        current_area_ha,
         deforestationRate,
-        Cmax,
+        emissionsFactor,
+        carbonStoredPerHectare,
         sequestrationRate,
       } = inputParams
 
       return calculateEmissionData({
-        initial_area_ha,
+        current_area_ha,
         deforestationRate,
-        Cmax,
+        emissionsFactor,
+        carbonStoredPerHectare,
         sequestrationRate,
         forecastYears,
       })
     } else {
       return undefined
     }
-  }, [inputParams, forecastYears])
+  }, [forecastYears, inputParams])
 
   return {
     emissionModelResult,
     inputParams,
-    modifiedInputParams,
-    setModifiedInputParams,
+    setInputParams,
   }
 }

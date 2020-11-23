@@ -44,7 +44,7 @@ export function parseLocationData({
   const { area_m2: current_area_m2 } = historicalDatapoints[1]
   const loss_m2 = initial_area_m2 - current_area_m2
   const loss_ha = m2ToHa(loss_m2)
-  const initial_area_ha = m2ToHa(initial_area_m2)
+  // const initial_area_ha = m2ToHa(initial_area_m2)
   const current_area_ha = m2ToHa(current_area_m2)
 
   // get current stored carbon
@@ -61,7 +61,9 @@ export function parseLocationData({
   // (log(area[1] / area[0]) / timeDiff) * -1
   const deforestationRate =
     (Math.log(current_area_m2 / initial_area_m2) / historicalTimeDiff) * -1
-  const deforestationRatePercent = (Math.exp(deforestationRate) - 1) * 100
+  // const deforestationRatePercent = (Math.exp(deforestationRate) - 1) * 100
+
+  // const defRate = Math.log1p(deforestationRatePercent / 100)
 
   // Carbon storage
   // tonnes CO2e per hectare
@@ -70,17 +72,16 @@ export function parseLocationData({
 
   // Calculate remaining parameters
   const emissionsFactor = 0.8
-  const Cmax = emissionsFactor * carbonStoredPerHectare
   // sequestrationRate: varies, no global value, using 6.49 found in table S4 supp materials
   // sequestrationRate unit: tonnes CO2e per year
   const sequestrationRate = 6.49
 
   return {
     historicalTimeDiff,
-    initial_area_ha,
+    current_area_ha,
     loss_ha,
     deforestationRate,
-    deforestationRatePercent,
+    // deforestationRatePercent,
     emissionsFactor,
     sequestrationRate,
     agb_tco2e, // above ground total CO2e grams
@@ -88,25 +89,27 @@ export function parseLocationData({
     toc_tco2e, // total C02e
     soc_tco2e,
     carbonStoredPerHectare,
-    Cmax,
   }
 }
 
 export function calculateEmissionData({
-  initial_area_ha,
+  current_area_ha,
   deforestationRate,
-  Cmax,
+  emissionsFactor,
+  carbonStoredPerHectare,
   sequestrationRate,
   forecastYears = 50,
 }) {
   // generate emission_model data for range of years
   const years = _.range(forecastYears)
 
+  const Cmax = emissionsFactor * carbonStoredPerHectare
+
   // output unit: tonnes CO2 emitted
   const results = years.map((year) =>
     emission_model({
       t: year,
-      A1: initial_area_ha, // ha
+      A1: current_area_ha, // ha
       d: deforestationRate,
       Cmax,
       s: sequestrationRate,
