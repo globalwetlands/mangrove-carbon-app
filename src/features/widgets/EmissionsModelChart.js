@@ -6,7 +6,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  // Label,
+  Label,
 } from 'recharts'
 import _ from 'lodash'
 
@@ -16,7 +16,7 @@ const EmissionModelChart = ({
   inputParams = {},
   emissionModelResult = [],
   width = 385,
-  height = 200,
+  height = 225,
 }) => {
   const data = emissionModelResult.map((value, index) => ({
     name: index + 1, // year
@@ -37,7 +37,7 @@ const EmissionModelChart = ({
         top: 5,
         right: 40,
         left: 0,
-        bottom: 5,
+        bottom: 25,
       }}
     >
       <CartesianGrid
@@ -55,7 +55,9 @@ const EmissionModelChart = ({
         interval="preserveStartEnd"
         domain={[0, 'dataMax']}
         type="number"
-      />
+      >
+        <Label value="Year" position="bottom" />
+      </XAxis>
       <YAxis
         orientation="right"
         axisLine={false}
