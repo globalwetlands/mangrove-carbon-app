@@ -12,7 +12,7 @@ const TableRow = ({
   handleChange,
 }) => (
   <tr className="EmissionsModelWidget--Table--Row">
-    <th>
+    <th className="EmissionsModelWidget--Table--Row--Header">
       {title}
       {!!unit ? ` (${unit})` : ''}
     </th>
