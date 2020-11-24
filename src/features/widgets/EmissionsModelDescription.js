@@ -118,8 +118,11 @@ const EmissionModelDescription = ({
         <tfoot>
           <tr>
             <td>
-              <button className="button" onClick={() => addSeries()}>
-                Add Series
+              <button
+                className="button EmissionsModelWidget--Table--FooterButton"
+                onClick={() => addSeries()}
+              >
+                + Add Series
               </button>
             </td>
             {seriesInputs.map((inputParams, index) => {
@@ -129,14 +132,14 @@ const EmissionModelDescription = ({
                   key={`tfoot-${index}`}
                 >
                   <button
-                    className="button"
+                    className="button EmissionsModelWidget--Table--FooterButton"
                     onClick={() => resetInputParams({ index })}
                   >
                     Reset
                   </button>
                   {!!index > 0 && (
                     <button
-                      className="button"
+                      className="button EmissionsModelWidget--Table--FooterButton"
                       onClick={() => removeSeries({ index })}
                     >
                       Delete

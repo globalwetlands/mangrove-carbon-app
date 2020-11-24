@@ -25,3 +25,30 @@ pre {
 strong {
   font-weight: 700;
 }
+
+.button {
+  appearance: none;
+  display: inline-block;
+  border: none;
+  padding: 0.5em 1em;
+  margin: 0;
+  text-decoration: none;
+  color: inherit;
+  font-family: inherit;
+  border-radius: 3px;
+  background: whitesmoke;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 150ms ease-in-out, transform 150ms ease;
+}
+
+.button:hover,
+.button:focus {
+  background: #eee;
+}
+
+.button:active {
+  transform: scale(0.97);
+}
