@@ -101,7 +101,9 @@ export function calculateEmissionData({
   forecastYears = 50,
 }) {
   // generate emission_model data for range of years
-  const years = _.range(forecastYears)
+  const maxDataPoints = 100
+  const step = forecastYears > maxDataPoints ? forecastYears / maxDataPoints : 1
+  const years = _.range(1, forecastYears + 1, step)
 
   const Cmax = emissionsFactor * carbonStoredPerHectare
 

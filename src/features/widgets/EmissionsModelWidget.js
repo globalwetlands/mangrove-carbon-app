@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useSingleLocationData, useEmissionModel } from '../../utils/dataHooks'
 
@@ -15,6 +15,8 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
     locationID: selectedLocationData?.id,
   })
 
+  const [forecastYears, setForecastYears] = useState(50)
+
   const {
     seriesResults,
     seriesInputs,
@@ -22,7 +24,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
     resetInputParams,
     addSeries,
     removeSeries,
-  } = useEmissionModel({ locationData })
+  } = useEmissionModel({ locationData, forecastYears })
 
   return (
     <div className="Widgets--Box--Inner">
@@ -41,6 +43,8 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           resetInputParams={resetInputParams}
           addSeries={addSeries}
           removeSeries={removeSeries}
+          forecastYears={forecastYears}
+          setForecastYears={setForecastYears}
         />
       </div>
 

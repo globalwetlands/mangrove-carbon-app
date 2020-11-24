@@ -11,28 +11,31 @@ const TableRow = ({
   seriesInputs = [],
   valueFormatter = (val) => val,
   handleChange,
-}) => (
-  <tr className="EmissionsModelWidget--Table--Row">
-    <th className="EmissionsModelWidget--Table--Row--Header">
-      {title}
-      {!!unit ? ` (${unit})` : ''}
-    </th>
-    {seriesInputs.map((inputParams, index) => (
-      <ValueCell
-        name={name}
-        value={valueFormatter(inputParams[name])}
-        index={index}
-        handleChange={handleChange}
-      />
-    ))}
-  </tr>
-)
+}) => {
+  return (
+    <tr className="EmissionsModelWidget--Table--Row">
+      <th className="EmissionsModelWidget--Table--Row--Header">
+        {title}
+        {!!unit ? ` (${unit})` : ''}
+      </th>
+      {seriesInputs.map((inputParams, index) => (
+        <ValueCell
+          key={`${name}-${index}`}
+          name={name}
+          value={valueFormatter(inputParams[name])}
+          index={index}
+          handleChange={handleChange}
+        />
+      ))}
+    </tr>
+  )
+}
 
 const ValueCell = ({ name, value, index, handleChange }) => {
   return (
     <td
       className="EmissionsModelWidget--Table--Row--ValueCell"
-      key={`ValueCell-${index}`}
+      key={`ValueCell-${name}-${index}`}
     >
       <NumberInput
         name={name}
@@ -49,6 +52,8 @@ const EmissionModelDescription = ({
   resetInputParams,
   addSeries,
   removeSeries,
+  forecastYears,
+  setForecastYears,
 }) => {
   const handleChange = ({ name, value, index }) => {
     if (name === 'deforestationRate') {
@@ -113,6 +118,13 @@ const EmissionModelDescription = ({
             name="emissionsFactor"
             seriesInputs={seriesInputs}
             handleChange={handleChange}
+          />
+          <TableRow
+            title="Forecast Years"
+            name="forecastYears"
+            seriesInputs={[{ forecastYears }]}
+            handleChange={({ name, value }) => setForecastYears(value)}
+            valueFormatter={(val) => Math.abs(val)}
           />
         </tbody>
         <tfoot>
