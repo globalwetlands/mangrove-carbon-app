@@ -84,10 +84,15 @@
 .EmissionsModelWidget--Table {
   text-align: left;
   border-spacing: 10px 1px;
+  margin-left: -10px;
 }
 
 .EmissionsModelWidget--Table--Row--Header {
   font-weight: 400;
+}
+
+.EmissionsModelWidget--Table--Row--ValueTitle {
+  text-align: right;
 }
 
 .EmissionsModelWidget--Table--Row--ValueCell {
