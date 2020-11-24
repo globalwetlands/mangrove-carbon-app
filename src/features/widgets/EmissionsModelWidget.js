@@ -50,7 +50,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
 
       <div className="Widgets--Box--Column">
         <h3 className="Widgets--Box--Column--Title">
-          <strong>Projected Emissions</strong> (Mt CO₂e p.a.)
+          <strong>Projected Emissions</strong> (Mt CO₂e)
         </h3>
         <EmissionsModelChart
           seriesInputs={seriesInputs}
