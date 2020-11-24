@@ -51,7 +51,8 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
 
       <div className="Widgets--Box--Column">
         <h3 className="Widgets--Box--Column--Title">
-          <strong>Projected Emissions</strong> (Mt CO₂e)
+          <strong>Projected Emissions</strong> (
+          <abbr title="Megatonnes of CO₂ equivalent">Mt CO₂e</abbr>)
         </h3>
         <EmissionsModelChart
           seriesInputs={seriesInputs}
@@ -63,7 +64,8 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
 
       <div className="Widgets--Box--Column">
         <h3 className="Widgets--Box--Column--Title">
-          <strong>Carbon Stored</strong> (Mt CO₂e)
+          <strong>Carbon Stored</strong> (
+          <abbr title="Megatonnes of CO₂ equivalent">Mt CO₂e</abbr>)
         </h3>
 
         <StoredCarbonChart

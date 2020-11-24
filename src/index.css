@@ -26,6 +26,13 @@ strong {
   font-weight: 700;
 }
 
+abbr[title] {
+  border-bottom: none;
+  cursor: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+
 .button {
   appearance: none;
   display: inline-block;

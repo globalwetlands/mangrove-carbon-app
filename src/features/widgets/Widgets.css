@@ -91,6 +91,10 @@
   font-weight: 400;
 }
 
+.EmissionsModelWidget--Table--Row--Header--Name {
+  font-weight: 600;
+}
+
 .EmissionsModelWidget--Table--Row--ValueTitle {
   text-align: right;
 }

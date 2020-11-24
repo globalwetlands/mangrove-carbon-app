@@ -9,6 +9,7 @@ import { dataColors } from '../../utils/colorUtils'
 const TableRow = ({
   title,
   unit,
+  unitTitle,
   name,
   seriesInputs = [],
   valueFormatter = (val) => val,
@@ -17,8 +18,15 @@ const TableRow = ({
   return (
     <tr className="EmissionsModelWidget--Table--Row">
       <th className="EmissionsModelWidget--Table--Row--Header">
-        {title}
-        {!!unit ? ` (${unit})` : ''}
+        <span className="EmissionsModelWidget--Table--Row--Header--Name">
+          {title}
+        </span>
+        {!!unit && (
+          <span className="EmissionsModelWidget--Table--Row--Header--Unit">
+            {' '}
+            (<abbr title={unitTitle}>{unit}</abbr>)
+          </span>
+        )}
       </th>
       {!seriesInputs.length && <ValueCellPlaceholder />}
       {seriesInputs.map((inputParams, index) => (
@@ -93,6 +101,7 @@ const EmissionModelDescription = ({
           <TableRow
             title="Mangrove extent"
             unit="ha"
+            unitTitle="Hectares"
             name="current_area_ha"
             seriesInputs={seriesInputs}
             handleChange={handleChange}
@@ -101,6 +110,7 @@ const EmissionModelDescription = ({
           <TableRow
             title="Deforestation rate"
             unit="p.a."
+            unitTitle="Per annum"
             name="deforestationRate"
             seriesInputs={seriesInputs}
             handleChange={handleChange}
@@ -109,6 +119,7 @@ const EmissionModelDescription = ({
           <TableRow
             title="Sequestration rate"
             unit="t CO₂e p.a."
+            unitTitle="Metric Tonnes of CO₂ equivalent per annum"
             name="sequestrationRate"
             seriesInputs={seriesInputs}
             handleChange={handleChange}
@@ -116,6 +127,7 @@ const EmissionModelDescription = ({
           <TableRow
             title="Carbon Stored"
             unit="t CO₂e / ha"
+            unitTitle="Metric Tonnes of CO₂ equivalent per hectare"
             name="carbonStoredPerHectare"
             seriesInputs={seriesInputs}
             handleChange={handleChange}
