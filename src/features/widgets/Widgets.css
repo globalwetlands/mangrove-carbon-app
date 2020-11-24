@@ -5,7 +5,6 @@
   bottom: 0px;
   top: 0px;
   pointer-events: none;
-  overflow: scroll;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -14,16 +13,21 @@
 
 .Widgets--Box {
   position: relative;
-  display: flex;
-  flex-direction: row;
   border-radius: 20px;
   background: rgba(255, 255, 255, 1);
   padding: 30px 40px;
   min-height: 50px;
-  margin: 35px auto;
+  max-width: 100%;
+  margin: 25px auto;
   pointer-events: all;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
   padding-bottom: 50px;
+}
+
+.Widgets--Box--Inner {
+  overflow: scroll;
+  display: flex;
+  flex-direction: row;
 }
 
 .Widgets--Box--CloseButton {

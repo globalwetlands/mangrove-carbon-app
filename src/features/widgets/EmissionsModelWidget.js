@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import { useSingleLocationData, useEmissionModel } from '../../utils/dataHooks'
 
@@ -25,7 +25,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
   } = useEmissionModel({ locationData })
 
   return (
-    <Fragment>
+    <div className="Widgets--Box--Inner">
       {locationDataLoadingState !== 'loaded' && (
         <Spinner isSmall style={{ position: 'absolute', left: 10, top: 10 }} />
       )}
@@ -68,7 +68,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           inputParams={seriesInputs[0]}
         />
       </div>
-    </Fragment>
+    </div>
   )
 }
 
