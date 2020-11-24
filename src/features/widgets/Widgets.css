@@ -107,3 +107,8 @@
 .EmissionsModelWidget--Table--FooterCell > * + * {
   margin-left: 5px;
 }
+
+.EmissionsModelWidget--Table--FooterButton svg {
+  width: 1em;
+  height: 1em;
+}

@@ -1,5 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
+import ResetIcon from 'react-feather/dist/icons/refresh-cw'
+import RemoveIcon from 'react-feather/dist/icons/x'
 
 import NumberInput from './NumberInput'
 import { dataColors } from '../../utils/colorUtils'
@@ -146,15 +148,17 @@ const EmissionModelDescription = ({
                   <button
                     className="button EmissionsModelWidget--Table--FooterButton"
                     onClick={() => resetInputParams({ index })}
+                    title="Reset"
                   >
-                    Reset
+                    <ResetIcon />
                   </button>
                   {!!index > 0 && (
                     <button
                       className="button EmissionsModelWidget--Table--FooterButton"
                       onClick={() => removeSeries({ index })}
+                      title="Remove"
                     >
-                      Delete
+                      <RemoveIcon />
                     </button>
                   )}
                 </td>
