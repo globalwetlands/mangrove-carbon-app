@@ -62,17 +62,18 @@ const EmissionModelDescription = ({
         <thead>
           <tr>
             <th></th>
-            {seriesInputs.map((val, index) => (
-              <th
-                className="EmissionsModelWidget--Table--SeriesHeader"
-                key={`thead-${index}`}
-                style={{
-                  color: dataColors[index],
-                }}
-              >
-                Series {index + 1}
-              </th>
-            ))}
+            {seriesInputs.length > 1 &&
+              seriesInputs.map((val, index) => (
+                <th
+                  className="EmissionsModelWidget--Table--SeriesHeader"
+                  key={`thead-${index}`}
+                  style={{
+                    color: dataColors[index],
+                  }}
+                >
+                  Series {index + 1}
+                </th>
+              ))}
           </tr>
         </thead>
         <tbody>
