@@ -15,19 +15,19 @@
   position: relative;
   border-radius: 20px;
   background: rgba(255, 255, 255, 1);
-  padding: 30px 40px;
-  min-height: 50px;
+  padding: 30px 30px 30px 40px;
   max-width: 100%;
   margin: 25px auto;
   pointer-events: all;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
-  padding-bottom: 50px;
 }
 
 .Widgets--Box--Inner {
-  overflow: scroll;
   display: flex;
   flex-direction: row;
+  overflow: hidden;
+  overflow-x: scroll;
+  padding-bottom: 10px;
 }
 
 .Widgets--Box--CloseButton {
@@ -65,6 +65,7 @@
 }
 
 .Widgets--Title {
+  position: absolute;
   font-weight: 300;
   font-size: 30px;
   margin: 0 0 20px 0;
@@ -75,6 +76,7 @@
   font-weight: 300;
   line-height: 30px;
   margin: 0;
+  margin-top: 60px;
   padding-right: 20px;
   position: relative;
 }

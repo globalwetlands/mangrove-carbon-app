@@ -52,7 +52,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           seriesInputs={seriesInputs}
           seriesResults={seriesResults}
           width={385}
-          height={225}
+          height={250}
         />
       </div>
 
@@ -64,7 +64,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
         <StoredCarbonChart
           title="Carbon Stored"
           width={300}
-          height={225}
+          height={250}
           inputParams={seriesInputs[0]}
         />
       </div>
