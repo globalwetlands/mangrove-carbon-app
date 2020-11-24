@@ -37,59 +37,87 @@ export const useSingleLocationData = ({ locationID }) => {
 }
 
 export const useEmissionModel = ({ locationData, forecastYears = 50 }) => {
-  const [inputParams, setInputParams] = useState({})
   const [initialInputParams, setInitialInputParams] = useState({})
-  const [isModified, setIsModified] = useState(false)
+  const [seriesInputs, setSeriesInputs] = useState([])
 
   useEffect(() => {
     // update initialInputParams on initial load of locationData
     if (locationData) {
       const inputParams = parseLocationData({ locationData })
       setInitialInputParams(inputParams)
-      setInputParams(inputParams)
-      setIsModified(false)
+      setSeriesInputs([inputParams])
     }
   }, [locationData])
 
-  const resetInputParams = () => {
+  const resetInputParams = ({ index }) => {
     // reset params to initialInputParams
-    setInputParams(initialInputParams)
-    setIsModified(false)
+    setSeriesInputs((prev) => {
+      let updatedSeries = [...prev]
+      updatedSeries[index] = initialInputParams
+      return updatedSeries
+    })
   }
 
-  const setInputParamsHandler = (props) => {
-    setInputParams(props)
-    setIsModified(true)
+  const setInputParamsHandler = ({ index, inputParams }) => {
+    setSeriesInputs((prev) => {
+      let updatedSeries = [...prev]
+      const existing = updatedSeries[index]
+      updatedSeries[index] = { ...existing, ...inputParams }
+      return updatedSeries
+    })
   }
 
-  const emissionModelResult = useMemo(() => {
-    if (inputParams) {
-      const {
-        current_area_ha,
-        deforestationRate,
-        emissionsFactor,
-        carbonStoredPerHectare,
-        sequestrationRate,
-      } = inputParams
+  const addSeries = () => {
+    setSeriesInputs((prev) => {
+      const updatedSeries = [...prev]
+      updatedSeries.push(initialInputParams)
+      return updatedSeries
+    })
+  }
 
-      return calculateEmissionData({
-        current_area_ha,
-        deforestationRate,
-        emissionsFactor,
-        carbonStoredPerHectare,
-        sequestrationRate,
-        forecastYears,
-      })
-    } else {
-      return undefined
+  const removeSeries = ({ index }) => {
+    if (index === 0) {
+      return false
     }
-  }, [forecastYears, inputParams])
+    setSeriesInputs((prev) => {
+      const updatedSeries = [...prev]
+      updatedSeries.splice(index, 1)
+      return updatedSeries
+    })
+  }
+
+  const seriesResults = useMemo(() => {
+    if (seriesInputs.length) {
+      const results = seriesInputs.map((inputParams) => {
+        const {
+          current_area_ha,
+          deforestationRate,
+          emissionsFactor,
+          carbonStoredPerHectare,
+          sequestrationRate,
+        } = inputParams
+
+        return calculateEmissionData({
+          current_area_ha,
+          deforestationRate,
+          emissionsFactor,
+          carbonStoredPerHectare,
+          sequestrationRate,
+          forecastYears,
+        })
+      })
+      return results
+    } else {
+      return []
+    }
+  }, [forecastYears, seriesInputs])
 
   return {
-    emissionModelResult,
-    inputParams,
+    seriesResults,
+    seriesInputs,
     setInputParams: setInputParamsHandler,
     resetInputParams,
-    isModified,
+    addSeries,
+    removeSeries,
   }
 }

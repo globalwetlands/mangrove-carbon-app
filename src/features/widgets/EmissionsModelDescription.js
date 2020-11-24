@@ -1,13 +1,14 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import _ from 'lodash'
 
 import NumberInput from './NumberInput'
+import { dataColors } from '../../utils/colorUtils'
 
 const TableRow = ({
   title,
   unit,
   name,
-  series = [],
+  seriesInputs = [],
   valueFormatter = (val) => val,
   handleChange,
 }) => (
@@ -16,7 +17,7 @@ const TableRow = ({
       {title}
       {!!unit ? ` (${unit})` : ''}
     </th>
-    {series.map((inputParams, index) => (
+    {seriesInputs.map((inputParams, index) => (
       <ValueCell
         name={name}
         value={valueFormatter(inputParams[name])}
@@ -43,35 +44,31 @@ const ValueCell = ({ name, value, index, handleChange }) => {
 }
 
 const EmissionModelDescription = ({
-  inputParams = {},
+  seriesInputs = {},
   setInputParams,
   resetInputParams,
-  isModified,
+  addSeries,
+  removeSeries,
 }) => {
   const handleChange = ({ name, value, index }) => {
     if (name === 'deforestationRate') {
       value /= 100
     }
-    setInputParams((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setInputParams({ index, inputParams: { [name]: value } })
   }
-
-  const series = useMemo(() => {
-    return [inputParams]
-  }, [inputParams])
-
   return (
     <div className="Widgets--Description">
       <table className="EmissionsModelWidget--Table">
         <thead>
           <tr>
             <th></th>
-            {series.map((val, index) => (
+            {seriesInputs.map((val, index) => (
               <th
                 className="EmissionsModelWidget--Table--SeriesHeader"
                 key={`thead-${index}`}
+                style={{
+                  color: dataColors[index],
+                }}
               >
                 Series {index + 1}
               </th>
@@ -83,7 +80,7 @@ const EmissionModelDescription = ({
             title="Mangrove extent"
             unit="ha"
             name="current_area_ha"
-            series={series}
+            seriesInputs={seriesInputs}
             handleChange={handleChange}
             valueFormatter={(val) => _.round(val)}
           />
@@ -91,7 +88,7 @@ const EmissionModelDescription = ({
             title="Deforestation rate"
             unit="p.a."
             name="deforestationRate"
-            series={series}
+            seriesInputs={seriesInputs}
             handleChange={handleChange}
             valueFormatter={(val) => _.round(val * 100, 3)}
           />
@@ -99,36 +96,51 @@ const EmissionModelDescription = ({
             title="Sequestration rate"
             unit="t CO₂e p.a."
             name="sequestrationRate"
-            series={series}
+            seriesInputs={seriesInputs}
             handleChange={handleChange}
           />
           <TableRow
             title="Carbon Stored"
             unit="t CO₂e / ha"
             name="carbonStoredPerHectare"
-            series={series}
+            seriesInputs={seriesInputs}
             handleChange={handleChange}
             valueFormatter={(val) => _.round(val, 2)}
           />
           <TableRow
             title="Emissions factor"
             name="emissionsFactor"
-            series={series}
+            seriesInputs={seriesInputs}
             handleChange={handleChange}
           />
         </tbody>
         <tfoot>
           <tr>
-            <td></td>
-            {series.map((inputParams, index) => {
+            <td>
+              <button className="button" onClick={() => addSeries()}>
+                Add Series
+              </button>
+            </td>
+            {seriesInputs.map((inputParams, index) => {
               return (
                 <td
                   className="EmissionsModelWidget--Table--FooterCell"
                   key={`tfoot-${index}`}
                 >
-                  <button className="button" onClick={resetInputParams}>
+                  <button
+                    className="button"
+                    onClick={() => resetInputParams({ index })}
+                  >
                     Reset
                   </button>
+                  {!!index > 0 && (
+                    <button
+                      className="button"
+                      onClick={() => removeSeries({ index })}
+                    >
+                      Delete
+                    </button>
+                  )}
                 </td>
               )
             })}

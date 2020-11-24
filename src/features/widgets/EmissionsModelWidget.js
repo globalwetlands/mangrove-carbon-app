@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 
 import { useSingleLocationData, useEmissionModel } from '../../utils/dataHooks'
 
@@ -8,7 +8,6 @@ import EmissionsModelDescription from './EmissionsModelDescription'
 import StoredCarbonChart from './StoredCarbonChart'
 
 const EmissionsModelWidget = ({ selectedLocationData }) => {
-  const [additionalDataSeries, setAdditionalDataSeries] = useState([])
   const {
     data: locationData,
     loadingState: locationDataLoadingState,
@@ -17,18 +16,13 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
   })
 
   const {
-    emissionModelResult,
-    inputParams,
-    modifiedInputParams,
+    seriesResults,
+    seriesInputs,
     setInputParams,
     resetInputParams,
-    isModified,
+    addSeries,
+    removeSeries,
   } = useEmissionModel({ locationData })
-
-  const addSeries = () => {
-    const newDataSeries = {}
-    setAdditionalDataSeries((prev) => [...prev, newDataSeries])
-  }
 
   return (
     <Fragment>
@@ -42,14 +36,12 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
         </h3>
 
         <EmissionsModelDescription
-          inputParams={inputParams}
-          modifiedInputParams={modifiedInputParams}
+          seriesInputs={seriesInputs}
           setInputParams={setInputParams}
           resetInputParams={resetInputParams}
-          isModified={isModified}
+          addSeries={addSeries}
+          removeSeries={removeSeries}
         />
-
-        <button onClick={addSeries}>Add Series</button>
       </div>
 
       <div className="Widgets--Box--Column">
@@ -57,8 +49,8 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           <strong>Projected Emissions</strong> (Mt CO₂e p.a.)
         </h3>
         <EmissionsModelChart
-          inputParams={inputParams}
-          emissionModelResult={emissionModelResult}
+          seriesInputs={seriesInputs}
+          seriesResults={seriesResults}
           width={385}
           height={225}
         />
@@ -73,7 +65,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           title="Carbon Stored"
           width={300}
           height={225}
-          inputParams={inputParams}
+          inputParams={seriesInputs[0]}
         />
       </div>
     </Fragment>

@@ -89,6 +89,7 @@
 
 .EmissionsModelWidget--Table--SeriesHeader {
   text-align: right;
+  text-decoration: underline;
 }
 
 .EmissionsModelWidget--Table--FooterCell {

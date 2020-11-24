@@ -11,17 +11,29 @@ import {
 import _ from 'lodash'
 
 import { tToMt } from '../../utils/utils'
+import { dataColors } from '../../utils/colorUtils'
+
+const emissionModelSeriesReducer = (acc, results, seriesIndex) => {
+  const parsedResults = results.map((value, yearIndex) => ({
+    name: yearIndex + 1, // year
+    [`series_${seriesIndex}`]: value,
+  }))
+
+  acc = parsedResults.map((results) => {
+    let match = acc.find(({ name }) => name === results.name) || {}
+    match = { ...match, ...results }
+    return match
+  })
+
+  return acc
+}
 
 const EmissionModelChart = ({
-  inputParams = {},
-  emissionModelResult = [],
+  seriesResults = [],
   width = 385,
   height = 225,
 }) => {
-  const data = emissionModelResult.map((value, index) => ({
-    name: index + 1, // year
-    value,
-  }))
+  const data = seriesResults.reduce(emissionModelSeriesReducer, [])
 
   const formatNumber = (num) => _.round(tToMt(num), 2).toLocaleString()
   const formatYear = (c) => 2016 + c
@@ -82,14 +94,17 @@ const EmissionModelChart = ({
         }}
       />
       {/* <Legend /> */}
-      <Line
-        type="monotone"
-        dataKey="value"
-        stroke="#8884d8"
-        strokeWidth={2}
-        activeDot={{ r: 8 }}
-        dot={false}
-      />
+      {seriesResults.map((val, seriesIndex) => (
+        <Line
+          key={`series_${seriesIndex}`}
+          dataKey={`series_${seriesIndex}`}
+          type="monotone"
+          stroke={dataColors[seriesIndex]}
+          strokeWidth={2}
+          activeDot={{ r: 8 }}
+          dot={false}
+        />
+      ))}
     </LineChart>
   )
 }
