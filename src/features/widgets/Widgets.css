@@ -99,6 +99,13 @@
   text-align: right;
 }
 
+.EmissionsModelWidget--Table--Row--ValueCellPlaceholder {
+  display: block;
+  border-bottom: 1px solid currentColor;
+  height: 24px;
+  width: 60px;
+}
+
 .EmissionsModelWidget--Table--SeriesHeader {
   text-align: right;
   text-decoration: underline;

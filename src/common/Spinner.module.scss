@@ -23,7 +23,7 @@ $duration: 1.4s;
   stroke-dasharray: $offset;
   stroke-dashoffset: 0;
   transform-origin: center;
-  stroke: #50e597;
+  stroke: #212121;
   animation: dash $duration ease-in-out infinite,
     colors ($duration * 4) ease-in-out infinite;
 }
@@ -32,7 +32,7 @@ $duration: 1.4s;
   stroke-dasharray: $offset-small;
   stroke-dashoffset: 0;
   transform-origin: center;
-  stroke: #50e597;
+  stroke: #212121;
   animation: dashSmall $duration ease-in-out infinite;
 }
 

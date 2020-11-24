@@ -45,6 +45,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           removeSeries={removeSeries}
           forecastYears={forecastYears}
           setForecastYears={setForecastYears}
+          isLoaded={locationDataLoadingState === 'loaded'}
         />
       </div>
 

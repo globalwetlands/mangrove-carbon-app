@@ -20,6 +20,7 @@ const TableRow = ({
         {title}
         {!!unit ? ` (${unit})` : ''}
       </th>
+      {!seriesInputs.length && <ValueCellPlaceholder />}
       {seriesInputs.map((inputParams, index) => (
         <ValueCell
           key={`${name}-${index}`}
@@ -35,10 +36,7 @@ const TableRow = ({
 
 const ValueCell = ({ name, value, index, handleChange }) => {
   return (
-    <td
-      className="EmissionsModelWidget--Table--Row--ValueCell"
-      key={`ValueCell-${name}-${index}`}
-    >
+    <td className="EmissionsModelWidget--Table--Row--ValueCell">
       <NumberInput
         name={name}
         value={value}
@@ -47,6 +45,13 @@ const ValueCell = ({ name, value, index, handleChange }) => {
     </td>
   )
 }
+const ValueCellPlaceholder = () => (
+  <td className="EmissionsModelWidget--Table--Row--ValueCell">
+    <span className="EmissionsModelWidget--Table--Row--ValueCellPlaceholder">
+      {' '}
+    </span>
+  </td>
+)
 
 const EmissionModelDescription = ({
   seriesInputs = {},
@@ -56,6 +61,7 @@ const EmissionModelDescription = ({
   removeSeries,
   forecastYears,
   setForecastYears,
+  isLoaded,
 }) => {
   const handleChange = ({ name, value, index }) => {
     if (name === 'deforestationRate') {
@@ -132,12 +138,14 @@ const EmissionModelDescription = ({
         <tfoot>
           <tr>
             <td>
-              <button
-                className="button EmissionsModelWidget--Table--FooterButton"
-                onClick={() => addSeries()}
-              >
-                + Add Series
-              </button>
+              {isLoaded && (
+                <button
+                  className="button EmissionsModelWidget--Table--FooterButton"
+                  onClick={() => addSeries()}
+                >
+                  + Add Series
+                </button>
+              )}
             </td>
             {seriesInputs.map((inputParams, index) => {
               return (

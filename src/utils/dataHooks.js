@@ -46,6 +46,9 @@ export const useEmissionModel = ({ locationData, forecastYears = 50 }) => {
       const inputParams = parseLocationData({ locationData })
       setInitialInputParams(inputParams)
       setSeriesInputs([inputParams])
+    } else {
+      setInitialInputParams({})
+      setSeriesInputs([])
     }
   }, [locationData])
 
