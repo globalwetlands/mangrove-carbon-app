@@ -11,7 +11,11 @@ const NumberInput = ({
   unit = '',
   ...props
 }) => {
-  const calculatedWidth = (value || 0).toLocaleString().length
+  const formattedValue = (value || 0).toLocaleString(undefined, {
+    maximumFractionDigits: 20,
+  })
+  const calculatedWidth = formattedValue.length + 0.5 // unit = ch
+  const minWidth = 25
 
   return (
     <span>
@@ -23,6 +27,7 @@ const NumberInput = ({
         style={{
           ...style,
           width: `${calculatedWidth}ch`,
+          minWidth,
         }}
         onValueChange={({ floatValue, formattedValue }) => {
           onChange({
