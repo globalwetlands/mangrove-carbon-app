@@ -12,7 +12,7 @@ export const loadLocationsData = async ({
   const dataUrl = `/geojson/${type}_locations.json`
   console.log('Loading locations data')
   // await delay(1000)
-  const data = fetch(dataUrl).then((res) => res.json())
+  const data = await fetch(dataUrl).then((res) => res.json())
   return data
 }
 
