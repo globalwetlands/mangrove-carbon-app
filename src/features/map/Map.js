@@ -102,8 +102,8 @@ const Map = ({ setSelectedLocationData }) => {
 
     const type = _.startCase(hoveredFeature.properties.location_type)
     const name = `${hoveredFeature.properties.name} (${hoveredFeature.properties.iso})`
-    const deforestationRate = _.round(
-      hoveredFeature.properties.deforestationRate * 100,
+    const deforestationRatePercent = _.round(
+      hoveredFeature.properties.deforestationRatePercent,
       2
     )
 
@@ -113,7 +113,7 @@ const Map = ({ setSelectedLocationData }) => {
           <div>
             {type}: {name}
           </div>
-          <div>Deforestation Rate: {deforestationRate}%</div>
+          <div>Deforestation Rate: {deforestationRatePercent}%</div>
         </div>
       )
     )
@@ -126,7 +126,7 @@ const Map = ({ setSelectedLocationData }) => {
     ]
     locations = _.sortBy(locations, 'area_m2').reverse()
 
-    const colourKey = 'deforestationRate'
+    const colourKey = 'deforestationRatePercent'
     const colourValueKey = 'colour_normalised'
     const minValue = _.min(locations.map((loc) => loc[colourKey])) || 0
     const maxValue = _.max(locations.map((loc) => loc[colourKey])) || 1
@@ -168,7 +168,7 @@ const Map = ({ setSelectedLocationData }) => {
     id: 'data',
     type: 'fill',
     paint: {
-      'fill-opacity': 0.5,
+      'fill-opacity': 0.4,
       'fill-outline-color': 'black',
       'fill-color': [
         'interpolate-hcl',
