@@ -84,6 +84,10 @@ const Map = ({ setSelectedLocationData }) => {
     })
   }
 
+  const onMouseOut = () => {
+    setTooltip({})
+  }
+
   const onClick = (e) => {
     const { features } = e
     const clickedFeature =
@@ -211,6 +215,7 @@ const Map = ({ setSelectedLocationData }) => {
         onViewportChange={setViewport}
         mapboxApiAccessToken={mapboxApiAccessToken}
         onHover={onHover}
+        onMouseOut={onMouseOut}
         onClick={onClick}
         ref={mapRef}
         getCursor={getCursor}
