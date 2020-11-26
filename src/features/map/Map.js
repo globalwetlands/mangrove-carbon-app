@@ -18,7 +18,8 @@ import { normalise } from '../../utils/utils'
 
 const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
-  const mapStyle = 'mapbox://styles/mapbox/light-v9'
+  const mapStyle =
+    'mapbox://styles/ejinks-gu/ckhycntp61ol31am7qum156sk?optimize=true'
   const mapRef = useRef()
 
   const countryLocations = useLocationsData({ type: 'country' })
