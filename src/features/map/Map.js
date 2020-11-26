@@ -13,6 +13,7 @@ import bbox from '@turf/bbox'
 import { useLocationsData } from '../../utils/dataHooks'
 import Spinner from '../../common/Spinner'
 import './Map.css'
+import { colors } from '../../utils/colorUtils'
 
 const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
@@ -32,8 +33,8 @@ const Map = ({ setSelectedLocationData }) => {
   })
 
   const [tooltip, setTooltip] = useState({})
-
   const [mapFeatures, setMapFeatures] = useState(null)
+  const [mapColours, setMapColours] = useState({})
 
   const fitBounds = useCallback(
     (feature) => {
@@ -121,6 +122,15 @@ const Map = ({ setSelectedLocationData }) => {
         },
       }
     })
+
+    const colourData = {
+      min: _.min(locations.map((loc) => loc.area_m2)) || 0,
+      max: _.max(locations.map((loc) => loc.area_m2)) || 1,
+      colourMin: colors['green'][500],
+      colourMax: colors['red'][500],
+    }
+
+    setMapColours(colourData)
     setMapFeatures(features)
   }, [countryLocations, wdpaLocations, aoiLocations])
 
@@ -128,16 +138,17 @@ const Map = ({ setSelectedLocationData }) => {
     id: 'data',
     type: 'fill',
     paint: {
-      'fill-opacity': 0.15,
+      'fill-opacity': 0.35,
       'fill-outline-color': 'black',
+
       'fill-color': [
-        'match',
-        ['get', 'location_type'],
-        'country',
-        '#50E597',
-        'wdpa',
-        '#FF4E8B',
-        /* other */ '#FF3200',
+        'interpolate',
+        ['linear'],
+        ['get', 'area_m2'],
+        mapColours.min,
+        mapColours.colourMin,
+        mapColours.max,
+        mapColours.colourMax,
       ],
     },
   }
