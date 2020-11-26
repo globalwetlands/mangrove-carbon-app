@@ -179,7 +179,7 @@ const Map = ({ setSelectedLocationData }) => {
     id: 'data',
     type: 'fill',
     paint: {
-      'fill-opacity': 0.4,
+      'fill-opacity': 0.3,
       'fill-outline-color': 'black',
       'fill-color': [
         'interpolate-hcl',
@@ -229,7 +229,7 @@ const Map = ({ setSelectedLocationData }) => {
           type="geojson"
           data={{ type: 'FeatureCollection', features: mapFeatures }}
         >
-          <Layer {...dataLayer} />
+          <Layer {...dataLayer} beforeId="country-label" />
         </Source>
         {renderTooltip()}
       </MapGL>
