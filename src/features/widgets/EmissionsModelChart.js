@@ -12,21 +12,7 @@ import _ from 'lodash'
 
 import { tToMt } from '../../utils/utils'
 import { dataColors } from '../../utils/colorUtils'
-
-const emissionModelSeriesReducer = (acc, results, seriesIndex) => {
-  const parsedResults = results.map((value, yearIndex) => ({
-    name: yearIndex, // year
-    [`series_${seriesIndex}`]: value,
-  }))
-
-  acc = parsedResults.map((results) => {
-    let match = acc.find(({ name }) => name === results.name) || {}
-    match = { ...match, ...results }
-    return match
-  })
-
-  return acc
-}
+import { emissionModelSeriesReducer } from '../../utils/dataUtils'
 
 const EmissionModelChart = ({
   seriesResults = [],
@@ -34,10 +20,13 @@ const EmissionModelChart = ({
   width = 385,
   height = 225,
 }) => {
-  const data = seriesResults.reduce(emissionModelSeriesReducer, [])
+  const data = emissionModelSeriesReducer({
+    seriesResults,
+    forecastStartingYear,
+  })
 
   const formatNumber = (num) => _.round(tToMt(num), 2).toLocaleString()
-  const formatYear = (c) => forecastStartingYear + c
+  const formatYear = (c) => c
   const formatTooltipLabel = (val) => `${formatYear(val)} emissions`
   const formatTooltipValue = (val) => `${formatNumber(val)} Mt CO₂e`
 
@@ -64,9 +53,9 @@ const EmissionModelChart = ({
         axisLine={false}
         tickMargin={5}
         tickCount={10}
+        domain={[forecastStartingYear - 1, 'dataMax']}
         tickFormatter={formatYear}
         interval="preserveStartEnd"
-        domain={[0, 'dataMax']}
         type="number"
       >
         <Label value="Year" position="bottom" />

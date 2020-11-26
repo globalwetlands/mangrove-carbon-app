@@ -1,5 +1,7 @@
 import _ from 'lodash'
 import dayjs from 'dayjs'
+import { parseAsync } from 'json2csv'
+import { saveAs } from 'file-saver'
 
 import { m2ToHa } from './utils'
 import { emission_model } from './emission_model'
@@ -119,4 +121,35 @@ export function calculateEmissionData({
   )
 
   return results
+}
+
+export function emissionModelSeriesReducer({
+  seriesResults,
+  forecastStartingYear,
+}) {
+  const reducer = (acc, results, seriesIndex) => {
+    const parsedResults = results.map((value, yearIndex) => ({
+      name: yearIndex + forecastStartingYear, // year
+      [`series_${seriesIndex}`]: value,
+    }))
+
+    acc = parsedResults.map((results) => {
+      let match = acc.find(({ name }) => name === results.name) || {}
+      match = { ...match, ...results }
+      return match
+    })
+
+    return acc
+  }
+  return seriesResults.reduce(reducer, [])
+}
+
+export async function exportCsv({
+  data,
+  filename = `${new Date()}.csv`,
+  options = {},
+}) {
+  const csv = await parseAsync(data, options)
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+  saveAs(blob, filename)
 }

@@ -8,6 +8,8 @@
     "@testing-library/user-event": "^12.1.10",
     "@turf/bbox": "^6.0.1",
     "dayjs": "^1.9.4",
+    "file-saver": "^2.0.5",
+    "json2csv": "^5.0.5",
     "lodash": "^4.17.20",
     "material-colors": "^1.2.6",
     "node-sass": "^4.14.1",

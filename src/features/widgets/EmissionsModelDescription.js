@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import ResetIcon from 'react-feather/dist/icons/refresh-cw'
 import RemoveIcon from 'react-feather/dist/icons/x'
+import FileIcon from 'react-feather/dist/icons/file-text'
 
 import NumberInput from './NumberInput'
 import { dataColors } from '../../utils/colorUtils'
@@ -70,6 +71,7 @@ const EmissionModelDescription = ({
   forecastYears,
   setForecastYears,
   isLoaded,
+  exportCsv,
 }) => {
   const handleChange = ({ name, value, index }) => {
     if (name === 'deforestationRate') {
@@ -149,13 +151,24 @@ const EmissionModelDescription = ({
         </tbody>
         <tfoot>
           <tr>
-            <td>
+            <td
+              className="EmissionsModelWidget--Table--FooterCell"
+              style={{ textAlign: 'left' }}
+            >
               {isLoaded && (
                 <button
                   className="button EmissionsModelWidget--Table--FooterButton"
                   onClick={() => addSeries()}
                 >
                   + Add Series
+                </button>
+              )}
+              {isLoaded && (
+                <button
+                  className="button EmissionsModelWidget--Table--FooterButton"
+                  onClick={exportCsv}
+                >
+                  <FileIcon /> Export CSV
                 </button>
               )}
             </td>

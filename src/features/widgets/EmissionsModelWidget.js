@@ -6,8 +6,12 @@ import Spinner from '../../common/Spinner'
 import EmissionsModelChart from './EmissionsModelChart'
 import EmissionsModelDescription from './EmissionsModelDescription'
 import StoredCarbonChart from './StoredCarbonChart'
+import { emissionModelSeriesReducer, exportCsv } from '../../utils/dataUtils'
 
-const EmissionsModelWidget = ({ selectedLocationData }) => {
+const EmissionsModelWidget = ({
+  selectedLocationData,
+  exportCsvResultsFilenamePrefix = 'MangroveCarbon_forecast_',
+}) => {
   const {
     data: locationData,
     loadingState: locationDataLoadingState,
@@ -26,6 +30,23 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
     removeSeries,
     forecastStartingYear,
   } = useEmissionModel({ locationData, forecastYears })
+
+  const exportEmissionResultsCsv = () => {
+    const data = emissionModelSeriesReducer({
+      seriesResults,
+      forecastStartingYear,
+    })
+    const mapData = (row) => {
+      const { name, ...rest } = row
+      let updatedRow = { year: name, ...rest }
+      return updatedRow
+    }
+    const dataMapped = data.map(mapData)
+
+    const filename = `${exportCsvResultsFilenamePrefix}${new Date()}.csv`
+
+    exportCsv({ data: dataMapped, filename })
+  }
 
   return (
     <div className="Widgets--Box--Inner">
@@ -47,6 +68,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
           forecastYears={forecastYears}
           setForecastYears={setForecastYears}
           isLoaded={locationDataLoadingState === 'loaded'}
+          exportCsv={exportEmissionResultsCsv}
         />
       </div>
 
