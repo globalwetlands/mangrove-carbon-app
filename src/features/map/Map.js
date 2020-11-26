@@ -14,14 +14,15 @@ import { useLocationsData } from '../../utils/dataHooks'
 import Spinner from '../../common/Spinner'
 import './Map.css'
 import { colors } from '../../utils/colorUtils'
+import { normalise } from '../../utils/utils'
 
 const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
   const mapStyle = 'mapbox://styles/mapbox/light-v9'
 
   const countryLocations = useLocationsData({ type: 'country' })
-  const wdpaLocations = useLocationsData({ type: 'wdpa' })
-  const aoiLocations = useLocationsData({ type: 'aoi' })
+  // const wdpaLocations = useLocationsData({ type: 'wdpa' })
+  // const aoiLocations = useLocationsData({ type: 'aoi' })
 
   const [viewport, setViewport] = useState({
     // width: 400,
@@ -95,20 +96,49 @@ const Map = ({ setSelectedLocationData }) => {
   const renderTooltip = () => {
     const { hoveredFeature, x, y } = tooltip
 
+    if (!hoveredFeature) {
+      return null
+    }
+
+    const type = _.startCase(hoveredFeature.properties.location_type)
+    const name = `${hoveredFeature.properties.name} (${hoveredFeature.properties.iso})`
+    const deforestationRate = _.round(
+      hoveredFeature.properties.deforestationRate * 100,
+      2
+    )
+
     return (
       hoveredFeature && (
         <div className="Map--Tooltip" style={{ left: x, top: y }}>
-          <div>State: {hoveredFeature.properties.name}</div>
-          <div>Type: {hoveredFeature.properties.location_type}</div>
-          <div>ISO: {hoveredFeature.properties.iso}</div>
+          <div>
+            {type}: {name}
+          </div>
+          <div>Deforestation Rate: {deforestationRate}%</div>
         </div>
       )
     )
   }
 
   useEffect(() => {
-    let locations = [...countryLocations, ...wdpaLocations, ...aoiLocations]
+    let locations = [
+      ...countryLocations,
+      //  ...wdpaLocations, ...aoiLocations
+    ]
     locations = _.sortBy(locations, 'area_m2').reverse()
+
+    const colourKey = 'deforestationRate'
+    const colourValueKey = 'colour_normalised'
+    const minValue = _.min(locations.map((loc) => loc[colourKey])) || 0
+    const maxValue = _.max(locations.map((loc) => loc[colourKey])) || 1
+    const colourData = {
+      colourKey,
+      colourValueKey,
+      min: minValue,
+      max: maxValue,
+      colourMin: colors.teal[400],
+      colourMax: colors.deepOrange[500],
+    }
+
     let features = locations.map((loc) => {
       const { geometry, bounds, ...properties } = loc
       return {
@@ -119,35 +149,34 @@ const Map = ({ setSelectedLocationData }) => {
           // save x/y bounding box coordinates
           x: bounds?.coordinates[0][0],
           y: bounds?.coordinates[0][2],
+          //  add colourValue
+          [colourValueKey]:
+            normalise(properties[colourKey], colourData.max, colourData.min) *
+            100,
         },
       }
     })
 
-    const colourData = {
-      min: _.min(locations.map((loc) => loc.area_m2)) || 0,
-      max: _.max(locations.map((loc) => loc.area_m2)) || 1,
-      colourMin: colors['green'][500],
-      colourMax: colors['red'][500],
-    }
-
     setMapColours(colourData)
     setMapFeatures(features)
-  }, [countryLocations, wdpaLocations, aoiLocations])
+  }, [
+    countryLocations,
+    // , wdpaLocations, aoiLocations
+  ])
 
   const dataLayer = {
     id: 'data',
     type: 'fill',
     paint: {
-      'fill-opacity': 0.35,
+      'fill-opacity': 0.5,
       'fill-outline-color': 'black',
-
       'fill-color': [
-        'interpolate',
+        'interpolate-hcl',
         ['linear'],
-        ['get', 'area_m2'],
-        mapColours.min,
+        ['get', mapColours.colourValueKey],
+        0,
         mapColours.colourMin,
-        mapColours.max,
+        100,
         mapColours.colourMax,
       ],
     },
