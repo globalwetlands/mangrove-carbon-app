@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import {
   InteractiveMap as MapGL,
   NavigationControl,
@@ -19,6 +19,7 @@ import { normalise } from '../../utils/utils'
 const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
   const mapStyle = 'mapbox://styles/mapbox/light-v9'
+  const mapRef = useRef()
 
   const countryLocations = useLocationsData({ type: 'country' })
   // const wdpaLocations = useLocationsData({ type: 'wdpa' })
@@ -111,9 +112,14 @@ const Map = ({ setSelectedLocationData }) => {
       hoveredFeature && (
         <div className="Map--Tooltip" style={{ left: x, top: y }}>
           <div>
-            {type}: {name}
+            {type}: <span className="Map--Tooltip--Value">{name}</span>
           </div>
-          <div>Deforestation Rate: {deforestationRatePercent}%</div>
+          <div>
+            Deforestation Rate:{' '}
+            <span className="Map--Tooltip--Value">
+              {deforestationRatePercent}%
+            </span>
+          </div>
         </div>
       )
     )
@@ -182,6 +188,19 @@ const Map = ({ setSelectedLocationData }) => {
     },
   }
 
+  const getCursor = (e) => {
+    if (e.isHovering) {
+      return 'pointer'
+    }
+    if (e?.isDragging) {
+      return 'grabbing'
+    }
+    if (tooltip?.hoveredFeature) {
+      return 'crosshair'
+    }
+    return 'grab'
+  }
+
   return (
     <div className="Map">
       <MapGL
@@ -193,6 +212,8 @@ const Map = ({ setSelectedLocationData }) => {
         mapboxApiAccessToken={mapboxApiAccessToken}
         onHover={onHover}
         onClick={onClick}
+        ref={mapRef}
+        getCursor={getCursor}
       >
         <NavigationControl
           className="Map--NavigationControl"

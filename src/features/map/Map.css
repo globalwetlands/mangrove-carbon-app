@@ -13,11 +13,21 @@
 .Map--Tooltip {
   position: absolute;
   margin: 8px;
-  padding: 4px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
+  padding: 7px;
+  background: rgba(255, 255, 255, 0.9);
+  /* color: #fff; */
+  /* border-radius: 3px; */
   max-width: 300px;
-  font-size: 10px;
+  font-size: 12px;
   z-index: 9;
   pointer-events: none;
+  border-style: solid;
+  border-width: 1px;
+  border-left-width: 3px;
+  border-color: #353535;
+  border-radius: 3px;
+}
+
+.Map--Tooltip--Value {
+  font-weight: 600;
 }
