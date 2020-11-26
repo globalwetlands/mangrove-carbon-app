@@ -15,7 +15,7 @@ import { dataColors } from '../../utils/colorUtils'
 
 const emissionModelSeriesReducer = (acc, results, seriesIndex) => {
   const parsedResults = results.map((value, yearIndex) => ({
-    name: yearIndex + 1, // year
+    name: yearIndex, // year
     [`series_${seriesIndex}`]: value,
   }))
 
@@ -30,13 +30,14 @@ const emissionModelSeriesReducer = (acc, results, seriesIndex) => {
 
 const EmissionModelChart = ({
   seriesResults = [],
+  forecastStartingYear,
   width = 385,
   height = 225,
 }) => {
   const data = seriesResults.reduce(emissionModelSeriesReducer, [])
 
   const formatNumber = (num) => _.round(tToMt(num), 2).toLocaleString()
-  const formatYear = (c) => 2016 + c
+  const formatYear = (c) => forecastStartingYear + c
   const formatTooltipLabel = (val) => `${formatYear(val)} emissions`
   const formatTooltipValue = (val) => `${formatNumber(val)} Mt CO₂e`
 

@@ -24,6 +24,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
     resetInputParams,
     addSeries,
     removeSeries,
+    forecastStartingYear,
   } = useEmissionModel({ locationData, forecastYears })
 
   return (
@@ -57,6 +58,7 @@ const EmissionsModelWidget = ({ selectedLocationData }) => {
         <EmissionsModelChart
           seriesInputs={seriesInputs}
           seriesResults={seriesResults}
+          forecastStartingYear={forecastStartingYear}
           width={385}
           height={250}
         />

@@ -36,7 +36,11 @@ export const useSingleLocationData = ({ locationID }) => {
   return { data, loadingState }
 }
 
-export const useEmissionModel = ({ locationData, forecastYears = 50 }) => {
+export const useEmissionModel = ({
+  locationData,
+  forecastYears = 50,
+  forecastStartingYear = 2017,
+}) => {
   const [initialInputParams, setInitialInputParams] = useState({})
   const [seriesInputs, setSeriesInputs] = useState([])
 
@@ -122,5 +126,6 @@ export const useEmissionModel = ({ locationData, forecastYears = 50 }) => {
     resetInputParams,
     addSeries,
     removeSeries,
+    forecastStartingYear,
   }
 }
