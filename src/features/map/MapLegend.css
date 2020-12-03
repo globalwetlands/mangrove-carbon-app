@@ -1,0 +1,47 @@
+.MapLegend {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 7px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  border-style: solid;
+  border-width: 1px;
+  /* border-left-width: 3px; */
+  border-color: #353535;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+.MapLegend--Title {
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+.MapLegend--Unit {
+  font-weight: 500;
+}
+
+.MapLegend--Display {
+  display: flex;
+}
+
+.MapLegend--ColourBox {
+  height: 100px;
+  width: 25px;
+  border: 1px solid black;
+  border-radius: 2px;
+  margin-right: 10px;
+}
+
+.MapLegend--Values {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.MapLegend--Value {
+  font-weight: 600;
+}

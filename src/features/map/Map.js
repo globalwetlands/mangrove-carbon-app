@@ -10,11 +10,12 @@ import {
 import _ from 'lodash'
 import bbox from '@turf/bbox'
 
-import { useLocationsData } from '../../utils/dataHooks'
 import Spinner from '../../common/Spinner'
-import './Map.css'
+import MapLegend from './MapLegend'
+import { useLocationsData } from '../../utils/dataHooks'
 import { colors } from '../../utils/colorUtils'
 import { normalise } from '../../utils/utils'
+import './Map.css'
 
 const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
@@ -138,6 +139,8 @@ const Map = ({ setSelectedLocationData }) => {
     locations = _.sortBy(locations, 'area_m2').reverse()
 
     const colourKey = 'deforestationRatePercent'
+    const colourKeyName = 'Deforestation Rate'
+    const colourKeyUnit = '% p.a.'
     const colourValueKey = 'colour_normalised'
     const minValue = _.min(locations.map((loc) => loc[colourKey])) || 0
     const maxValue = _.max(locations.map((loc) => loc[colourKey])) || 1
@@ -148,6 +151,8 @@ const Map = ({ setSelectedLocationData }) => {
       max: maxValue,
       colourMin: colors.teal[400],
       colourMax: colors.deepOrange[500],
+      colourKeyName,
+      colourKeyUnit,
     }
 
     let features = locations.map((loc) => {
@@ -232,6 +237,7 @@ const Map = ({ setSelectedLocationData }) => {
           <Layer {...dataLayer} beforeId="country-label" />
         </Source>
         {renderTooltip()}
+        <MapLegend mapColours={mapColours} />
       </MapGL>
       {!countryLocations?.length && (
         <Spinner
