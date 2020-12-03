@@ -13,6 +13,7 @@
   border-radius: 3px;
   display: flex;
   flex-direction: column;
+  pointer-events: none;
 }
 
 .MapLegend--Title {
