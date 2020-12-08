@@ -1,16 +1,16 @@
 import React from 'react'
 import _ from 'lodash'
 
+import { opacify } from '../../utils/colorUtils'
 import './MapLegend.css'
 
 const MapLegend = ({ mapColours }) => {
   const {
     colourKeyName,
     colourKeyUnit,
-    min,
-    max,
-    colourMin,
-    colourMax,
+    colourStops,
+    valueStops,
+    opacity,
   } = mapColours
 
   return (
@@ -21,16 +21,26 @@ const MapLegend = ({ mapColours }) => {
         <span className="MapLegend--Unit">({colourKeyUnit})</span>
       </h4>
       <div className="MapLegend--Display">
-        <div
-          className="MapLegend--ColourBox"
-          style={{
-            background: `linear-gradient(180deg, ${colourMax}, ${colourMin})`,
-          }}
-        />
-        <div className="MapLegend--Values">
-          <div className="MapLegend--Value">{_.round(max, 2)}</div>
-          <div className="MapLegend--Value">{_.round(min, 2)}</div>
-        </div>
+        {colourStops.map((colour, index) => {
+          const value = _.round(valueStops[index], 2)
+
+          let valueString = `> ${value}`
+          if (index === 0) {
+            valueString = `<= ${_.round(valueStops[index + 1], 2)}`
+          }
+
+          return (
+            <div className="MapLegend--ColourStop">
+              <div
+                className="MapLegend--ColourBox"
+                style={{
+                  background: opacify(colour, opacity),
+                }}
+              />
+              <div className="MapLegend--Value">{valueString}</div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

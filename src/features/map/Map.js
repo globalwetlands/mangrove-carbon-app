@@ -13,7 +13,7 @@ import bbox from '@turf/bbox'
 import Spinner from '../../common/Spinner'
 import MapLegend from './MapLegend'
 import { useLocationsData } from '../../utils/dataHooks'
-import { colors } from '../../utils/colorUtils'
+import { getBrewerColours } from '../../utils/colorUtils'
 import { normalise } from '../../utils/utils'
 import './Map.css'
 
@@ -142,21 +142,39 @@ const Map = ({ setSelectedLocationData }) => {
     const colourKeyName = 'Deforestation Rate'
     const colourKeyUnit = '% p.a.'
     const colourValueKey = 'colour_normalised'
-    const minValue = _.min(locations.map((loc) => loc[colourKey])) || 0
+    // const minValue = _.min(locations.map((loc) => loc[colourKey])) || 0
+    const minValue = 0
     const maxValue = _.max(locations.map((loc) => loc[colourKey])) || 1
+    const numValueStops = 5
+    const valueStops = _.range(minValue, maxValue, 0.25)
+
     const colourData = {
       colourKey,
       colourValueKey,
-      min: minValue,
-      max: maxValue,
-      colourMin: colors.teal[400],
-      colourMax: colors.deepOrange[500],
       colourKeyName,
       colourKeyUnit,
+      min: minValue,
+      max: maxValue,
+      valueStops,
+      colourStops: getBrewerColours('Reds', numValueStops),
+      opacity: 0.5,
     }
 
     let features = locations.map((loc) => {
       const { geometry, bounds, ...properties } = loc
+
+      const normalisedColourVal = normalise(
+        properties[colourKey],
+        colourData.max,
+        colourData.min
+      )
+      const colourStopIndex = _.clamp(
+        Math.floor(normalisedColourVal * numValueStops),
+        0,
+        numValueStops - 1
+      )
+      const colour = colourData.colourStops[colourStopIndex]
+
       return {
         type: 'Feature',
         geometry: geometry,
@@ -165,10 +183,7 @@ const Map = ({ setSelectedLocationData }) => {
           // save x/y bounding box coordinates
           x: bounds?.coordinates[0][0],
           y: bounds?.coordinates[0][2],
-          //  add colourValue
-          [colourValueKey]:
-            normalise(properties[colourKey], colourData.max, colourData.min) *
-            100,
+          colour,
         },
       }
     })
@@ -184,17 +199,9 @@ const Map = ({ setSelectedLocationData }) => {
     id: 'data',
     type: 'fill',
     paint: {
-      'fill-opacity': 0.3,
+      'fill-opacity': mapColours.opacity,
       'fill-outline-color': 'black',
-      'fill-color': [
-        'interpolate-hcl',
-        ['linear'],
-        ['get', mapColours.colourValueKey],
-        0,
-        mapColours.colourMin,
-        100,
-        mapColours.colourMax,
-      ],
+      'fill-color': ['get', 'colour'],
     },
   }
 
