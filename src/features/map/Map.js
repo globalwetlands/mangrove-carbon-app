@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react'
 import {
   InteractiveMap as MapGL,
   NavigationControl,
@@ -26,6 +26,13 @@ const Map = ({ setSelectedLocationData }) => {
   const countryLocations = useLocationsData({ type: 'country' })
   // const wdpaLocations = useLocationsData({ type: 'wdpa' })
   // const aoiLocations = useLocationsData({ type: 'aoi' })
+
+  const loadingState = useMemo(() => {
+    if (!!countryLocations?.length) {
+      return 'loaded'
+    }
+    return 'loading'
+  }, [countryLocations])
 
   const [viewport, setViewport] = useState({
     // width: 400,
@@ -244,9 +251,11 @@ const Map = ({ setSelectedLocationData }) => {
           <Layer {...dataLayer} beforeId="country-label" />
         </Source>
         {renderTooltip()}
-        <MapLegend mapColours={mapColours} />
+
+        {loadingState === 'loaded' && <MapLegend mapColours={mapColours} />}
       </MapGL>
-      {!countryLocations?.length && (
+
+      {loadingState !== 'loaded' && (
         <Spinner
           style={{
             position: 'absolute',

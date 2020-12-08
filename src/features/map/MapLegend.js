@@ -24,13 +24,20 @@ const MapLegend = ({ mapColours }) => {
         {colourStops.map((colour, index) => {
           const value = _.round(valueStops[index], 2)
 
+          if (_.isNaN(value)) {
+            return null
+          }
+
           let valueString = `> ${value}`
           if (index === 0) {
             valueString = `<= ${_.round(valueStops[index + 1], 2)}`
           }
 
           return (
-            <div className="MapLegend--ColourStop">
+            <div
+              className="MapLegend--ColourStop"
+              key={`MapLegend--ColourStop--${index}`}
+            >
               <div
                 className="MapLegend--ColourBox"
                 style={{
