@@ -29,7 +29,7 @@ const EmissionsModelWidget = ({
 
   const {
     seriesResults,
-    seriesInputs,
+    seriesInputs = [],
     setInputParams,
     resetInputParams,
     addSeries,
@@ -98,11 +98,13 @@ const EmissionsModelWidget = ({
           <abbr title="Megatonnes of CO₂ equivalent">Mt CO₂e</abbr>)
         </h3>
 
-        <StoredCarbonChart
-          width={300}
-          height={250}
-          inputParams={seriesInputs[0]}
-        />
+        {seriesInputs?.[0] && (
+          <StoredCarbonChart
+            width={300}
+            height={250}
+            inputParams={seriesInputs[0]}
+          />
+        )}
       </div>
     </div>
   )

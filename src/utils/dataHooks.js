@@ -6,6 +6,14 @@ import {
   parseLocationData,
 } from './dataUtils'
 
+import {
+  updateLocationSeriesInputs,
+  removeLocationSeries,
+  addLocationSeriesInputs,
+  createLocationSeriesInputs,
+} from '../redux/widgetSettingsSlice'
+import { useDispatch, useSelector } from 'react-redux'
+
 export const useLocationsData = ({ type = 'country' } = {}) => {
   const [data, setData] = useState([])
   useEffect(() => {
@@ -42,59 +50,69 @@ export const useEmissionModel = ({
   forecastStartingYear = 2017,
 }) => {
   const [initialInputParams, setInitialInputParams] = useState({})
-  const [seriesInputs, setSeriesInputs] = useState([])
+
+  const locationID = useMemo(() => {
+    return locationData?.id
+  }, [locationData])
+
+  const seriesInputs = useSelector(
+    (state) => state.widgetSettings.seriesInputs?.[locationID]
+  )
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    // update initialInputParams on initial load of locationData
+    // update initialInputParams on first load of locationData
     if (locationData) {
       const inputParams = parseLocationData({ locationData })
       setInitialInputParams(inputParams)
-      setSeriesInputs([inputParams])
+      dispatch(createLocationSeriesInputs({ locationID, inputParams }))
     } else {
       setInitialInputParams({})
-      setSeriesInputs([])
     }
-  }, [locationData])
+  }, [dispatch, locationData, locationID])
 
   const resetInputParams = ({ index }) => {
     // reset params to initialInputParams
-    setSeriesInputs((prev) => {
-      let updatedSeries = [...prev]
-      updatedSeries[index] = initialInputParams
-      return updatedSeries
-    })
+    dispatch(
+      updateLocationSeriesInputs({
+        locationID,
+        seriesIndex: index,
+        inputParams: initialInputParams,
+      })
+    )
   }
 
-  const setInputParamsHandler = ({ index, inputParams }) => {
-    setSeriesInputs((prev) => {
-      let updatedSeries = [...prev]
-      const existing = updatedSeries[index]
-      updatedSeries[index] = { ...existing, ...inputParams }
-      return updatedSeries
-    })
+  const setInputParams = ({ index, inputParams }) => {
+    dispatch(
+      updateLocationSeriesInputs({
+        locationID,
+        seriesIndex: index,
+        inputParams,
+      })
+    )
   }
 
   const addSeries = () => {
-    setSeriesInputs((prev) => {
-      const updatedSeries = [...prev]
-      updatedSeries.push(initialInputParams)
-      return updatedSeries
-    })
+    dispatch(
+      addLocationSeriesInputs({
+        locationID,
+        inputParams: initialInputParams,
+      })
+    )
   }
 
   const removeSeries = ({ index }) => {
-    if (index === 0) {
-      return false
-    }
-    setSeriesInputs((prev) => {
-      const updatedSeries = [...prev]
-      updatedSeries.splice(index, 1)
-      return updatedSeries
-    })
+    dispatch(
+      removeLocationSeries({
+        locationID,
+        seriesIndex: index,
+      })
+    )
   }
 
   const seriesResults = useMemo(() => {
-    if (seriesInputs.length) {
+    if (seriesInputs?.length) {
       const results = seriesInputs.map((inputParams) => {
         const {
           current_area_ha,
@@ -122,7 +140,7 @@ export const useEmissionModel = ({
   return {
     seriesResults,
     seriesInputs,
-    setInputParams: setInputParamsHandler,
+    setInputParams,
     resetInputParams,
     addSeries,
     removeSeries,
