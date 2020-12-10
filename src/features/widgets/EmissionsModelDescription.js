@@ -127,7 +127,7 @@ const EmissionModelDescription = ({
             handleChange={handleChange}
           />
           <TableRow
-            title="Carbon Stored"
+            title="Carbon stored"
             unit="t CO₂e / ha"
             unitTitle="Metric Tonnes of CO₂ equivalent per hectare"
             name="carbonStoredPerHectare"

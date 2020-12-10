@@ -93,7 +93,6 @@ const EmissionsModelWidget = ({
         </h3>
 
         <StoredCarbonChart
-          title="Carbon Stored"
           width={300}
           height={250}
           inputParams={seriesInputs[0]}
