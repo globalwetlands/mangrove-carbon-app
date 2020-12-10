@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { useSingleLocationData, useEmissionModel } from '../../utils/dataHooks'
 
@@ -7,6 +7,8 @@ import EmissionsModelChart from './EmissionsModelChart'
 import EmissionsModelDescription from './EmissionsModelDescription'
 import StoredCarbonChart from './StoredCarbonChart'
 import { emissionModelSeriesReducer, exportCsv } from '../../utils/dataUtils'
+import { useDispatch, useSelector } from 'react-redux'
+import { setForecastYears } from '../../redux/widgetSettingsSlice'
 
 const EmissionsModelWidget = ({
   selectedLocationData,
@@ -19,7 +21,11 @@ const EmissionsModelWidget = ({
     locationID: selectedLocationData?.id,
   })
 
-  const [forecastYears, setForecastYears] = useState(50)
+  const dispatch = useDispatch()
+
+  const forecastYears = useSelector(
+    (state) => state.widgetSettings.forecastYears
+  )
 
   const {
     seriesResults,
@@ -66,7 +72,7 @@ const EmissionsModelWidget = ({
           addSeries={addSeries}
           removeSeries={removeSeries}
           forecastYears={forecastYears}
-          setForecastYears={setForecastYears}
+          setForecastYears={(val) => dispatch(setForecastYears(val))}
           isLoaded={locationDataLoadingState === 'loaded'}
           exportCsv={exportEmissionResultsCsv}
         />
