@@ -22,15 +22,18 @@ const MapLegend = ({ mapColours }) => {
       </h4>
       <div className="MapLegend--Display">
         {colourStops.map((colour, index) => {
-          const value = _.round(valueStops[index], 2)
+          const value = valueStops?.[index]
+          const nextValue = valueStops?.[index + 1]
 
-          if (_.isNaN(value)) {
+          if (!_.isNumber(value) || !_.isNumber(nextValue)) {
             return null
           }
 
-          let valueString = `> ${value}`
+          const toFixed = (val) => val.toFixed(2)
+
+          let valueString = `${toFixed(value)} - ${toFixed(nextValue)}`
           if (index === 0) {
-            valueString = `<= ${_.round(valueStops[index + 1], 2)}`
+            valueString = `< ${toFixed(nextValue)}`
           }
 
           return (
