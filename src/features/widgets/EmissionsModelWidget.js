@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 
 import { useSingleLocationData, useEmissionModel } from '../../utils/dataHooks'
 
@@ -42,15 +43,25 @@ const EmissionsModelWidget = ({
       seriesResults,
       forecastStartingYear,
     })
+
+    const formatSeriesName = (value, key) => {
+      const re = /series_(\d+)/g
+      const result = re.exec(key)
+      let index = parseInt(result[1])
+      return `Series ${index + 1}`
+    }
+
     const mapData = (row) => {
       const { name, ...rest } = row
-      let updatedRow = { year: name, ...rest }
+
+      // Change series_0 -> series_1
+      const seriesResults = _.mapKeys(rest, formatSeriesName)
+      const updatedRow = { Year: name, ...seriesResults }
       return updatedRow
     }
+
     const dataMapped = data.map(mapData)
-
     const filename = `${exportCsvResultsFilenamePrefix}${new Date()}.csv`
-
     exportCsv({ data: dataMapped, filename })
   }
 

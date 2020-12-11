@@ -83,7 +83,6 @@ const EmissionModelChart = ({
           return [formatTooltipValue(val), null]
         }}
       />
-      {/* <Legend /> */}
       {seriesResults.map((val, seriesIndex) => (
         <Line
           key={`series_${seriesIndex}`}
