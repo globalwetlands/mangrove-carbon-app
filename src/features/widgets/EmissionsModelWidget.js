@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { useSingleLocationData, useEmissionModel } from '../../utils/dataHooks'
 
@@ -7,9 +8,13 @@ import Spinner from '../../common/Spinner'
 import EmissionsModelChart from './EmissionsModelChart'
 import EmissionsModelDescription from './EmissionsModelDescription'
 import StoredCarbonChart from './StoredCarbonChart'
+import SelectInput from './SelectInput'
 import { emissionModelSeriesReducer, exportCsv } from '../../utils/dataUtils'
-import { useDispatch, useSelector } from 'react-redux'
-import { setForecastYears } from '../../redux/widgetSettingsSlice'
+import {
+  setCarbonPrice,
+  setEmissionsChartYAxis,
+  setForecastYears,
+} from '../../redux/widgetSettingsSlice'
 
 const EmissionsModelWidget = ({
   selectedLocationData,
@@ -27,6 +32,10 @@ const EmissionsModelWidget = ({
   const forecastYears = useSelector(
     (state) => state.widgetSettings.forecastYears
   )
+  const emissionsChartYAxis = useSelector(
+    (state) => state.widgetSettings.emissionsChartYAxis
+  )
+  const carbonPrice = useSelector((state) => state.widgetSettings.carbonPrice)
 
   const {
     seriesResults,
@@ -84,6 +93,9 @@ const EmissionsModelWidget = ({
           removeSeries={removeSeries}
           forecastYears={forecastYears}
           setForecastYears={(val) => dispatch(setForecastYears(val))}
+          carbonPrice={carbonPrice}
+          showCarbonPrice={emissionsChartYAxis === 'price'}
+          setCarbonPrice={(val) => dispatch(setCarbonPrice(val))}
           isLoaded={locationDataLoadingState === 'loaded'}
           exportCsv={exportEmissionResultsCsv}
         />
@@ -91,8 +103,8 @@ const EmissionsModelWidget = ({
 
       <div className="Widgets--Box--Column">
         <h3 className="Widgets--Box--Column--Title">
-          <strong>Projected Emissions</strong> (
-          <abbr title="Megatonnes of CO₂ equivalent">Mt CO₂e</abbr>)
+          <strong>Projected Emissions</strong>
+          <EmissionsMetricSelect />
         </h3>
         <EmissionsModelChart
           seriesInputs={seriesInputs}
@@ -118,6 +130,36 @@ const EmissionsModelWidget = ({
         )}
       </div>
     </div>
+  )
+}
+
+const EmissionsMetricSelect = () => {
+  const dispatch = useDispatch()
+
+  const emissionsChartYAxis = useSelector(
+    (state) => state.widgetSettings.emissionsChartYAxis
+  )
+
+  const handleChange = (val) => {
+    dispatch(setEmissionsChartYAxis(val))
+  }
+  const options = [
+    {
+      name: 'Mt CO₂e',
+      value: 'mtco2e',
+    },
+    {
+      name: 'Price (USD)',
+      value: 'price',
+    },
+  ]
+
+  return (
+    <SelectInput
+      options={options}
+      onChange={handleChange}
+      selectedValue={emissionsChartYAxis}
+    />
   )
 }
 

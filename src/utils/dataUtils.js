@@ -126,11 +126,12 @@ export function calculateEmissionData({
 export function emissionModelSeriesReducer({
   seriesResults,
   forecastStartingYear,
+  conversionRate = 1,
 }) {
   const reducer = (acc, results, seriesIndex) => {
     const parsedResults = results.map((value, yearIndex) => ({
       name: yearIndex + forecastStartingYear, // year
-      [`series_${seriesIndex}`]: value,
+      [`series_${seriesIndex}`]: value * conversionRate,
     }))
 
     acc = parsedResults.map((results) => {

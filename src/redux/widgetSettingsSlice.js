@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   forecastYears: 50,
+  emissionsChartYAxis: 'mtco2e',
+  carbonPrice: 5,
   seriesInputs: {
     // [countryId]: [...array of series objects, each containing inputParams]
   },
@@ -15,6 +17,20 @@ const widgetSettingsSlice = createSlice({
     setForecastYears: (state, action) => {
       const value = action.payload
       state.forecastYears = value
+    },
+    setEmissionsChartYAxis: (state, action) => {
+      const options = ['mtco2e', 'price']
+      const value = action.payload
+      if (options.includes(value)) {
+        state.emissionsChartYAxis = value
+      }
+    },
+    setCarbonPrice: (state, action) => {
+      const value = action.payload
+      const isValid = _.inRange(value, 0, 999)
+      if (isValid) {
+        state.carbonPrice = value
+      }
     },
     createLocationSeriesInputs: (state, action) => {
       const { locationID, inputParams } = action.payload
@@ -79,6 +95,8 @@ export const {
   removeLocationSeries,
   addLocationSeriesInputs,
   createLocationSeriesInputs,
+  setEmissionsChartYAxis,
+  setCarbonPrice,
 } = widgetSettingsSlice.actions
 
 export default widgetSettingsSlice.reducer

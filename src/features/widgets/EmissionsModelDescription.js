@@ -15,6 +15,8 @@ const TableRow = ({
   seriesInputs = [],
   valueFormatter = (val) => val,
   handleChange,
+  min,
+  max,
 }) => {
   return (
     <tr className="EmissionsModelWidget--Table--Row">
@@ -37,19 +39,23 @@ const TableRow = ({
           value={valueFormatter(inputParams[name])}
           index={index}
           handleChange={handleChange}
+          min={min}
+          max={max}
         />
       ))}
     </tr>
   )
 }
 
-const ValueCell = ({ name, value, index, handleChange }) => {
+const ValueCell = ({ name, value, index, handleChange, min, max }) => {
   return (
     <td className="EmissionsModelWidget--Table--Row--ValueCell">
       <NumberInput
         name={name}
         value={value}
         onChange={({ name, value }) => handleChange({ name, value, index })}
+        min={min}
+        max={max}
       />
     </td>
   )
@@ -70,6 +76,9 @@ const EmissionModelDescription = ({
   removeSeries,
   forecastYears,
   setForecastYears,
+  carbonPrice,
+  setCarbonPrice,
+  showCarbonPrice,
   isLoaded,
   exportCsv,
 }) => {
@@ -148,6 +157,19 @@ const EmissionModelDescription = ({
             handleChange={({ name, value }) => setForecastYears(value)}
             valueFormatter={(val) => Math.abs(val)}
           />
+          {showCarbonPrice && (
+            <TableRow
+              title="Carbon Price"
+              name="carbonPrice"
+              unit="USD / t"
+              unitTitle="US Dollars per metric tonne of CO₂ equivalent"
+              seriesInputs={[{ carbonPrice }]}
+              handleChange={({ name, value }) => setCarbonPrice(value)}
+              valueFormatter={(val) => Math.abs(val)}
+              min={0}
+              max={999}
+            />
+          )}
         </tbody>
         <tfoot>
           <tr>

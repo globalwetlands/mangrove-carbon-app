@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   LineChart,
   Line,
@@ -13,22 +13,50 @@ import _ from 'lodash'
 import { tToMt } from '../../utils/utils'
 import { dataColors } from '../../utils/colorUtils'
 import { emissionModelSeriesReducer } from '../../utils/dataUtils'
+import { useSelector } from 'react-redux'
 
-const EmissionModelChart = ({
+const EmissionsModelChart = ({
   seriesResults = [],
   forecastStartingYear,
   width = 385,
   height = 225,
 }) => {
+  const emissionsChartYAxis = useSelector(
+    (state) => state.widgetSettings.emissionsChartYAxis
+  )
+  const carbonPrice = useSelector((state) => state.widgetSettings.carbonPrice)
+
+  const conversionRate = useMemo(() => {
+    let rate = 1
+    if (emissionsChartYAxis === 'price') {
+      rate = carbonPrice
+    }
+    return rate
+  }, [emissionsChartYAxis, carbonPrice])
+
+  const units = {
+    price: 'USD',
+    mtco2e: `Mt CO₂e`,
+  }
+
   const data = emissionModelSeriesReducer({
     seriesResults,
     forecastStartingYear,
+    conversionRate,
   })
 
   const formatNumber = (num) => _.round(tToMt(num), 2).toLocaleString()
+  const formatYAxis = (num) => {
+    let unit = ' Mt'
+    if (emissionsChartYAxis === 'price') {
+      unit = 'm'
+    }
+    return `${formatNumber(num)}${unit}`
+  }
   const formatYear = (c) => c
   const formatTooltipLabel = (val) => `${formatYear(val)} emissions`
-  const formatTooltipValue = (val) => `${formatNumber(val)} Mt CO₂e`
+  const formatTooltipValue = (val) =>
+    `${formatNumber(val)}m ${units[emissionsChartYAxis]}`
 
   return (
     <LineChart
@@ -63,18 +91,11 @@ const EmissionModelChart = ({
       <YAxis
         orientation="right"
         axisLine={false}
-        tickFormatter={(c) => formatNumber(c)}
+        tickFormatter={(c) => formatYAxis(c)}
         type="number"
         tickLine={false}
         tickMargin={5}
-      >
-        {/* <Label
-          value="Mg CO2 emitted"
-          angle={-90}
-          offset={-2}
-          position="insideBottomLeft"
-        /> */}
-      </YAxis>
+      />
       <Tooltip
         labelFormatter={(val, name, props) => {
           return formatTooltipLabel(val)
@@ -98,4 +119,4 @@ const EmissionModelChart = ({
   )
 }
 
-export default EmissionModelChart
+export default EmissionsModelChart
