@@ -29,14 +29,20 @@ const EmissionsModelChart = ({
   const conversionRate = useMemo(() => {
     let rate = 1
     if (emissionsChartYAxis === 'price') {
-      rate = carbonPrice
+      rate = carbonPrice / 1000
     }
     return rate
   }, [emissionsChartYAxis, carbonPrice])
 
-  const units = {
-    price: 'USD',
-    mtco2e: `Mt CO₂e`,
+  const metricSuffix = {
+    price: {
+      select: 'USD',
+      yAxis: 'b',
+    },
+    mtco2e: {
+      select: 'Mt CO₂e',
+      yAxis: ' Mt',
+    },
   }
 
   const data = emissionModelSeriesReducer({
@@ -47,16 +53,15 @@ const EmissionsModelChart = ({
 
   const formatNumber = (num) => _.round(tToMt(num), 2).toLocaleString()
   const formatYAxis = (num) => {
-    let unit = ' Mt'
-    if (emissionsChartYAxis === 'price') {
-      unit = 'm'
-    }
-    return `${formatNumber(num)}${unit}`
+    let suffix = metricSuffix[emissionsChartYAxis].yAxis
+    return `${formatNumber(num)}${suffix}`
   }
   const formatYear = (c) => c
   const formatTooltipLabel = (val) => `${formatYear(val)} emissions`
-  const formatTooltipValue = (val) =>
-    `${formatNumber(val)}m ${units[emissionsChartYAxis]}`
+  const formatTooltipValue = (val) => {
+    let suffix = metricSuffix[emissionsChartYAxis].yAxis
+    return `${formatNumber(val)}${suffix}`
+  }
 
   return (
     <LineChart
