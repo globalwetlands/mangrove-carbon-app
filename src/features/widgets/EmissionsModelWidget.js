@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useSingleLocationData, useEmissionModel } from '../../utils/dataHooks'
 
 import Spinner from '../../common/Spinner'
+import Abbr from '../../common/Abbr'
 import EmissionsModelChart from './EmissionsModelChart'
 import EmissionsModelDescription from './EmissionsModelDescription'
 import StoredCarbonChart from './StoredCarbonChart'
@@ -118,7 +119,7 @@ const EmissionsModelWidget = ({
       <div className="Widgets--Box--Column">
         <h3 className="Widgets--Box--Column--Title">
           <strong>Carbon Stored</strong> (
-          <abbr title="Megatonnes of CO₂ equivalent">Mt CO₂e</abbr>)
+          <Abbr title="Megatonnes of CO₂ equivalent">Mt CO₂e</Abbr>)
         </h3>
 
         {seriesInputs?.[0] && (

@@ -7,6 +7,7 @@ import FileIcon from 'react-feather/dist/icons/file-text'
 import NumberInput from './NumberInput'
 import { dataColors } from '../../utils/colorUtils'
 import InfoPopup from '../../common/InfoPopup'
+import Abbr from '../../common/Abbr'
 import './EmissionsModelDescription.css'
 
 const TableRow = ({
@@ -31,7 +32,7 @@ const TableRow = ({
         {!!unit && (
           <span className="EmissionsModelWidget--Table--Row--Header--Unit">
             {' '}
-            (<abbr title={unitTitle}>{unit}</abbr>)
+            (<Abbr title={unitTitle}>{unit}</Abbr>)
           </span>
         )}
         {infoPopupContent && (
