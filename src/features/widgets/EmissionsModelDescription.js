@@ -6,6 +6,8 @@ import FileIcon from 'react-feather/dist/icons/file-text'
 
 import NumberInput from './NumberInput'
 import { dataColors } from '../../utils/colorUtils'
+import InfoPopup from '../../common/InfoPopup'
+import './EmissionsModelDescription.css'
 
 const TableRow = ({
   title,
@@ -17,6 +19,8 @@ const TableRow = ({
   handleChange,
   min,
   max,
+  infoPopupContent,
+  infoPopupTitle,
 }) => {
   return (
     <tr className="EmissionsModelWidget--Table--Row">
@@ -29,6 +33,9 @@ const TableRow = ({
             {' '}
             (<abbr title={unitTitle}>{unit}</abbr>)
           </span>
+        )}
+        {infoPopupContent && (
+          <InfoPopup content={infoPopupContent} title={infoPopupTitle} />
         )}
       </th>
       {!seriesInputs.length && <ValueCellPlaceholder />}
@@ -117,6 +124,12 @@ const EmissionModelDescription = ({
             seriesInputs={seriesInputs}
             handleChange={handleChange}
             valueFormatter={(val) => _.round(val)}
+            infoPopupTitle="Mangrove extent"
+            infoPopupContent={
+              <div>
+                The area of mangrove habitat as hectares. Data source: ...
+              </div>
+            }
           />
           <TableRow
             title="Deforestation rate"

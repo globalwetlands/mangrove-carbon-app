@@ -1,0 +1,83 @@
+.InfoPopup--InfoIcon {
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+}
+
+.InfoPopup--InfoIcon:hover,
+.InfoPopup--InfoIcon:focus {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.InfoPopup--CloseButton {
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+}
+
+.InfoPopup--CloseButton {
+  position: absolute;
+  cursor: pointer;
+  top: 12px;
+  right: 15px;
+  width: 20px;
+  height: 20px;
+  opacity: 0.8;
+}
+
+.InfoPopup--CloseButton:hover,
+.InfoPopup--CloseButton:focus {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.InfoPopup--Modal {
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  position: absolute;
+  padding: 30px 30px 40px;
+  background: white;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+  width: 600px;
+  max-width: 95%;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  animation: InfoPopup--modal 0.3s;
+  margin: auto;
+}
+
+.InfoPopup--Modal:focus {
+  outline: none;
+}
+
+.InfoPopup--Title {
+  font-weight: 500;
+  font-size: 25px;
+  margin: 0 0 20px 0;
+}
+
+.InfoPopup--Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(21, 21, 21, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+@keyframes InfoPopup--modal {
+  from {
+    opacity: 0;
+    transform: translate(0, 5px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0px);
+  }
+}

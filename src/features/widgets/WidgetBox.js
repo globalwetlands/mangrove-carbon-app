@@ -1,12 +1,13 @@
 import React from 'react'
 import CloseIcon from 'react-feather/dist/icons/x'
+import IconButton from '../../common/IconButton'
 
 const WidgetBox = ({ children, onClose, ...props }) => {
   return (
     <div className="Widgets--Box" {...props}>
-      <CloseIcon
+      <IconButton
+        Icon={CloseIcon}
         className="Widgets--Box--CloseButton"
-        role="button"
         onClick={onClose}
       />
       {children}

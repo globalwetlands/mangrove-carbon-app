@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 35px;
+  z-index: 2;
 }
 
 .Widgets--Box {
@@ -16,8 +16,8 @@
   border-radius: 20px;
   background: rgba(255, 255, 255, 1);
   padding: 30px 30px 30px 40px;
-  max-width: 100%;
-  margin: 25px auto;
+  max-width: 95%;
+  margin: 0 auto 2.5vw auto;
   pointer-events: all;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
 }
@@ -79,52 +79,4 @@
   margin-top: 60px;
   padding-right: 20px;
   position: relative;
-}
-
-.EmissionsModelWidget--Table {
-  text-align: left;
-  border-spacing: 10px 1px;
-  margin-left: -10px;
-}
-
-.EmissionsModelWidget--Table--Row--Header {
-  font-weight: 400;
-}
-
-.EmissionsModelWidget--Table--Row--Header--Name {
-  font-weight: 600;
-}
-
-.EmissionsModelWidget--Table--Row--ValueTitle {
-  text-align: right;
-}
-
-.EmissionsModelWidget--Table--Row--ValueCell {
-  text-align: right;
-}
-
-.EmissionsModelWidget--Table--Row--ValueCellPlaceholder {
-  display: block;
-  border-bottom: 1px solid currentColor;
-  height: 24px;
-  width: 60px;
-}
-
-.EmissionsModelWidget--Table--SeriesHeader {
-  text-align: right;
-  text-decoration: underline;
-}
-
-.EmissionsModelWidget--Table--FooterCell {
-  text-align: right;
-  padding: 0;
-}
-
-.EmissionsModelWidget--Table--FooterCell > * + * {
-  margin-left: 5px;
-}
-
-.EmissionsModelWidget--Table--FooterButton svg {
-  width: 1em;
-  height: 1em;
 }
