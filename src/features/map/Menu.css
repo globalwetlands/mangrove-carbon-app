@@ -7,11 +7,11 @@
   height: 40px;
   stroke-width: 1px;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+  transition: all 0.1s ease-in-out;
 }
 
 .Menu--MenuButton:hover,
 .Menu--MenuButton:focus {
   transform: scale(1.1);
-  background: #212121;
-  color: white;
+  stroke-width: 1.5px;
 }
