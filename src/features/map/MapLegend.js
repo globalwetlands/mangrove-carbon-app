@@ -14,7 +14,7 @@ const MapLegend = ({ mapColours }) => {
   } = mapColours
 
   return (
-    <div className="MapLegend">
+    <div className="Map--Overlays--Box MapLegend">
       <h4 className="MapLegend--Title">
         {colourKeyName}
         <br />

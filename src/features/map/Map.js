@@ -12,6 +12,7 @@ import bbox from '@turf/bbox'
 
 import Spinner from '../../common/Spinner'
 import MapLegend from './MapLegend'
+import Menu from './Menu'
 import { useLocationsData } from '../../utils/dataHooks'
 import { getBrewerColours } from '../../utils/colorUtils'
 import { normalise } from '../../utils/utils'
@@ -244,16 +245,22 @@ const Map = ({ setSelectedLocationData }) => {
           className="Map--NavigationControl"
           onViewportChange={setViewport}
         />
+
         <Source
           type="geojson"
           data={{ type: 'FeatureCollection', features: mapFeatures }}
         >
           <Layer {...dataLayer} beforeId="country-label" />
         </Source>
+
         {renderTooltip()}
+      </MapGL>
+
+      <div className="Map--Overlays">
+        <Menu />
 
         {loadingState === 'loaded' && <MapLegend mapColours={mapColours} />}
-      </MapGL>
+      </div>
 
       {loadingState !== 'loaded' && (
         <Spinner

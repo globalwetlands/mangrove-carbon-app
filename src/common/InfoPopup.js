@@ -9,7 +9,7 @@ import IconButton from './IconButton'
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement(`#root`)
 
-const InfoPopup = ({ content, title }) => {
+const InfoPopup = ({ content, title, className = '' }) => {
   const [modalIsOpen, setIsOpen] = useState(false)
 
   function openModal() {
@@ -26,7 +26,7 @@ const InfoPopup = ({ content, title }) => {
     <Fragment>
       <IconButton
         Icon={InfoIcon}
-        className={'InfoPopup--InfoIcon'}
+        className={`InfoPopup--InfoIcon ${className}`}
         onClick={openModal}
       />
       <Modal
@@ -35,7 +35,6 @@ const InfoPopup = ({ content, title }) => {
         onRequestClose={closeModal}
         className="InfoPopup--Modal"
         overlayClassName="InfoPopup--Overlay"
-        contentLabel="Example Modal"
       >
         <IconButton
           Icon={CloseIcon}
