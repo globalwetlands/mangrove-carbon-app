@@ -126,11 +126,7 @@ const EmissionModelDescription = ({
             handleChange={handleChange}
             valueFormatter={(val) => _.round(val)}
             infoPopupTitle="Mangrove extent"
-            infoPopupContent={
-              <div>
-                The area of mangrove habitat as hectares. Data source: ...
-              </div>
-            }
+            infoPopupContent="Area covered by mangroves measured in hectares."
           />
           <TableRow
             title="Deforestation rate"
@@ -140,6 +136,8 @@ const EmissionModelDescription = ({
             seriesInputs={seriesInputs}
             handleChange={handleChange}
             valueFormatter={(val) => _.round(val * 100, 3)}
+            infoPopupTitle="Deforestation rate"
+            infoPopupContent="Rate at which mangroves are cleared per annum measured in %"
           />
           <TableRow
             title="Sequestration rate"
@@ -148,6 +146,8 @@ const EmissionModelDescription = ({
             name="sequestrationRate"
             seriesInputs={seriesInputs}
             handleChange={handleChange}
+            infoPopupTitle="Sequestration rate"
+            infoPopupContent="Rate at which carbon is sequestered per annum measured in metric tonnes of CO₂e per annum."
           />
           <TableRow
             title="Carbon stored"
@@ -157,6 +157,8 @@ const EmissionModelDescription = ({
             seriesInputs={seriesInputs}
             handleChange={handleChange}
             valueFormatter={(val) => _.round(val, 2)}
+            infoPopupTitle="Carbon stored"
+            infoPopupContent="The amount of carbon stored per hectare of mangroves measured in metric tonnes of CO₂e per hectare."
           />
           <TableRow
             title="Emissions factor"
@@ -170,6 +172,8 @@ const EmissionModelDescription = ({
             seriesInputs={[{ forecastYears }]}
             handleChange={({ name, value }) => setForecastYears(value)}
             valueFormatter={(val) => Math.abs(val)}
+            infoPopupTitle="Forecast Years"
+            infoPopupContent="The number of years you would like to see projections for."
           />
           {showCarbonPrice && (
             <TableRow
@@ -182,6 +186,8 @@ const EmissionModelDescription = ({
               valueFormatter={(val) => Math.abs(val)}
               min={0}
               max={999}
+              infoPopupTitle="Carbon Price"
+              infoPopupContent="The cost per tonne of carbon in USD."
             />
           )}
         </tbody>
