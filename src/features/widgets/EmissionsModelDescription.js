@@ -160,12 +160,12 @@ const EmissionModelDescription = ({
             infoPopupTitle="Carbon stored"
             infoPopupContent="The amount of carbon stored per hectare of mangroves measured in metric tonnes of CO₂e per hectare."
           />
-          <TableRow
+          {/* <TableRow
             title="Emissions factor"
             name="emissionsFactor"
             seriesInputs={seriesInputs}
             handleChange={handleChange}
-          />
+          /> */}
           <TableRow
             title="Forecast Years"
             name="forecastYears"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Map from '../features/map/Map'
 import Widgets from '../features/widgets/Widgets'
 
