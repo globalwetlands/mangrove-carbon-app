@@ -38,6 +38,7 @@ const EmissionsModelChart = ({
     price: {
       select: 'USD',
       yAxis: 'b',
+      yAxisSmallValue: 'm',
     },
     mtco2e: {
       select: 'Mt CO₂e',
@@ -53,14 +54,26 @@ const EmissionsModelChart = ({
 
   const formatNumber = (num) => _.round(tToMt(num), 2).toLocaleString()
   const formatYAxis = (num) => {
-    let suffix = metricSuffix[emissionsChartYAxis].yAxis
-    return `${formatNumber(num)}${suffix}`
+    if (num < 1000000 && metricSuffix[emissionsChartYAxis].yAxisSmallValue) {
+      // if value less than 0.01b
+      let suffix = metricSuffix[emissionsChartYAxis].yAxisSmallValue
+      return `${formatNumber(num * 1000)}${suffix}`
+    } else {
+      let suffix = metricSuffix[emissionsChartYAxis].yAxis
+      return `${formatNumber(num)}${suffix}`
+    }
   }
   const formatYear = (c) => c
   const formatTooltipLabel = (val) => `${formatYear(val)} emissions`
   const formatTooltipValue = (val) => {
-    let suffix = metricSuffix[emissionsChartYAxis].yAxis
-    return `${formatNumber(val)}${suffix}`
+    if (val < 1000000 && metricSuffix[emissionsChartYAxis].yAxisSmallValue) {
+      // if value less than 0.01b
+      let suffix = metricSuffix[emissionsChartYAxis].yAxisSmallValue
+      return `${formatNumber(val * 1000)}${suffix}`
+    } else {
+      let suffix = metricSuffix[emissionsChartYAxis].yAxis
+      return `${formatNumber(val)}${suffix}`
+    }
   }
 
   return (
