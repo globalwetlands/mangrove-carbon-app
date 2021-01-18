@@ -6,44 +6,84 @@ import './Menu.css'
 
 const MenuPopupContent = () => (
   <div>
-    <h3>About the app</h3>
-    <p>
-      Countries measure the amount of carbon stored in their forests and
-      wetlands when calculating their total carbon emissions, however,
-      assessments often overlook the carbon stored in the soils beneath these
-      ecosystems which is where most of the carbon is actually stored. This
-      leads to countries underestimating their total carbon emissions and the
-      true value of protecting their coastal wetlands.
-    </p>
+    <h4>
+      Nations measure the amount of carbon stored in their forests and wetlands
+      when calculating their total carbon emissions.
+    </h4>
     <p>
       Mangroves have among the highest carbon densities of any tropical forest
-      and are referred to as “blue carbon” ecosystems. This web app is designed
-      to help you explore the contribution of mangrove protection to mitigating
-      emissions using data from the publication <mark>________________</mark>{' '}
-      and Global Mangrove Watch.
+      and are referred to as “blue carbon” ecosystems. Much of this carbon is
+      stored in the soils beneath the trees, a stock of carbon that was
+      historically overlooked in national carbon accounts.
     </p>
     <p>
-      <mark>
-        Include bit here about carbon pricing and the intended use of this app.
-      </mark>{' '}
-      Please cite this publication if you use output from this app or the
-      associated data.
+      This web app is designed to help you explore the contribution of mangrove
+      protection to mitigating emissions. The app will predict forgone
+      opportunities to store carbon, given a rate of deforestation. These
+      predictions tell us how much carbon would be stored in the mangrove
+      forests if deforestation was prevented. They include carbon emitted when
+      mangroves are deforested and missed opportunities to sequester carbon in
+      mangroves that are deforested.
     </p>
+    <p>
+      Predictions for future emissions cannot be made with perfect certainty.
+      These predictions depend on the accuracy of measurements of mangrove area,
+      carbon storage, carbon sequestration and the rate of deforestation. Errors
+      in these inputs, especially the rate of deforestation, will affect the
+      predictions for emissions. However, the results at the national scale are{' '}
+      <a href="https://www.biorxiv.org/content/10.1101/2020.08.27.271189v1">
+        robust for comparing hotspots of emissions across countries
+      </a>
+      .
+    </p>
+    <p>
+      The app uses models and data from the publications:{' '}
+      <ul>
+        <li>
+          <a href="https://doi.org/10.1111/conl.12445">
+            The undervalued contribution of mangrove protection in Mexico to
+            carbon emission targets
+          </a>
+          <br />
+          {' – '}
+          Adame et al. 2018
+        </li>
+
+        <li>
+          <a href="https://www.biorxiv.org/content/10.1101/2020.08.27.271189v1">
+            Future carbon emissions from global mangrove forest loss
+          </a>
+          <br />
+          {' – '}Adame et al. 2020
+        </li>
+        <li>
+          data from the{' '}
+          <a href="https://globalmangrovewatch.org">Global Mangrove Watch</a>.{' '}
+        </li>
+      </ul>
+      <strong>
+        Please cite these publication if you use output from this app or the
+        associated data.
+      </strong>
+    </p>
+
     <h3>Instructions</h3>
     <p>
       Click on any country to view country specific information about carbon and
-      projected emissions. To compare future scenarios, set your Forecast Years
-      and click + Add Series and change the deforestation rate (you can add more
-      than one series).
+      projected emissions. To compare future scenarios, set your{' '}
+      <strong>Forecast Years</strong> and click <strong>+ Add Series</strong>{' '}
+      and change the deforestation rate (you can add more than one series).
     </p>
     <p>
       To place a dollar value on these emissions, click the drop down next to
-      the Projected Emissions graph title and switch from Mt CO2e to Price
-      (USD). On the left you will now see that Carbon Price has appeared below
-      Forecast Years. Different carbon prices are used around the world. To find
-      out what carbon price might be appropriate for a specific area, visit{' '}
+      the <strong>Projected Emissions</strong> graph title and switch from{' '}
+      <strong>Mt CO2e</strong> to <strong>Price (USD)</strong>. On the left you
+      will now see that <strong>Carbon Price</strong> has appeared below
+      <strong>Forecast Years</strong>. Different carbon prices are used around
+      the world. To find out what carbon price might be appropriate for a
+      specific area, visit{' '}
       <a href="https://www.worldbank.org/en/programs/pricing-carbon">
-        https://www.worldbank.org/en/programs/pricing-carbon
+        worldbank.org/en/programs/pricing-carbon
       </a>
       .
     </p>
