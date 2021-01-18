@@ -1,8 +1,25 @@
-# Getting Started with Create React App
+# Mangrove Carbon App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About
 
-## Available Scripts
+#### Nations measure the amount of carbon stored in their forests and wetlands when calculating their total carbon emissions.
+
+Mangroves have among the highest carbon densities of any tropical forest and are referred to as “blue carbon” ecosystems. Much of this carbon is stored in the soils beneath the trees, a stock of carbon that was historically overlooked in national carbon accounts.
+
+This web app is designed to help you explore the contribution of mangrove protection to mitigating emissions. The app will predict forgone opportunities to store carbon, given a rate of deforestation. These predictions tell us how much carbon would be stored in the mangrove forests if deforestation was prevented. They include carbon emitted when mangroves are deforested and missed opportunities to sequester carbon in mangroves that are deforested.
+
+Predictions for future emissions cannot be made with perfect certainty. These predictions depend on the accuracy of measurements of mangrove area, carbon storage, carbon sequestration and the rate of deforestation. Errors in these inputs, especially the rate of deforestation, will affect the predictions for emissions. However, the results at the national scale are [robust for comparing hotspots of emissions across countries](https://www.biorxiv.org/content/10.1101/2020.08.27.271189v1)</a>.
+
+The app uses models and data from the publications:
+
+- [The undervalued contribution of mangrove protection in Mexico to
+  carbon emission targets](https://doi.org/10.1111/conl.12445) – Adame et al. 2018
+- [Future carbon emissions from global mangrove forest loss](https://www.biorxiv.org/content/10.1101/2020.08.27.271189v1) – Adame et al. 2020
+- data from the [Global Mangrove Watch](https://globalmangrovewatch.org).
+
+**Please cite these publication if you use output from this app or the associated data.**
+
+## Development
 
 In the project directory, you can run:
 
@@ -28,43 +45,3 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
