@@ -80,7 +80,7 @@ const MenuPopupContent = () => (
       To place a dollar value on these emissions, click the drop down next to
       the <strong>Projected Emissions</strong> graph title and switch from{' '}
       <strong>Mt CO2e</strong> to <strong>Price (USD)</strong>. On the left you
-      will now see that <strong>Carbon Price</strong> has appeared below
+      will now see that <strong>Carbon Price</strong> has appeared below{' '}
       <strong>Forecast Years</strong>. Different carbon prices are used around
       the world. To find out what carbon price might be appropriate for a
       specific area, visit{' '}
