@@ -5,10 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useSingleLocationData, useEmissionModel } from '../../utils/dataHooks'
 
 import Spinner from '../../common/Spinner'
-import Abbr from '../../common/Abbr'
 import EmissionsModelChart from './EmissionsModelChart'
 import EmissionsModelDescription from './EmissionsModelDescription'
-import StoredCarbonChart from './StoredCarbonChart'
 import SelectInput from './SelectInput'
 import { emissionModelSeriesReducer, exportCsv } from '../../utils/dataUtils'
 import {
@@ -58,7 +56,7 @@ const EmissionsModelWidget = ({
       const re = /series_(\d+)/g
       const result = re.exec(key)
       let index = parseInt(result[1])
-      return `Series ${index + 1}`
+      return `Series ${index + 1} (t CO2e)`
     }
 
     const mapData = (row) => {
