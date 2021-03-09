@@ -115,21 +115,6 @@ const EmissionsModelWidget = ({
           height={250}
         />
       </div>
-
-      <div className="Widgets--Box--Column">
-        <h3 className="Widgets--Box--Column--Title">
-          <strong>Carbon Stored</strong> (
-          <Abbr title="Megatonnes of CO₂ equivalent">Mt CO₂e</Abbr>)
-        </h3>
-
-        {seriesInputs?.[0] && (
-          <StoredCarbonChart
-            width={300}
-            height={250}
-            inputParams={seriesInputs[0]}
-          />
-        )}
-      </div>
     </div>
   )
 }
