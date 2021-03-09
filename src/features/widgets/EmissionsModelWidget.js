@@ -8,6 +8,7 @@ import Spinner from '../../common/Spinner'
 import EmissionsModelChart from './EmissionsModelChart'
 import EmissionsModelDescription from './EmissionsModelDescription'
 import SelectInput from './SelectInput'
+import InfoPopup from '../../common/InfoPopup'
 import { emissionModelSeriesReducer, exportCsv } from '../../utils/dataUtils'
 import {
   setCarbonPrice,
@@ -102,7 +103,17 @@ const EmissionsModelWidget = ({
 
       <div className="Widgets--Box--Column">
         <h3 className="Widgets--Box--Column--Title">
-          <strong>Projected Emissions</strong>
+          <strong>
+            Projected Emissions{' '}
+            <InfoPopup
+              title={'Projected Emissions'}
+              content={
+                emissionsChartYAxis === 'price'
+                  ? 'Estimated projected emissions per annum measured in USD'
+                  : 'Estimated projected emissions per annum measured in megatonnes of CO₂e'
+              }
+            />
+          </strong>
           <EmissionsMetricSelect />
         </h3>
         <EmissionsModelChart
