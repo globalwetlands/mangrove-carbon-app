@@ -16,10 +16,50 @@ import { useDispatch, useSelector } from 'react-redux'
 
 export const useLocationsData = ({ type = 'country' } = {}) => {
   const [data, setData] = useState([])
+  const [dataProcessed, setDataProcessed] = useState([])
+  const forecastYears = useSelector(
+    (state) => state.widgetSettings.forecastYears
+  )
+
   useEffect(() => {
     loadLocationsData({ type }).then((data) => setData(data))
   }, [type])
-  return data
+
+  // Additional data processing
+  useEffect(() => {
+    // Calculate projected emissions for each data point
+    if (data?.length) {
+      console.time('Projected Emissions for all locations')
+
+      const dataProcessed = data.map((locationData) => {
+        const {
+          current_area_ha,
+          deforestationRate,
+          carbonStoredPerHectare,
+        } = locationData
+
+        // TODO: make these variables configurable
+        const emissionsFactor = 0.8
+        const sequestrationRate = 6.49
+
+        const emissionModelResults = calculateEmissionData({
+          current_area_ha,
+          deforestationRate,
+          emissionsFactor,
+          carbonStoredPerHectare,
+          sequestrationRate,
+          forecastYears,
+        })
+        return { ...locationData, emissionModelResults }
+      })
+
+      console.timeEnd('Projected Emissions for all locations')
+
+      setDataProcessed(dataProcessed)
+    }
+  }, [data, forecastYears])
+
+  return dataProcessed
 }
 
 export const useSingleLocationData = ({ locationID }) => {

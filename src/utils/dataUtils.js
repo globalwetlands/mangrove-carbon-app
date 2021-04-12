@@ -97,9 +97,11 @@ export function parseLocationData({
 export function calculateEmissionData({
   current_area_ha,
   deforestationRate,
-  emissionsFactor,
   carbonStoredPerHectare,
-  sequestrationRate,
+  emissionsFactor = 0.8,
+  // sequestrationRate: varies, no global value, using 6.49 found in table S4 supp materials
+  // sequestrationRate unit: tonnes CO2e per year
+  sequestrationRate = 6.49,
   forecastYears = 50,
 }) {
   // generate emission_model data for range of years
