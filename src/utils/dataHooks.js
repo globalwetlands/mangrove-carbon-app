@@ -50,7 +50,13 @@ export const useLocationsData = ({ type = 'country' } = {}) => {
           sequestrationRate,
           forecastYears,
         })
-        return { ...locationData, emissionModelResults }
+        const emissionModelResultFinal =
+          emissionModelResults[emissionModelResults.length - 1]
+        return {
+          ...locationData,
+          emissionModelResults,
+          emissionModelResultFinal,
+        }
       })
 
       console.timeEnd('Projected Emissions for all locations')

@@ -29,11 +29,14 @@ const MapLegend = ({ mapColours }) => {
             return null
           }
 
-          const toFixed = (val) => val.toFixed(2)
+          const toFixed = (val) => val.toFixed(0)
 
           let valueString = `${toFixed(value)} - ${toFixed(nextValue)}`
           if (index === 0) {
             valueString = `< ${toFixed(nextValue)}`
+          }
+          if (index === colourStops.length - 1) {
+            valueString = `> ${toFixed(value)}`
           }
 
           return (
