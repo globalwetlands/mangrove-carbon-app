@@ -9,6 +9,7 @@ import {
 } from 'react-map-gl'
 import _ from 'lodash'
 import bbox from '@turf/bbox'
+import summarise from 'summary'
 
 import Spinner from '../../common/Spinner'
 import MapLegend from './MapLegend'
@@ -133,7 +134,7 @@ const Map = ({ setSelectedLocationData }) => {
             {type}: <span className="Map--Tooltip--Value">{name}</span>
           </div>
           <div>
-            Deforestation Rate:{' '}
+            Projected Emissions:{' '}
             <span className="Map--Tooltip--Value">
               {emissionModelResultFinal} Mt
             </span>
@@ -149,7 +150,6 @@ const Map = ({ setSelectedLocationData }) => {
       //  ...wdpaLocations, ...aoiLocations
     ]
     locations = _.sortBy(locations, 'area_m2').reverse()
-    console.log(locations[0])
 
     const colourKey = 'emissionModelResultFinal'
     const colourKeyName = `${forecastYears}yr Projected Emissions`
@@ -158,11 +158,12 @@ const Map = ({ setSelectedLocationData }) => {
     // const minValue = _.min(locations.map((loc) => loc[colourKey])) || 0
     const minValue = 0
     // const maxValue = _.max(locations.map((loc) => tToMt(loc[colourKey]))) || 1
-
+    const allValues = locations.map((loc) => tToMt(loc[colourKey]))
+    const summary = summarise(allValues)
     const numValueStops = 5
-    const valueStep = 50
-    const maxValue = valueStep * (numValueStops + 1)
-    const valueStops = _.range(minValue, maxValue, valueStep)
+    const maxValue = _.ceil(summary.quartile(0.95), -2)
+    const valueStep = maxValue / numValueStops
+    const valueStops = _.range(minValue, maxValue + valueStep, valueStep)
 
     const colourData = {
       colourKey,
