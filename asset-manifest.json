@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/mangrove-carbon-app/static/css/main.77981b22.chunk.css",
-    "main.js": "/mangrove-carbon-app/static/js/main.875df6d6.chunk.js",
-    "main.js.map": "/mangrove-carbon-app/static/js/main.875df6d6.chunk.js.map",
+    "main.js": "/mangrove-carbon-app/static/js/main.4bb8b702.chunk.js",
+    "main.js.map": "/mangrove-carbon-app/static/js/main.4bb8b702.chunk.js.map",
     "runtime-main.js": "/mangrove-carbon-app/static/js/runtime-main.f320a5f3.js",
     "runtime-main.js.map": "/mangrove-carbon-app/static/js/runtime-main.f320a5f3.js.map",
     "static/css/2.3ca2e7a5.chunk.css": "/mangrove-carbon-app/static/css/2.3ca2e7a5.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.3ca2e7a5.chunk.css",
     "static/js/2.37cf02b9.chunk.js",
     "static/css/main.77981b22.chunk.css",
-    "static/js/main.875df6d6.chunk.js"
+    "static/js/main.4bb8b702.chunk.js"
   ]
 }
