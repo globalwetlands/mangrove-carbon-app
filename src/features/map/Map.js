@@ -126,6 +126,8 @@ const Map = ({ setSelectedLocationData }) => {
     const emissionModelResultFinal = tToMt(
       hoveredFeature.properties.emissionModelResultFinal
     ).toFixed(1)
+    const userHasModifiedParams =
+      hoveredFeature.properties.userHasModifiedParams
 
     return (
       hoveredFeature && (
@@ -138,6 +140,13 @@ const Map = ({ setSelectedLocationData }) => {
             <span className="Map--Tooltip--Value">
               {emissionModelResultFinal} Mt
             </span>
+          </div>
+          <div>
+            {!!userHasModifiedParams && (
+              <span>
+                <em>*user modified</em>
+              </span>
+            )}
           </div>
         </div>
       )
