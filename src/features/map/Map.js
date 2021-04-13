@@ -9,14 +9,16 @@ import {
 } from 'react-map-gl'
 import _ from 'lodash'
 import bbox from '@turf/bbox'
+import summarise from 'summary'
 
 import Spinner from '../../common/Spinner'
 import MapLegend from './MapLegend'
 import Menu from './Menu'
 import { useLocationsData } from '../../utils/dataHooks'
 import { getBrewerColours } from '../../utils/colorUtils'
-import { normalise } from '../../utils/utils'
+import { normalise, tToMt } from '../../utils/utils'
 import './Map.css'
+import { useSelector } from 'react-redux'
 
 const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
@@ -27,6 +29,10 @@ const Map = ({ setSelectedLocationData }) => {
   const countryLocations = useLocationsData({ type: 'country' })
   // const wdpaLocations = useLocationsData({ type: 'wdpa' })
   // const aoiLocations = useLocationsData({ type: 'aoi' })
+
+  const forecastYears = useSelector(
+    (state) => state.widgetSettings.forecastYears
+  )
 
   const loadingState = useMemo(() => {
     if (!!countryLocations?.length) {
@@ -117,10 +123,11 @@ const Map = ({ setSelectedLocationData }) => {
 
     const type = _.startCase(hoveredFeature.properties.location_type)
     const name = `${hoveredFeature.properties.name} (${hoveredFeature.properties.iso})`
-    const deforestationRatePercent = _.round(
-      hoveredFeature.properties.deforestationRatePercent,
-      2
-    )
+    const emissionModelResultFinal = tToMt(
+      hoveredFeature.properties.emissionModelResultFinal
+    ).toFixed(1)
+    const userHasModifiedParams =
+      hoveredFeature.properties.userHasModifiedParams
 
     return (
       hoveredFeature && (
@@ -129,10 +136,17 @@ const Map = ({ setSelectedLocationData }) => {
             {type}: <span className="Map--Tooltip--Value">{name}</span>
           </div>
           <div>
-            Deforestation Rate:{' '}
+            Projected Emissions:{' '}
             <span className="Map--Tooltip--Value">
-              {deforestationRatePercent}%
+              {emissionModelResultFinal} Mt
             </span>
+          </div>
+          <div>
+            {!!userHasModifiedParams && (
+              <span>
+                <em>*user modified</em>
+              </span>
+            )}
           </div>
         </div>
       )
@@ -146,15 +160,19 @@ const Map = ({ setSelectedLocationData }) => {
     ]
     locations = _.sortBy(locations, 'area_m2').reverse()
 
-    const colourKey = 'deforestationRatePercent'
-    const colourKeyName = 'Deforestation Rate'
-    const colourKeyUnit = '% p.a.'
+    const colourKey = 'emissionModelResultFinal'
+    const colourKeyName = `${forecastYears || 0}yr Projected Emissions`
+    const colourKeyUnit = 'Mt CO₂e'
     const colourValueKey = 'colour_normalised'
     // const minValue = _.min(locations.map((loc) => loc[colourKey])) || 0
     const minValue = 0
-    const maxValue = _.max(locations.map((loc) => loc[colourKey])) || 1
+    // const maxValue = _.max(locations.map((loc) => tToMt(loc[colourKey]))) || 1
+    const allValues = locations.map((loc) => tToMt(loc[colourKey]))
+    const summary = summarise(allValues)
     const numValueStops = 5
-    const valueStops = _.range(minValue, maxValue, 0.25)
+    const maxValue = _.ceil(summary.quartile(0.95), -2)
+    const valueStep = maxValue / numValueStops
+    const valueStops = _.range(minValue, maxValue + valueStep, valueStep)
 
     const colourData = {
       colourKey,
@@ -171,11 +189,14 @@ const Map = ({ setSelectedLocationData }) => {
     let features = locations.map((loc) => {
       const { geometry, bounds, ...properties } = loc
 
+      const value = tToMt(properties[colourKey])
+
       const normalisedColourVal = normalise(
-        properties[colourKey],
+        value,
         colourData.max,
         colourData.min
       )
+
       const colourStopIndex = _.clamp(
         Math.floor(normalisedColourVal * numValueStops),
         0,
@@ -200,6 +221,7 @@ const Map = ({ setSelectedLocationData }) => {
     setMapFeatures(features)
   }, [
     countryLocations,
+    forecastYears,
     // , wdpaLocations, aoiLocations
   ])
 

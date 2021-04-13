@@ -20,6 +20,7 @@ export const useLocationsData = ({ type = 'country' } = {}) => {
   const forecastYears = useSelector(
     (state) => state.widgetSettings.forecastYears
   )
+  const seriesInputs = useSelector((state) => state.widgetSettings.seriesInputs)
 
   useEffect(() => {
     loadLocationsData({ type }).then((data) => setData(data))
@@ -38,6 +39,12 @@ export const useLocationsData = ({ type = 'country' } = {}) => {
           carbonStoredPerHectare,
         } = locationData
 
+        // Check redux state -> seriesInputs for modified settings per location
+        const locationSeriesInputs = seriesInputs[locationData.id]
+
+        // Use only first in series
+        const inputParams = locationSeriesInputs?.[0] || {}
+        const userHasModifiedParams = inputParams?.userHasModifiedParams
         // TODO: make these variables configurable
         const emissionsFactor = 0.8
         const sequestrationRate = 6.49
@@ -49,15 +56,23 @@ export const useLocationsData = ({ type = 'country' } = {}) => {
           carbonStoredPerHectare,
           sequestrationRate,
           forecastYears,
+          ...inputParams,
         })
-        return { ...locationData, emissionModelResults }
+        const emissionModelResultFinal =
+          emissionModelResults[emissionModelResults.length - 1]
+        return {
+          ...locationData,
+          emissionModelResults,
+          emissionModelResultFinal,
+          userHasModifiedParams,
+        }
       })
 
       console.timeEnd('Projected Emissions for all locations')
 
       setDataProcessed(dataProcessed)
     }
-  }, [data, forecastYears])
+  }, [data, forecastYears, seriesInputs])
 
   return dataProcessed
 }
@@ -114,16 +129,24 @@ export const useEmissionModel = ({
 
   const resetInputParams = ({ index }) => {
     // reset params to initialInputParams
+    const inputParams = {
+      ...initialInputParams,
+      userHasModifiedParams: false,
+    }
     dispatch(
       updateLocationSeriesInputs({
         locationID,
         seriesIndex: index,
-        inputParams: initialInputParams,
+        inputParams,
       })
     )
   }
 
   const setInputParams = ({ index, inputParams }) => {
+    inputParams = {
+      ...inputParams,
+      userHasModifiedParams: true,
+    }
     dispatch(
       updateLocationSeriesInputs({
         locationID,
