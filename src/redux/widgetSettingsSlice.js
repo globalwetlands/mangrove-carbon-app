@@ -18,6 +18,9 @@ const widgetSettingsSlice = createSlice({
       const value = action.payload
       state.forecastYears = value
     },
+    resetForecastYears: (state) => {
+      state.forecastYears = initialState.forecastYears
+    },
     setEmissionsChartYAxis: (state, action) => {
       const options = ['mtco2e', 'price']
       const value = action.payload
@@ -91,6 +94,7 @@ const widgetSettingsSlice = createSlice({
 
 export const {
   setForecastYears,
+  resetForecastYears,
   updateLocationSeriesInputs,
   removeLocationSeries,
   addLocationSeriesInputs,

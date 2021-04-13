@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import { useDispatch } from 'react-redux'
 import ResetIcon from 'react-feather/dist/icons/refresh-cw'
 import RemoveIcon from 'react-feather/dist/icons/x'
 import FileIcon from 'react-feather/dist/icons/file-text'
@@ -8,6 +9,7 @@ import NumberInput from './NumberInput'
 import { dataColors } from '../../utils/colorUtils'
 import InfoPopup from '../../common/InfoPopup'
 import Abbr from '../../common/Abbr'
+import { resetForecastYears } from '../../redux/widgetSettingsSlice'
 import './EmissionsModelDescription.css'
 
 const TableRow = ({
@@ -90,11 +92,18 @@ const EmissionModelDescription = ({
   isLoaded,
   exportCsv,
 }) => {
+  const dispatch = useDispatch()
   const handleChange = ({ name, value, index }) => {
     if (name === 'deforestationRate') {
       value /= 100
     }
     setInputParams({ index, inputParams: { [name]: value } })
+  }
+  const handleResetSeries = ({ index }) => {
+    resetInputParams({ index })
+    if (index === 0) {
+      dispatch(resetForecastYears())
+    }
   }
   return (
     <div className="Widgets--Description">
@@ -222,7 +231,7 @@ const EmissionModelDescription = ({
                 >
                   <button
                     className="button EmissionsModelWidget--Table--FooterButton"
-                    onClick={() => resetInputParams({ index })}
+                    onClick={() => handleResetSeries({ index })}
                     title="Reset"
                   >
                     <ResetIcon />
