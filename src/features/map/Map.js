@@ -152,7 +152,7 @@ const Map = ({ setSelectedLocationData }) => {
     locations = _.sortBy(locations, 'area_m2').reverse()
 
     const colourKey = 'emissionModelResultFinal'
-    const colourKeyName = `${forecastYears}yr Projected Emissions`
+    const colourKeyName = `${forecastYears || 0}yr Projected Emissions`
     const colourKeyUnit = 'Mt CO₂e'
     const colourValueKey = 'colour_normalised'
     // const minValue = _.min(locations.map((loc) => loc[colourKey])) || 0
