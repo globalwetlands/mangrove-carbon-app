@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import IconButton from '../../common/IconButton'
 import Popup from '../../common/Popup'
@@ -142,6 +143,9 @@ const MenuIcon = (props) => {
 
 const Menu = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(false)
+  const showMenuHelpText = useSelector(
+    (state) => state.globalSettings.showMenuHelpText
+  )
 
   const menuPopupTitle = 'Mangrove Carbon App'
 
@@ -151,7 +155,7 @@ const Menu = () => {
 
   return (
     <Fragment>
-      <div className="Menu--MenuButtonWrap">
+      <div className="Menu--MenuButtonWrap" data-hashelptext={showMenuHelpText}>
         <IconButton
           Icon={MenuIcon}
           onClick={openMenu}

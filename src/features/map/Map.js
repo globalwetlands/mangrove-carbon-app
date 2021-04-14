@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   InteractiveMap as MapGL,
   NavigationControl,
@@ -18,6 +18,7 @@ import Menu from './Menu'
 import { useLocationsData } from '../../utils/dataHooks'
 import { getBrewerColours } from '../../utils/colorUtils'
 import { normalise, tToMt } from '../../utils/utils'
+import { hideMenuHelpText } from '../../redux/globalSettingsSlice'
 import './Map.css'
 
 const Map = ({ setSelectedLocationData }) => {
@@ -33,6 +34,8 @@ const Map = ({ setSelectedLocationData }) => {
   const forecastYears = useSelector(
     (state) => state.widgetSettings.forecastYears
   )
+
+  const dispatch = useDispatch()
 
   const loadingState = useMemo(() => {
     if (!!countryLocations?.length) {
@@ -111,6 +114,7 @@ const Map = ({ setSelectedLocationData }) => {
     if (clickedFeature) {
       fitBounds(clickedFeature)
       setSelectedLocationData(clickedFeature?.properties)
+      dispatch(hideMenuHelpText())
     }
   }
 
