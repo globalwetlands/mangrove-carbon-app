@@ -6,6 +6,13 @@ import { saveAs } from 'file-saver'
 import { m2ToHa } from './utils'
 import { emission_model } from './emission_model'
 
+export const defaultEmissionModelVariables = {
+  emissionsFactor: 1.0,
+  // sequestrationRate: varies, no global value, using 6.49 found in table S4 supp materials
+  // sequestrationRate unit: tonnes CO2e per year
+  sequestrationRate: 6.49,
+}
+
 export const loadLocationsData = async ({
   type = 'country', // country, aoi, wdpa
 }) => {
@@ -73,10 +80,10 @@ export function parseLocationData({
   const carbonStoredPerHectare = toc_tco2e / current_area_ha
 
   // Calculate remaining parameters
-  const emissionsFactor = 0.8
+  const emissionsFactor = defaultEmissionModelVariables.emissionsFactor
   // sequestrationRate: varies, no global value, using 6.49 found in table S4 supp materials
   // sequestrationRate unit: tonnes CO2e per year
-  const sequestrationRate = 6.49
+  const sequestrationRate = defaultEmissionModelVariables.sequestrationRate
 
   return {
     historicalTimeDiff,
@@ -98,10 +105,8 @@ export function calculateEmissionData({
   current_area_ha,
   deforestationRate,
   carbonStoredPerHectare,
-  emissionsFactor = 0.8,
-  // sequestrationRate: varies, no global value, using 6.49 found in table S4 supp materials
-  // sequestrationRate unit: tonnes CO2e per year
-  sequestrationRate = 6.49,
+  emissionsFactor = defaultEmissionModelVariables.emissionsFactor,
+  sequestrationRate = defaultEmissionModelVariables.sequestrationRate,
   forecastYears = 50,
 }) {
   // generate emission_model data for range of years

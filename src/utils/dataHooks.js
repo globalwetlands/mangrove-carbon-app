@@ -4,6 +4,7 @@ import {
   loadSingleLocationData,
   calculateEmissionData,
   parseLocationData,
+  defaultEmissionModelVariables,
 } from './dataUtils'
 
 import {
@@ -46,8 +47,9 @@ export const useLocationsData = ({ type = 'country' } = {}) => {
         const inputParams = locationSeriesInputs?.[0] || {}
         const userHasModifiedParams = inputParams?.userHasModifiedParams
         // TODO: make these variables configurable
-        const emissionsFactor = 0.8
-        const sequestrationRate = 6.49
+        const emissionsFactor = defaultEmissionModelVariables.emissionsFactor
+        const sequestrationRate =
+          defaultEmissionModelVariables.sequestrationRate
 
         const emissionModelResults = calculateEmissionData({
           current_area_ha,
