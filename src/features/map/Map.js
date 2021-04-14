@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import {
   InteractiveMap as MapGL,
   NavigationControl,
@@ -18,7 +19,6 @@ import { useLocationsData } from '../../utils/dataHooks'
 import { getBrewerColours } from '../../utils/colorUtils'
 import { normalise, tToMt } from '../../utils/utils'
 import './Map.css'
-import { useSelector } from 'react-redux'
 
 const Map = ({ setSelectedLocationData }) => {
   const mapboxApiAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
@@ -280,7 +280,6 @@ const Map = ({ setSelectedLocationData }) => {
 
       <div className="Map--Overlays">
         <Menu />
-
         {loadingState === 'loaded' && <MapLegend mapColours={mapColours} />}
       </div>
 

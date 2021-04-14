@@ -151,13 +151,16 @@ const Menu = () => {
 
   return (
     <Fragment>
-      <IconButton
-        Icon={MenuIcon}
-        onClick={openMenu}
-        className="Menu--MenuButton"
-        title="Open Menu"
-        tabIndex={1}
-      />
+      <div className="Menu--MenuButtonWrap">
+        <IconButton
+          Icon={MenuIcon}
+          onClick={openMenu}
+          className="Menu--MenuButton"
+          title="Open Menu"
+          tabIndex={1}
+        />
+        <div className="Menu--HelpText">Click on a country to get started</div>
+      </div>
       <Popup
         title={menuPopupTitle}
         modalIsOpen={menuIsOpen}
