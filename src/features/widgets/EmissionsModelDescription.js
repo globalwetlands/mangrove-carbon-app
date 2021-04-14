@@ -167,7 +167,7 @@ const EmissionModelDescription = ({
             handleChange={handleChange}
             valueFormatter={(val) => _.round(val, 2)}
             infoPopupTitle="Carbon stored"
-            infoPopupContent="The amount of carbon stored per hectare of mangroves measured in metric tonnes of CO₂e per hectare."
+            infoPopupContent="The amount of carbon stored per hectare of mangroves that can be emitted, measured in metric tonnes of CO₂e per hectare."
           />
           {/* <TableRow
             title="Emissions factor"
