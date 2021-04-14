@@ -110,7 +110,7 @@ const EmissionsModelWidget = ({
               content={
                 emissionsChartYAxis === 'price'
                   ? 'Estimated projected emissions per annum measured in USD'
-                  : 'Estimated projected emissions per annum measured in megatonnes of CO₂e'
+                  : 'Cumulative projected emissions measured in megatonnes of CO₂e'
               }
             />
           </strong>
