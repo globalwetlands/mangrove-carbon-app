@@ -16,6 +16,7 @@ import {
 import storage from 'redux-persist/lib/storage'
 
 import widgetSettingsSlice from './widgetSettingsSlice'
+import globalSettingsSlice from './globalSettingsSlice'
 
 const createPersistedReducer = ({ key, reducer, config = {} }) => {
   const persistConfig = {
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
     reducer: widgetSettingsSlice,
     key: 'widgetSettings',
   }),
+  globalSettings: globalSettingsSlice,
 })
 
 export const store = configureStore({
