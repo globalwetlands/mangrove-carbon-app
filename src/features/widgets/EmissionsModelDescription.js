@@ -94,9 +94,6 @@ const EmissionModelDescription = ({
 }) => {
   const dispatch = useDispatch()
   const handleChange = ({ name, value, index }) => {
-    if (name === 'deforestationRate') {
-      value /= 100
-    }
     setInputParams({ index, inputParams: { [name]: value } })
   }
   const handleResetSeries = ({ index }) => {
@@ -141,7 +138,7 @@ const EmissionModelDescription = ({
             title="Deforestation rate"
             unit="p.a."
             unitTitle="Per annum"
-            name="deforestationRate"
+            name="deforestationRatePercent"
             seriesInputs={seriesInputs}
             handleChange={handleChange}
             valueFormatter={(val) => _.round(val * 100, 3)}

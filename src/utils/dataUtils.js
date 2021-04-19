@@ -31,6 +31,9 @@ export const loadSingleLocationData = async (locationID) => {
   return data
 }
 
+export const rateToPercent = (rate) => (Math.exp(rate) - 1) * 100
+export const percentToRate = (percent) => Math.log1p(percent / 100)
+
 export function parseLocationData({
   locationData,
   historicalDates = ['1996-01-01', '2016-01-01'],
@@ -70,9 +73,8 @@ export function parseLocationData({
   // (log(area[1] / area[0]) / timeDiff) * -1
   const deforestationRate =
     (Math.log(current_area_m2 / initial_area_m2) / historicalTimeDiff) * -1
-  // const deforestationRatePercent = (Math.exp(deforestationRate) - 1) * 100
-
-  // const defRate = Math.log1p(deforestationRatePercent / 100)
+  const deforestationRatePercent = rateToPercent(deforestationRate)
+  // const defRate = percentToRate(deforestationRatePercent)
 
   // Carbon storage
   // tonnes CO2e per hectare
@@ -90,7 +92,7 @@ export function parseLocationData({
     current_area_ha,
     loss_ha,
     deforestationRate,
-    // deforestationRatePercent,
+    deforestationRatePercent,
     emissionsFactor,
     sequestrationRate,
     agb_tco2e, // above ground total CO2e grams

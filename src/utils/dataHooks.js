@@ -5,6 +5,7 @@ import {
   calculateEmissionData,
   parseLocationData,
   defaultEmissionModelVariables,
+  percentToRate,
 } from './dataUtils'
 
 import {
@@ -149,6 +150,14 @@ export const useEmissionModel = ({
       ...inputParams,
       userHasModifiedParams: true,
     }
+
+    // if deforestationRatePercent also update deforestationRate
+    if (Object.keys(inputParams).includes('deforestationRatePercent')) {
+      const { deforestationRatePercent } = inputParams
+      const deforestationRate = percentToRate(deforestationRatePercent)
+      inputParams.deforestationRate = deforestationRate
+    }
+
     dispatch(
       updateLocationSeriesInputs({
         locationID,
