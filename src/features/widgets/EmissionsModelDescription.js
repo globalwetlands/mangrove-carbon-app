@@ -1,5 +1,4 @@
 import React from 'react'
-import _ from 'lodash'
 import { useDispatch } from 'react-redux'
 import ResetIcon from 'react-feather/dist/icons/refresh-cw'
 import RemoveIcon from 'react-feather/dist/icons/x'
