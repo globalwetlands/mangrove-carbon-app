@@ -5,7 +5,9 @@ import {
   calculateEmissionData,
   parseLocationData,
   defaultEmissionModelVariables,
+  compareSeriesObjects,
   percentToRate,
+  formatSeriesValuesByKey,
 } from './dataUtils'
 
 import {
@@ -108,6 +110,7 @@ export const useEmissionModel = ({
   forecastStartingYear = 2017,
 }) => {
   const [initialInputParams, setInitialInputParams] = useState({})
+  const [userModifiedKeys, setUserModifiedKeys] = useState([])
 
   const locationID = useMemo(() => {
     return locationData?.id
@@ -211,13 +214,28 @@ export const useEmissionModel = ({
     }
   }, [forecastYears, seriesInputs])
 
+  useEffect(() => {
+    if (seriesInputs?.[0] && initialInputParams) {
+      const userModifiedKeys = compareSeriesObjects({
+        a: seriesInputs[0],
+        b: initialInputParams,
+        roundValuesByKey: formatSeriesValuesByKey,
+      })
+      setUserModifiedKeys(userModifiedKeys)
+    } else {
+      setUserModifiedKeys([])
+    }
+  }, [seriesInputs, initialInputParams])
+
   return {
     seriesResults,
     seriesInputs,
+    userModifiedKeys,
     setInputParams,
     resetInputParams,
     addSeries,
     removeSeries,
     forecastStartingYear,
+    formatSeriesValuesByKey,
   }
 }

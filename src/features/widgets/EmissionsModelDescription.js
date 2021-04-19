@@ -18,13 +18,20 @@ const TableRow = ({
   unitTitle,
   name,
   seriesInputs = [],
+  userModifiedKeys,
   valueFormatter = (val) => val,
+  formatSeriesValuesByKey = {},
   handleChange,
   min,
   max,
   infoPopupContent,
   infoPopupTitle,
 }) => {
+  const isModified = userModifiedKeys.includes(name)
+
+  if (Object.keys(formatSeriesValuesByKey).includes(name)) {
+    valueFormatter = formatSeriesValuesByKey[name]
+  }
   return (
     <tr className="EmissionsModelWidget--Table--Row">
       <th className="EmissionsModelWidget--Table--Row--Header">
@@ -42,24 +49,38 @@ const TableRow = ({
         )}
       </th>
       {!seriesInputs.length && <ValueCellPlaceholder />}
-      {seriesInputs.map((inputParams, index) => (
-        <ValueCell
-          key={`${name}-${index}`}
-          name={name}
-          value={valueFormatter(inputParams[name])}
-          index={index}
-          handleChange={handleChange}
-          min={min}
-          max={max}
-        />
-      ))}
+      {seriesInputs.map((inputParams, index) => {
+        return (
+          <ValueCell
+            key={`${name}-${index}`}
+            name={name}
+            isModified={index === 0 && isModified}
+            value={valueFormatter(inputParams[name])}
+            index={index}
+            handleChange={handleChange}
+            min={min}
+            max={max}
+          />
+        )
+      })}
     </tr>
   )
 }
 
-const ValueCell = ({ name, value, index, handleChange, min, max }) => {
+const ValueCell = ({
+  name,
+  value,
+  index,
+  handleChange,
+  min,
+  max,
+  isModified,
+}) => {
   return (
-    <td className="EmissionsModelWidget--Table--Row--ValueCell">
+    <td
+      className="EmissionsModelWidget--Table--Row--ValueCell"
+      data-ismodified={isModified}
+    >
       <NumberInput
         name={name}
         value={value}
@@ -78,8 +99,10 @@ const ValueCellPlaceholder = () => (
   </td>
 )
 
-const EmissionModelDescription = ({
+const EmissionsModelDescription = ({
   seriesInputs = {},
+  formatSeriesValuesByKey,
+  userModifiedKeys,
   setInputParams,
   resetInputParams,
   addSeries,
@@ -129,8 +152,9 @@ const EmissionModelDescription = ({
             unitTitle="Hectares"
             name="current_area_ha"
             seriesInputs={seriesInputs}
+            userModifiedKeys={userModifiedKeys}
             handleChange={handleChange}
-            valueFormatter={(val) => _.round(val)}
+            formatSeriesValuesByKey={formatSeriesValuesByKey}
             infoPopupTitle="Mangrove extent"
             infoPopupContent="Area covered by mangroves measured in hectares."
           />
@@ -140,8 +164,9 @@ const EmissionModelDescription = ({
             unitTitle="Per annum"
             name="deforestationRatePercent"
             seriesInputs={seriesInputs}
+            userModifiedKeys={userModifiedKeys}
             handleChange={handleChange}
-            valueFormatter={(val) => _.round(val * 100, 3)}
+            formatSeriesValuesByKey={formatSeriesValuesByKey}
             infoPopupTitle="Deforestation rate"
             infoPopupContent="Rate at which mangroves are cleared per annum measured in %"
           />
@@ -151,6 +176,8 @@ const EmissionModelDescription = ({
             unitTitle="Metric Tonnes of CO₂ equivalent per annum"
             name="sequestrationRate"
             seriesInputs={seriesInputs}
+            userModifiedKeys={userModifiedKeys}
+            formatSeriesValuesByKey={formatSeriesValuesByKey}
             handleChange={handleChange}
             infoPopupTitle="Sequestration rate"
             infoPopupContent="Rate at which carbon is sequestered per annum measured in metric tonnes of CO₂e per annum."
@@ -161,8 +188,9 @@ const EmissionModelDescription = ({
             unitTitle="Metric Tonnes of CO₂ equivalent per hectare"
             name="carbonStoredPerHectare"
             seriesInputs={seriesInputs}
+            userModifiedKeys={userModifiedKeys}
             handleChange={handleChange}
-            valueFormatter={(val) => _.round(val, 2)}
+            formatSeriesValuesByKey={formatSeriesValuesByKey}
             infoPopupTitle="Carbon stored"
             infoPopupContent="The amount of carbon stored per hectare of mangroves that can be emitted, measured in metric tonnes of CO₂e per hectare."
           />
@@ -170,14 +198,17 @@ const EmissionModelDescription = ({
             title="Emissions factor"
             name="emissionsFactor"
             seriesInputs={seriesInputs}
+            userModifiedKeys={userModifiedKeys}
             handleChange={handleChange}
+            formatSeriesValuesByKey={formatSeriesValuesByKey}
           /> */}
           <TableRow
             title="Forecast Years"
             name="forecastYears"
             seriesInputs={[{ forecastYears }]}
+            userModifiedKeys={userModifiedKeys}
             handleChange={({ name, value }) => setForecastYears(value)}
-            valueFormatter={(val) => Math.abs(val)}
+            formatSeriesValuesByKey={formatSeriesValuesByKey}
             infoPopupTitle="Forecast Years"
             infoPopupContent="The number of years you would like to see projections for."
           />
@@ -188,8 +219,9 @@ const EmissionModelDescription = ({
               unit="USD / t"
               unitTitle="US Dollars per metric tonne of CO₂ equivalent"
               seriesInputs={[{ carbonPrice }]}
+              userModifiedKeys={userModifiedKeys}
               handleChange={({ name, value }) => setCarbonPrice(value)}
-              valueFormatter={(val) => Math.abs(val)}
+              formatSeriesValuesByKey={formatSeriesValuesByKey}
               min={0}
               max={999}
               infoPopupTitle="Carbon Price"
@@ -252,4 +284,4 @@ const EmissionModelDescription = ({
   )
 }
 
-export default EmissionModelDescription
+export default EmissionsModelDescription

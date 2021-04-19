@@ -40,6 +40,8 @@ const EmissionsModelWidget = ({
   const {
     seriesResults,
     seriesInputs = [],
+    formatSeriesValuesByKey,
+    userModifiedKeys,
     setInputParams,
     resetInputParams,
     addSeries,
@@ -87,6 +89,8 @@ const EmissionsModelWidget = ({
 
         <EmissionsModelDescription
           seriesInputs={seriesInputs}
+          userModifiedKeys={userModifiedKeys}
+          formatSeriesValuesByKey={formatSeriesValuesByKey}
           setInputParams={setInputParams}
           resetInputParams={resetInputParams}
           addSeries={addSeries}

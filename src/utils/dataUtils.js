@@ -163,3 +163,30 @@ export async function exportCsv({
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
   saveAs(blob, filename)
 }
+
+export const compareSeriesObjects = ({ a, b, roundValuesByKey = {} }) =>
+  _.reduce(
+    a,
+    function (result, value, key) {
+      let aValue = value
+      let bValue = b[key]
+      if (_.isNumber(aValue)) {
+        if (roundValuesByKey?.[key]) {
+          aValue = roundValuesByKey[key](aValue)
+          bValue = roundValuesByKey[key](bValue)
+        }
+      }
+      return _.isEqual(aValue, bValue) ? result : result.concat(key)
+    },
+    []
+  )
+
+export const formatSeriesValuesByKey = {
+  current_area_ha: (val) => _.round(val),
+  deforestationRatePercent: (val) => _.round(val, 3),
+  sequestrationRate: (val) => _.round(val, 3),
+  carbonStoredPerHectare: (val) => _.round(val, 2),
+  emissionsFactor: (val) => _.round(val, 4),
+  forecastYears: (val) => _.round(Math.abs(val), 2),
+  carbonPrice: (val) => _.round(Math.abs(val), 2),
+}

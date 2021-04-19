@@ -33,6 +33,20 @@
   width: 60px;
 }
 
+.EmissionsModelWidget--Table--Row--ValueCell[data-ismodified='true'] {
+  color: rgb(43, 137, 226);
+}
+
+.EmissionsModelWidget--Table--Row--ValueCell[data-ismodified='true']:after {
+  content: '*';
+  position: absolute;
+}
+
+.EmissionsModelWidget--Table--Row--ValueCell[data-ismodified='true']
+  .NumberInput {
+  border-bottom-style: dashed;
+}
+
 .EmissionsModelWidget--Table--SeriesHeader {
   text-align: right;
   text-decoration: underline;
