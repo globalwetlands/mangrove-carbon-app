@@ -159,8 +159,8 @@ const EmissionsModelDescription = ({
           />
           <TableRow
             title="Deforestation rate"
-            unit="p.a."
-            unitTitle="Per annum"
+            unit="% p.a."
+            unitTitle="% per annum"
             name="deforestationRatePercent"
             seriesInputs={seriesInputs}
             userModifiedKeys={userModifiedKeys}
