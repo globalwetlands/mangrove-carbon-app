@@ -36,7 +36,7 @@ export const percentToRate = (percent) => Math.log1p(percent / 100)
 
 export function parseLocationData({
   locationData,
-  historicalDates = ['1996-01-01', '2016-01-01'],
+  historicalDates = ['2010-01-01', '2016-01-01'],
 }) {
   // Mg (Megagram) == Tonne
   const { mangrove_datum } = locationData
