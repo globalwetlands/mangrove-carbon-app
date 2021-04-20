@@ -173,8 +173,8 @@ const Map = ({ setSelectedLocationData }) => {
     // const maxValue = _.max(locations.map((loc) => tToMt(loc[colourKey]))) || 1
     const allValues = locations.map((loc) => tToMt(loc[colourKey]))
     const summary = summarise(allValues)
-    const numValueStops = 5
-    const maxValue = _.ceil(summary.quartile(0.95), -2)
+    const numValueStops = 6
+    const maxValue = _.ceil(summary.quartile(0.98), -2)
     const valueStep = maxValue / numValueStops
     const valueStops = _.range(minValue, maxValue + valueStep, valueStep)
 
