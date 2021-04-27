@@ -59,7 +59,9 @@ const EmissionsModelWidget = ({
       const re = /series_(\d+)/g
       const result = re.exec(key)
       let index = parseInt(result[1])
-      return `Series ${index + 1} (t CO2e)`
+      const prettyName = `Series ${index + 1} (t CO2e)`
+      const snakeName = `series_${index + 1}_tco2e`
+      return snakeName
     }
 
     const mapData = (row) => {
@@ -67,7 +69,7 @@ const EmissionsModelWidget = ({
 
       // Change series_0 -> series_1
       const seriesResults = _.mapKeys(rest, formatSeriesName)
-      const updatedRow = { Year: name, ...seriesResults }
+      const updatedRow = { year: name, ...seriesResults }
       return updatedRow
     }
 
