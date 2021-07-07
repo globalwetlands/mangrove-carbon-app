@@ -2,6 +2,8 @@
 
 ![GitHub License](https://img.shields.io/github/license/globalwetlands/mangrove-carbon-app)
 
+View the app at __[mangrove-carbon.wetlands.app](https://mangrove-carbon.wetlands.app/)__
+
 ## About
 
 #### Nations measure the amount of carbon stored in their forests and wetlands when calculating their total carbon emissions.
