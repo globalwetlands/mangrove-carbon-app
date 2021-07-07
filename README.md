@@ -21,7 +21,9 @@ The app uses models and data from the publications:
 
 ## Development
 
-Prequisites: node.js. Run `npm install` in your terminal to install node. 
+### Prequisites
+* [node.js 12+](https://nodejs.org/en/)
+  * Run `npm install` in your terminal to install node dependencies before running the commands below. 
 
 In the project directory, you can then run:
 
